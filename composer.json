@@ -1,0 +1,31 @@
+{
+    "authors": [
+        {
+            "email": "dn@phantasie-schmiede.de",
+            "name": "Daniel Ablass",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "PSB\\PsbGiftLog\\": "Classes/"
+        }
+    },
+    "description": "Keep a record of all the gifts you have received or given.",
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "psb_gift_log"
+        }
+    },
+    "keywords": [
+        "extension",
+        "organizing",
+        "typo3"
+    ],
+    "license": "GPL-2.0-or-later",
+    "name": "psb/psb-gift-log",
+    "require": {
+        "psb/psb-foundation": "^2.1"
+    },
+    "type": "typo3-cms-extension"
+}
