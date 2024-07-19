@@ -1,0 +1,19 @@
+<html
+    data-namespace-typo3-fluid="true">
+<f:if condition="{gifts}">
+    <dt class="col-3">Geschenke</dt>
+    <dd class="col-9">
+        <ul>
+            <f:for
+                as="gift"
+                each="{gifts}">
+                <li>
+                    <strong>{gift.year}</strong>
+                    von <f:for as="donor" each="{gift.donors}">{donor.displayName}</f:for>:
+                    <span>{gift.description}</span>
+                </li>
+            </f:for>
+        </ul>
+    </dd>
+</f:if>
+</html>

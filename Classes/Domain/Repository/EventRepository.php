@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace PSB\PsbGiftLog\Domain\Repository;
 
-use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * Class EntryRepository
+ * Class EventRepository
  *
  * @package PSB\PsbGiftLog\Domain\Repository
  */
-class EntryRepository extends AbstractEntity
+class EventRepository extends Repository
 {
 }

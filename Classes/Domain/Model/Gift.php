@@ -11,37 +11,51 @@ declare(strict_types=1);
 namespace PSB\PsbGiftLog\Domain\Model;
 
 use PSB\PsbContacts\Domain\Model\Contact;
-use PSB\PsbContacts\Domain\Model\Event;
+use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
 use PSB\PsbFoundation\Attribute\TCA\Column;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\File;
+use PSB\PsbFoundation\Attribute\TCA\ColumnType\Group;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Number;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
+use PSB\PsbFoundation\Service\ObjectService;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use ReflectionException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
- * Class Entry
+ * Class Gift
  *
  * @package PSB\PsbGiftLog\Domain\Model
  */
-#[Ctrl(label: 'name')]
-class Entry extends AbstractEntity
+#[Ctrl(label: 'description')]
+class Gift extends AbstractEntity
 {
+    public const MM_TABLES = [
+        'donors'     => 'tx_psbgiftlog_gift_contact_donor_mm',
+        'events'     => 'tx_psbgiftlog_gift_event_mm',
+        'recipients' => 'tx_psbgiftlog_gift_contact_recipient_mm',
+    ];
+
     #[Text]
     protected string $description = '';
 
     /** @var ObjectStorage<Contact> */
-    #[Select(linkedModel: Contact::class, mm: 'tx_psbgiftlog_entry_contact_donor', renderType: SelectRenderType::selectMultipleSideBySide)]
+    #[Select(linkedModel: Contact::class, minItems: 1, mm: self::MM_TABLES['donors'], renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $donors;
 
-    /** @var ObjectStorage<Event> */
-    #[Select(linkedModel: Event::class, mm: 'tx_psbgiftlog_entry_event', renderType: SelectRenderType::selectMultipleSideBySide)]
-    protected ObjectStorage $events;
+    #[Group(mm: self::MM_TABLES['events'], mmOppositeUsage: [
+        Event::class        => ['gifts'],
+        ContactEvent::class => ['gifts'],
+    ])]
+    protected string $events;
 
     /** @var ObjectStorage<FileReference> */
     #[File]
@@ -50,7 +64,8 @@ class Entry extends AbstractEntity
     #[Text]
     protected string $notes = '';
 
-    #[Select(linkedModel: Contact::class, mm: 'tx_psbgiftlog_entry_contact_recipient', renderType: SelectRenderType::selectMultipleSideBySide)]
+    /** @var ObjectStorage<Contact> */
+    #[Select(linkedModel: Contact::class, minItems: 1, mm: self::MM_TABLES['recipients'], renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $recipients;
 
     #[Column(nullable: true)]
@@ -76,9 +91,15 @@ class Entry extends AbstractEntity
         return $this->donors;
     }
 
-    public function getEvents(): ObjectStorage
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
+    public function getEvents(): array
     {
-        return $this->events;
+        return GeneralUtility::makeInstance(ObjectService::class)
+            ->resolveMmRelationWithDifferentTables($this, 'events');
     }
 
     public function getImages(): ObjectStorage
@@ -104,7 +125,6 @@ class Entry extends AbstractEntity
     public function initializeObject(): void
     {
         $this->donors = new ObjectStorage();
-        $this->events = new ObjectStorage();
         $this->images = new ObjectStorage();
         $this->recipients = new ObjectStorage();
     }
@@ -117,11 +137,6 @@ class Entry extends AbstractEntity
     public function setDonors(ObjectStorage $donors): void
     {
         $this->donors = $donors;
-    }
-
-    public function setEvents(ObjectStorage $events): void
-    {
-        $this->events = $events;
     }
 
     public function setImages(ObjectStorage $images): void

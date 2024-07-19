@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-07-15T11:55:00+01:00"
+        original="messages"
+        product-name="psb_gift_log"
+        source-language="en">
+        <body>
+            <trans-unit id="ctrl.title">
+                <source>Event</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
