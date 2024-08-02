@@ -1,5 +1,10 @@
 <html
-    data-namespace-typo3-fluid="true">
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbvh="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
+    xmlns:psbvh="http://typo3.org/ns/PSB/PsbViewHelpers/ViewHelpers">
+<psbvh:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/show.xlf" />
+
 <f:if condition="{gifts}">
     <dt class="col-3">Geschenke</dt>
     <dd class="col-9">
@@ -8,7 +13,24 @@
                 as="gift"
                 each="{gifts}">
                 <li>
-                    <strong>{gift.year}</strong>
+                    <strong>
+                        <f:for
+                            as="event"
+                            each="{gift.events}"
+                            iteration="eventIterator">
+                            <f:if condition="{event.name}">
+                                <f:then>
+                                    <strong>{event.name}</strong><f:if condition="!{eventIterator.isLast}">,</f:if>
+                                </f:then>
+                                <f:else>
+                                    <psbvh:translate
+                                        default="{event.label}"
+                                        id="show:event.type.{event.label}" /><f:if condition="!{eventIterator.isLast}">,</f:if>
+                                </f:else>
+                            </f:if>
+                        </f:for>
+                        {gift.year}
+                    </strong>
                     von <f:for as="donor" each="{gift.donors}">{donor.displayName}</f:for>:
                     <span>{gift.description}</span>
                 </li>

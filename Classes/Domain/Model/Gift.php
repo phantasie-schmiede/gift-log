@@ -21,6 +21,7 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
+use PSB\PsbFoundation\Exceptions\ImplementationException;
 use PSB\PsbFoundation\Service\ObjectService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -93,13 +94,14 @@ class Gift extends AbstractEntity
 
     /**
      * @throws ContainerExceptionInterface
+     * @throws ImplementationException
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      */
     public function getEvents(): array
     {
         return GeneralUtility::makeInstance(ObjectService::class)
-            ->resolveMmRelationWithDifferentTables($this, 'events');
+            ->resolveMmRelationWithDifferentTables($this, 'events', [Event::class]);
     }
 
     public function getImages(): ObjectStorage

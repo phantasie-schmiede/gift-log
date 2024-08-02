@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace PSB\PsbGiftLog\Domain\Repository;
 
-use PSB\PsbFoundation\Traits\RepositoryConstraintsTrait;
+use PSB\PsbFoundation\Utility\QueryUtility;
 use PSB\PsbGiftLog\Domain\Demand\GiftDemand;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -23,8 +23,6 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class GiftRepository extends Repository
 {
-    use RepositoryConstraintsTrait;
-
     /**
      * @throws InvalidQueryException
      */
@@ -37,7 +35,7 @@ class GiftRepository extends Repository
             $constraints[] = $query->contains('recipients', $demand->getRecipient());
         }
 
-        $this->applyConstraints($constraints, $query);
+        QueryUtility::applyConstraints($constraints, $query);
 
         return $query->execute();
     }
