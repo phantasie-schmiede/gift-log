@@ -26,7 +26,7 @@
     "name": "psb/psb-gift-log",
     "require": {
         "psb/psb-contacts": "@dev",
-        "psb/psb-foundation": "^2.2.1"
+        "psb/psb-foundation": "@dev"
     },
     "type": "typo3-cms-extension"
 }
