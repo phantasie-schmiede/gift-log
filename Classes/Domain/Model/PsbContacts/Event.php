@@ -16,6 +16,7 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\Mapping\Table;
 use PSB\PsbFoundation\Attribute\TCA\Tab;
 use PSB\PsbFoundation\Enum\SelectRenderType;
+use PSB\PsbGiftLog\Domain\Model\EventWithGiftsInterface;
 use PSB\PsbGiftLog\Domain\Model\Gift;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -26,7 +27,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  */
 #[Tab(identifier: 'giftLog')]
 #[Table(name: 'tx_psbcontacts_domain_model_event')]
-class Event extends ContactEvent
+class Event extends ContactEvent implements EventWithGiftsInterface
 {
     /** @var ObjectStorage<Gift> $gifts */
     #[Column(position: 'tab:giftLog')]

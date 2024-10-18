@@ -23,7 +23,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @package PSB\PsbGiftLog\Domain\Model
  */
 #[Ctrl(label: 'name')]
-class Event extends AbstractEntity
+class Event extends AbstractEntity implements EventWithGiftsInterface
 {
     /** @var ObjectStorage<Gift> $gifts */
     #[Select(linkedModel: Gift::class, mm: Gift::MM_TABLES['events'], mmOppositeField: 'events', renderType: SelectRenderType::selectMultipleSideBySide)]

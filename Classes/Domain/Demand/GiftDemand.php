@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace PSB\PsbGiftLog\Domain\Demand;
 
 use PSB\PsbContacts\Domain\Model\Contact;
+use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
+use PSB\PsbGiftLog\Domain\Model\Event;
 
 /**
  * Class GiftDemand
@@ -19,16 +21,29 @@ use PSB\PsbContacts\Domain\Model\Contact;
  */
 class GiftDemand
 {
-    protected ?Contact $recipient = null;
+    protected ?Contact                $contact = null;
+    protected ContactEvent|Event|null $event   = null;
 
-    public function getRecipient(): ?Contact
+    public function getContact(): ?Contact
     {
-        return $this->recipient;
+        return $this->contact;
     }
 
-    public function setRecipient(?Contact $recipient): self
+    public function getEvent(): Event|ContactEvent|null
     {
-        $this->recipient = $recipient;
+        return $this->event;
+    }
+
+    public function setContact(?Contact $contact): self
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+
+    public function setEvent(Event|ContactEvent|null $event): self
+    {
+        $this->event = $event;
 
         return $this;
     }

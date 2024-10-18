@@ -15,35 +15,42 @@ use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
 use PSB\PsbGiftLog\Data\ExtensionInformation;
 use PSB\PsbGiftLog\Domain\Demand\GiftDemand;
 use PSB\PsbGiftLog\Domain\Repository\GiftRepository;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 
 /**
- * Class ExtensionInformation
+ * Class AdditionalContactContent
  *
- * @package PSB\PsbGiftLog\Data
+ * @package PSB\PsbGiftLog\EventListener
  */
-class AdditionalContactContent
+#[AsEventListener(identifier: 'PsbGiftLog/AdditionalContactContent')]
+readonly class AdditionalContactContent
 {
     public function __construct(
-        protected readonly ExtensionInformation $extensionInformation,
-        protected readonly GiftRepository       $giftRepository,
+        protected ExtensionInformation $extensionInformation,
+        protected GiftRepository       $giftRepository,
+        protected ViewFactoryInterface $viewFactory,
     ) {
     }
 
+    /**
+     * @throws InvalidQueryException
+     */
     public function __invoke(AdditionalContactContentEvent $event): void
     {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $demand = (new GiftDemand())->setRecipient($event->getContact());
-
-        $view->setTemplatePathAndFilename(
-            FilePathUtility::getPrivateResourcePath(
+        $viewFactoryData = new ViewFactoryData(
+               templatePathAndFilename: FilePathUtility::getPrivateResourcePath(
                 $this->extensionInformation,
                 'Templates/Event/AdditionalContactContent.html'
-            )
+            ), request                : $event->getRequest(),
         );
+        $view = $this->viewFactory->create($viewFactoryData);
+
+        $demand = (new GiftDemand())->setContact($event->getContact());
         $view->assignMultiple([
-            'gifts' => $this->giftRepository->findAll(),
+            'gifts' => $this->giftRepository->findByDemand($demand),
         ]);
 
         $event->addContent($view->render());

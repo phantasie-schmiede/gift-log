@@ -31,8 +31,15 @@ class GiftRepository extends Repository
         $constraints = [];
         $query = $this->createQuery();
 
-        if (null !== $demand->getRecipient()) {
-            $constraints[] = $query->contains('recipients', $demand->getRecipient());
+        if (null !== $demand->getEvent()) {
+            $constraints[] = $query->contains('events', $demand->getEvent());
+        }
+
+        if (null !== $demand->getContact()) {
+            $constraints[] = $query->logicalOr(
+                $query->contains('donors', $demand->getContact()),
+                $query->contains('recipients', $demand->getContact()),
+            );
         }
 
         QueryUtility::applyConstraints($constraints, $query);

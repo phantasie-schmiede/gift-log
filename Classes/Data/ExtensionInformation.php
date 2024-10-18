@@ -11,6 +11,9 @@ declare(strict_types=1);
 namespace PSB\PsbGiftLog\Data;
 
 use PSB\PsbFoundation\Data\AbstractExtensionInformation;
+use PSB\PsbFoundation\Data\PluginConfiguration;
+use PSB\PsbGiftLog\Controller\HistoryController;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class ExtensionInformation
@@ -19,4 +22,15 @@ use PSB\PsbFoundation\Data\AbstractExtensionInformation;
  */
 class ExtensionInformation extends AbstractExtensionInformation
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->addPlugin(
+            GeneralUtility::makeInstance(
+                PluginConfiguration::class,
+                controllers: [HistoryController::class],
+                name       : 'History'
+            )
+        );
+    }
 }

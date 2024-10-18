@@ -6,8 +6,3 @@ services:
 
   PSB\PsbGiftLog\:
     resource: '../Classes/*'
-
-  PSB\PsbGiftLog\EventListener\AdditionalContactContent:
-    tags:
-      - identifier: 'psb.giftlog.additionalContactContent'
-        name: event.listener

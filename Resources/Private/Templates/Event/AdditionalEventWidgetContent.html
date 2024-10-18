@@ -1,0 +1,16 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<f:link.action
+    action="listForEvent"
+    arguments="{contactEvent: event}"
+    class="ms-auto{f:if(condition: hasGifts, then: ' text-success')}"
+    controller="History"
+    extensionName="PsbGiftLog"
+    pluginName="History">
+    <core:icon
+        identifier="psb-templates-gift"
+        size="small" />
+</f:link.action>
+</html>
