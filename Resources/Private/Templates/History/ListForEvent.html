@@ -18,4 +18,16 @@
         </div>
     </f:else>
 </f:if>
+
+<f:link.action
+    action="new"
+    arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
+    class="bg-primary-subtle btn mt-3"
+    controller="Gift"
+    pluginName="Gift">
+    <core:icon
+        identifier="psb-templates-plus-lg"
+        size="small" />
+    <psbFoundation:translate id="enterNewGift" />
+</f:link.action>
 </html>

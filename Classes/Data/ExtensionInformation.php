@@ -12,6 +12,7 @@ namespace PSB\PsbGiftLog\Data;
 
 use PSB\PsbFoundation\Data\AbstractExtensionInformation;
 use PSB\PsbFoundation\Data\PluginConfiguration;
+use PSB\PsbGiftLog\Controller\GiftController;
 use PSB\PsbGiftLog\Controller\HistoryController;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -25,6 +26,13 @@ class ExtensionInformation extends AbstractExtensionInformation
     public function __construct()
     {
         parent::__construct();
+        $this->addPlugin(
+            GeneralUtility::makeInstance(
+                PluginConfiguration::class,
+                controllers: [GiftController::class],
+                name       : 'Gift'
+            )
+        );
         $this->addPlugin(
             GeneralUtility::makeInstance(
                 PluginConfiguration::class,

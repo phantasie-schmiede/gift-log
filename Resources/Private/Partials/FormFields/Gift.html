@@ -1,0 +1,102 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_gift_log/Resources/Private/Language/Backend/Configuration/TCA/gift.xlf" />
+
+<f:asset.script
+    identifier="autoSizeTextArea"
+    src="EXT:psb_templates/Resources/Public/JavaScript/autoSizeTextArea.js"
+    type="module" />
+<f:asset.script
+    identifier="clearInput"
+    src="EXT:psb_templates/Resources/Public/JavaScript/clearInput.js"
+    type="module" />
+<f:asset.script
+    identifier="inputAutocomplete"
+    src="EXT:psb_templates/Resources/Public/JavaScript/inputAutocomplete.js"
+    type="module" />
+
+<div class="form-floating mb-3">
+    <f:form.textfield
+        class="form-control"
+        property="year"
+        placeholder="{psbFoundation:translate(id: 'gift:year')}"
+        type="number"
+        value="{gift.year -> f:or(alternative: '{f:format.date(date: \'now\', format: \'Y\')}')}" />
+    <label
+        class="form-label">
+        <psbFoundation:translate id="gift:year" />
+    </label>
+</div>
+
+<div class="form-floating mb-3">
+    <input
+        autocomplete="off"
+        class="form-control psb-templates-clear-input"
+        data-psb-autocomplete-items="{allContacts}"
+        data-psb-autocomplete-preselection=""
+        data-psb-autocomplete-selection-target="#gift-donors-selection"
+        data-psb-autocomplete-value-target="#gift-donors-value"
+        placeholder="{psbFoundation:translate(id: 'gift:donors')}"
+        type="text" />
+    <label
+        class="form-label">
+        <psbFoundation:translate id="gift:donors" />
+    </label>
+    <ul
+        class="list-group list-group-flush"
+        id="gift-donors-selection">
+    </ul>
+    <f:form.hidden
+        id="gift-donors-value"
+        property="donors" />
+</div>
+
+<div class="form-floating mb-3">
+    <input
+        autocomplete="off"
+        class="form-control psb-templates-clear-input"
+        data-psb-autocomplete-items="{allContacts}"
+        data-psb-autocomplete-preselection=""
+        data-psb-autocomplete-selection-target="#gift-recipients-selection"
+        data-psb-autocomplete-value-target="#gift-recipients-value"
+        placeholder="{psbFoundation:translate(id: 'gift:recipients')}"
+        type="text" />
+    <label
+        class="form-label">
+        <psbFoundation:translate id="gift:recipients" />
+    </label>
+    <ul
+        class="list-group list-group-flush"
+        id="gift-recipients-selection">
+    </ul>
+    <f:form.hidden
+        id="gift-recipients-value"
+        property="recipients" />
+</div>
+
+<div class="form-floating mb-3">
+    <f:form.textarea
+        class="form-control psb-templates-auto-size"
+        property="description"
+        placeholder="{psbFoundation:translate(id: 'gift:description')}"
+        value="{gift.description}" />
+    <label
+        class="form-label">
+        <psbFoundation:translate id="gift:description" />
+    </label>
+</div>
+
+<div class="form-floating mb-3">
+    <f:form.textarea
+        class="form-control psb-templates-auto-size"
+        property="notes"
+        placeholder="{psbFoundation:translate(id: 'gift:notes')}"
+        value="{gift.notes}" />
+    <label
+        class="form-label">
+        <psbFoundation:translate id="gift:notes" />
+    </label>
+</div>
+</html>

@@ -82,6 +82,20 @@ class Gift extends AbstractEntity
         $this->initializeObject();
     }
 
+    public function addDonor(Contact $contact): self
+    {
+        $this->donors->attach($contact);
+
+        return $this;
+    }
+
+    public function addRecipient(Contact $contact): self
+    {
+        $this->recipients->attach($contact);
+
+        return $this;
+    }
+
     public function getDescription(): string
     {
         return $this->description;
@@ -114,6 +128,11 @@ class Gift extends AbstractEntity
         return $this->notes;
     }
 
+    public function getRecipients(): ObjectStorage
+    {
+        return $this->recipients;
+    }
+
     public function getRedeemed(): ?bool
     {
         return $this->redeemed;
@@ -131,38 +150,60 @@ class Gift extends AbstractEntity
         $this->recipients = new ObjectStorage();
     }
 
-    public function setDescription(string $description): void
+    public function removeAllContacts(): self
+    {
+        $this->donors->removeAll($this->donors);
+        $this->recipients->removeAll($this->recipients);
+
+        return $this;
+    }
+
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
-    public function setDonors(ObjectStorage $donors): void
+    public function setDonors(ObjectStorage $donors): self
     {
         $this->donors = $donors;
+
+        return $this;
     }
 
-    public function setImages(ObjectStorage $images): void
+    public function setImages(ObjectStorage $images): self
     {
         $this->images = $images;
+
+        return $this;
     }
 
-    public function setNotes(string $notes): void
+    public function setNotes(string $notes): self
     {
         $this->notes = $notes;
+
+        return $this;
     }
 
-    public function setRecipients(ObjectStorage $recipients): void
+    public function setRecipients(ObjectStorage $recipients): self
     {
         $this->recipients = $recipients;
+
+        return $this;
     }
 
-    public function setRedeemed(?bool $redeemed): void
+    public function setRedeemed(?bool $redeemed): self
     {
         $this->redeemed = $redeemed;
+
+        return $this;
     }
 
-    public function setYear(?int $year): void
+    public function setYear(?int $year): self
     {
         $this->year = $year;
+
+        return $this;
     }
 }

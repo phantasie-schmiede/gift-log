@@ -3,5 +3,6 @@ plugin {
     persistence.storagePid = {$plugin.tx_psbcontacts.persistence.storagePid}
   }
 
+  tx_psbgiftlog_gift.view.defaultPid = auto
   tx_psbgiftlog_history.view.defaultPid = auto
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-11-12T13:18:00+01:00"
+        original="messages"
+        product-name="psb_gift_log"
+        source-language="en">
+        <body>
+            <trans-unit id="cancel">
+                <source>Cancel</source>
+            </trans-unit>
+            <trans-unit id="save">
+                <source>Save</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

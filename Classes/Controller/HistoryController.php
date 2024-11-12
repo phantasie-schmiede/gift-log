@@ -12,13 +12,11 @@ namespace PSB\PsbGiftLog\Controller;
 
 use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
-use PSB\PsbGiftLog\Domain\Demand\GiftDemand;
-use PSB\PsbGiftLog\Domain\Model\Event;
+use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
 use PSB\PsbGiftLog\Domain\Model\PsbContacts\Event as ContactEvent;
 use PSB\PsbGiftLog\Domain\Repository\GiftRepository;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 
 /**
  * Class HistoryController
@@ -36,17 +34,17 @@ class HistoryController extends ActionController
     ) {
     }
 
-    /**
-     * @throws InvalidQueryException
-     */
     #[PluginAction(default: true)]
-    public function listForEventAction(ContactEvent $contactEvent = null, Event $event = null): ResponseInterface
-    {
-        $demand = (new GiftDemand())->setEvent($event ?? $contactEvent);
+    public function listForEventAction(
+        ContactEvent $contactEvent = null,
+        GiftLogEvent $giftLogEvent = null,
+    ): ResponseInterface {
+        $this->setCacheTags(self::CACHE_TAG);
 
         $this->view->assignMultiple([
-            'event' => $event ?? $contactEvent,
-            'gifts' => $this->giftRepository->findByDemand($demand),
+            'contactEvent' => $contactEvent,
+            'event'        => $giftLogEvent ?? $contactEvent,
+            'giftLogEvent' => $giftLogEvent,
         ]);
 
         return $this->htmlResponse();

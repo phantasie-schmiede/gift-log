@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-11-12T15:37:00+01:00"
+        original="messages"
+        product-name="psb_gift_log"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="ctrl.title">
+                <source>Gift</source>
+                <target>Geschenk</target>
+            </trans-unit>
+            <trans-unit id="description">
+                <source>Description</source>
+                <target>Beschreibung</target>
+            </trans-unit>
+            <trans-unit id="donors">
+                <source>From</source>
+                <target>Von</target>
+            </trans-unit>
+            <trans-unit id="events">
+                <source>Events</source>
+                <target>Ereignisse</target>
+            </trans-unit>
+            <trans-unit id="images">
+                <source>Images</source>
+                <target>Bilder</target>
+            </trans-unit>
+            <trans-unit id="notes">
+                <source>Notes</source>
+                <target>Notizen</target>
+            </trans-unit>
+            <trans-unit id="recipients">
+                <source>For</source>
+                <target>Für</target>
+            </trans-unit>
+            <trans-unit id="redeemed">
+                <source>Redeemed</source>
+                <target>Eingelöst</target>
+            </trans-unit>
+            <trans-unit id="year">
+                <source>Year</source>
+                <target>Jahr</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

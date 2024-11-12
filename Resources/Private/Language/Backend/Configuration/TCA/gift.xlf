@@ -13,7 +13,7 @@
                 <source>Description</source>
             </trans-unit>
             <trans-unit id="donors">
-                <source>Donors</source>
+                <source>From</source>
             </trans-unit>
             <trans-unit id="events">
                 <source>Events</source>
@@ -25,7 +25,7 @@
                 <source>Notes</source>
             </trans-unit>
             <trans-unit id="recipients">
-                <source>Recipients</source>
+                <source>For</source>
             </trans-unit>
             <trans-unit id="redeemed">
                 <source>Redeemed</source>
