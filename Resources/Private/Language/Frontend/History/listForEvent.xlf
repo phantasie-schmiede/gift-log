@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-11-12T07:30:00+01:00"
+        original="messages"
+        product-name="psb_gift_log"
+        source-language="en">
+        <body>
+            <trans-unit id="enterNewGift">
+                <source>Enter new gift</source>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.baptism">
+                <source>Gifts for the baptism of {persons}</source>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.baptism.anniversary">
+                <source>Gifts for the baptism day of {persons}</source>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.birthday">
+                <source>Gifts for the birth of {persons}</source>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.birthday.anniversary">
+                <source>Gifts for the birthday of {persons}</source>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.confirmation">
+                <source>Gifts for the confirmation of {persons}</source>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.confirmation.anniversary">
+                <source>Gifts for the confirmation anniversary of {persons}</source>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.death">
+                <source>Gifts for the death of {persons}</source>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.death.anniversary">
+                <source>Gifts for the anniversary of the death of {persons}</source>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.divorce">
+                <source>Gifts for the divorce of {persons}</source>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.divorce.anniversary">
+                <source>Gifts for the anniversary of the divorce of {persons}</source>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.other">
+                <source>Gifts for an event of {persons}</source>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.other.anniversary">
+                <source>Gifts for an anniversary of {persons}</source>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.wedding">
+                <source>Gifts for the wedding of {persons}</source>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.wedding.anniversary">
+                <source>Gifts for wedding anniversary of {persons}</source>
+            </trans-unit>
+            <trans-unit id="noGiftsForEvent">
+                <source>No gifts have been entered yet.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

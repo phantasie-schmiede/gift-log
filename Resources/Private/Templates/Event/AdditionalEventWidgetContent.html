@@ -5,11 +5,12 @@
 <f:link.action
     action="listForEvent"
     arguments="{contactEvent: event}"
-    class="ms-auto{f:if(condition: hasGifts, then: ' text-success')}"
+    class="ms-auto{f:if(condition: hasGifts, else: ' text-secondary')}"
     controller="History"
     extensionName="PsbGiftLog"
     pluginName="History">
     <core:icon
+        alternativeMarkupIdentifier="inline"
         identifier="psb-templates-gift"
         size="small" />
 </f:link.action>

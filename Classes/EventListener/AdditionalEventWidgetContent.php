@@ -15,7 +15,6 @@ use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
 use PSB\PsbGiftLog\Data\ExtensionInformation;
 use PSB\PsbGiftLog\Domain\Demand\GiftDemand;
 use PSB\PsbGiftLog\Domain\Repository\GiftRepository;
-use PSB\PsbGiftLog\Domain\Repository\PsbContacts\EventRepository as ContactEventRepository;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
@@ -30,10 +29,9 @@ use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 readonly class AdditionalEventWidgetContent
 {
     public function __construct(
-        protected ExtensionInformation   $extensionInformation,
-        protected ContactEventRepository $contactEventRepository,
-        protected GiftRepository         $giftRepository,
-        protected ViewFactoryInterface   $viewFactory,
+        protected ExtensionInformation $extensionInformation,
+        protected GiftRepository       $giftRepository,
+        protected ViewFactoryInterface $viewFactory,
     ) {
     }
 
@@ -53,10 +51,7 @@ readonly class AdditionalEventWidgetContent
         $view = $this->viewFactory->create($viewFactoryData);
 
         $view->assignMultiple([
-            'event'    => $this->contactEventRepository->findByUid(
-                $event->getEvent()
-                    ->getUid()
-            ),
+            'event'    => $event->getEvent(),
             'hasGifts' => $this->giftRepository->findByDemand($demand)
                     ?->count() > 0,
         ]);

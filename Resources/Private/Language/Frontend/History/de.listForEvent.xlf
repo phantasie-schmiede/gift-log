@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-11-12T07:31:00+01:00"
+        original="messages"
+        product-name="psb_gift_log"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="enterNewGift">
+                <source>Enter new gift</source>
+                <target>Neues Geschenk eintragen</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.baptism">
+                <source>Gifts for the baptism of {persons}</source>
+                <target>Geschenke zur Taufe von {persons}</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.baptism.anniversary">
+                <source>Gifts for the baptism day of {persons}</source>
+                <target>Geschenke zum Tauftag von {persons}</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.birthday">
+                <source>Gifts for the birth of {persons}</source>
+                <target>Geschenke zur Geburt von {persons}</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.birthday.anniversary">
+                <source>Gifts for the birthday of {persons}</source>
+                <target>Geschenke zum Geburtstag von {persons}</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.confirmation">
+                <source>Gifts for the confirmation of {persons}</source>
+                <target>Geschenke zur Konfirmation von {persons}</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.confirmation.anniversary">
+                <source>Gifts for the confirmation anniversary of {persons}</source>
+                <target>Geschenke zum Jahrestag der Konfirmation von {persons}</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.death">
+                <source>Gifts for the death of {persons}</source>
+                <target>Geschenke zum Tod von {persons}</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.death.anniversary">
+                <source>Gifts for the anniversary of the death of {persons}</source>
+                <target>Geschenke zum Todestag von {persons}</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.divorce">
+                <source>Gifts for the divorce of {persons}</source>
+                <target>Geschenke zur Scheidung von {persons}</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.divorce.anniversary">
+                <source>Gifts for the anniversary of the divorce of {persons}</source>
+                <target>Geschenke zum Jahrestag der Scheidung von {persons}</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.other">
+                <source>Gifts for an event of {persons}</source>
+                <target>Geschenke zu einem Ereignis von {persons}</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.other.anniversary">
+                <source>Gifts for an anniversary of {persons}</source>
+                <target>Geschenke zu einem Jahrestag von {persons}</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.wedding">
+                <source>Gifts for the wedding of {persons}</source>
+                <target>Geschenke zur Hochzeit von {persons}</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.wedding.anniversary">
+                <source>Gifts for wedding anniversary of {persons}</source>
+                <target>Geschenke zum Hochzeitstag von {persons}</target>
+            </trans-unit>
+            <trans-unit id="noGiftsForEvent">
+                <source>No gifts have been entered yet.</source>
+                <target>Es wurden noch keine Geschenke eingetragen.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

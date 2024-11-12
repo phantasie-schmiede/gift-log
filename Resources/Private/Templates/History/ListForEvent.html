@@ -2,5 +2,20 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
-<h1>Geschenke zum {event.compactValue}</h1>
+<h1 class="text-center">
+    <psbFoundation:translate
+        arguments="{anniversary: event.nextAnniversary, persons: event.contactsAsEnumeration}"
+        id="{f:if(condition: event.nextAnniversary, then: 'giftsForEvent.{event.type.value}', else: 'giftsForEvent.{event.type.value}.anniversary')}" />
+</h1>
+
+<f:if condition="{gifts}">
+    <f:then>
+
+    </f:then>
+    <f:else>
+        <div class="alert alert-info text-center">
+            <psbFoundation:translate id="noGiftsForEvent" />
+        </div>
+    </f:else>
+</f:if>
 </html>
