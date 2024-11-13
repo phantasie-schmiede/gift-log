@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2024-11-13T10:38:00+01:00"
+        original="messages"
+        product-name="psb_gift_log"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="addEvent">
+                <source>Add event</source>
+                <target>Ereignis hinzufügen</target>
+            </trans-unit>
+            <trans-unit id="newRelation">
+                <source>&#60;Event&#62;</source>
+                <target>&#60;Ereignis&#62;</target>
+            </trans-unit>
+            <trans-unit id="remove">
+                <source>Remove</source>
+                <target>Entfernen</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

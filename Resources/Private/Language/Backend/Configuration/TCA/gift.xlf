@@ -30,9 +30,6 @@
             <trans-unit id="redeemed">
                 <source>Redeemed</source>
             </trans-unit>
-            <trans-unit id="year">
-                <source>Year</source>
-            </trans-unit>
         </body>
     </file>
 </xliff>

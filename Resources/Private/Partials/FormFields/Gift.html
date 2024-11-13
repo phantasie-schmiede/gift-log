@@ -3,6 +3,7 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_gift_log/Resources/Private/Language/Backend/Configuration/TCA/gift.xlf" />
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
 
 <f:asset.script
     identifier="autoSizeTextArea"
@@ -13,21 +14,54 @@
     src="EXT:psb_templates/Resources/Public/JavaScript/clearInput.js"
     type="module" />
 <f:asset.script
+    identifier="copyContent"
+    src="EXT:psb_templates/Resources/Public/JavaScript/copyContent.js"
+    type="module" />
+<f:asset.script
     identifier="inputAutocomplete"
     src="EXT:psb_templates/Resources/Public/JavaScript/inputAutocomplete.js"
     type="module" />
 
-<div class="form-floating mb-3">
-    <f:form.textfield
-        class="form-control"
-        property="year"
-        placeholder="{psbFoundation:translate(id: 'gift:year')}"
-        type="number"
-        value="{gift.year -> f:or(alternative: '{f:format.date(date: \'now\', format: \'Y\')}')}" />
-    <label
-        class="form-label">
-        <psbFoundation:translate id="gift:year" />
-    </label>
+<div
+    class="accordion accordion-flush mb-3"
+    id="accordionEventGiftRelation">
+    <f:for
+        as="record"
+        each="{gift.events}">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button
+                    aria-controls="accordionEventGiftRelation-{record.uid}"
+                    aria-expanded="false"
+                    class="accordion-button collapsed"
+                    data-bs-target="#accordionEventGiftRelation-{record.uid}"
+                    data-bs-toggle="collapse"
+                    type="button">
+                    {record.compactValue}compactValue
+                </button>
+            </h2>
+            <div
+                class="accordion-collapse collapse"
+                data-bs-parent="#accordionEventGiftRelation"
+                id="accordionEventGiftRelation-{record.uid}">
+                <div class="accordion-body">
+                    <f:render
+                        arguments="{_all}"
+                        partial="FormFields/EventGiftRelation" />
+                </div>
+            </div>
+        </div>
+    </f:for>
+</div>
+
+<div class="mb-3">
+    <span
+        class="bg-secondary-subtle btn"
+        data-psb-copy-mode="append"
+        data-psb-copy-source="#templateEventGiftRelation"
+        data-psb-copy-target="#accordionEventGiftRelation">
+        <psbFoundation:translate id="eventGiftRelation:addEvent" />
+    </span>
 </div>
 
 <div class="form-floating mb-3">

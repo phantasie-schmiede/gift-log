@@ -1,0 +1,58 @@
+<?php
+declare(strict_types=1);
+
+/*
+ * This file is part of PSB Gift Log.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ */
+
+namespace PSB\PsbGiftLog\Domain\Demand;
+
+use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
+use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
+
+/**
+ * Class EventGiftDemand
+ *
+ * @package PSB\PsbGiftLog\Domain\Demand
+ */
+class EventGiftDemand
+{
+    protected ?ContactEvent $contactEvent = null;
+    protected ?GiftLogEvent $giftLogEvent = null;
+
+    public function getContactEvent(): ?ContactEvent
+    {
+        return $this->contactEvent;
+    }
+
+    public function getGiftLogEvent(): ?GiftLogEvent
+    {
+        return $this->giftLogEvent;
+    }
+
+    public function setContactEvent(ContactEvent $contactEvent): self
+    {
+        $this->contactEvent = $contactEvent;
+
+        return $this;
+    }
+
+    public function setEvent(GiftLogEvent|ContactEvent $param): void
+    {
+        if ($param instanceof ContactEvent) {
+            $this->setContactEvent($param);
+        } else {
+            $this->setGiftLogEvent($param);
+        }
+    }
+
+    public function setGiftLogEvent(GiftLogEvent $giftLogEvent): self
+    {
+        $this->giftLogEvent = $giftLogEvent;
+
+        return $this;
+    }
+}

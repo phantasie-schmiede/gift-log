@@ -39,10 +39,6 @@
                 <source>Redeemed</source>
                 <target>Eingelöst</target>
             </trans-unit>
-            <trans-unit id="year">
-                <source>Year</source>
-                <target>Jahr</target>
-            </trans-unit>
         </body>
     </file>
 </xliff>

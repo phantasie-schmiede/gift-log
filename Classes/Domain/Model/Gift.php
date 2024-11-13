@@ -10,23 +10,17 @@ declare(strict_types=1);
 
 namespace PSB\PsbGiftLog\Domain\Model;
 
+use InvalidArgumentException;
 use PSB\PsbContacts\Domain\Model\Contact;
-use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
 use PSB\PsbFoundation\Attribute\TCA\Column;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\File;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Group;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Number;
+use PSB\PsbFoundation\Attribute\TCA\ColumnType\Inline;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
-use PSB\PsbFoundation\Exceptions\ImplementationException;
-use PSB\PsbFoundation\Service\ObjectService;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
-use ReflectionException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use PSB\PsbGiftLog\Domain\Model\Relation\EventGift;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -39,9 +33,8 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 #[Ctrl(label: 'description')]
 class Gift extends AbstractEntity
 {
-    public const MM_TABLES = [
+    public const array MM_TABLES = [
         'donors'     => 'tx_psbgiftlog_gift_contact_donor_mm',
-        'events'     => 'tx_psbgiftlog_gift_event_mm',
         'recipients' => 'tx_psbgiftlog_gift_contact_recipient_mm',
     ];
 
@@ -52,11 +45,9 @@ class Gift extends AbstractEntity
     #[Select(linkedModel: Contact::class, minItems: 1, mm: self::MM_TABLES['donors'], renderType: SelectRenderType::selectMultipleSideBySide)]
     protected ObjectStorage $donors;
 
-    #[Group(mm: self::MM_TABLES['events'], mmOppositeUsage: [
-        Event::class        => ['gifts'],
-        ContactEvent::class => ['gifts'],
-    ])]
-    protected string $events;
+    /** @var ObjectStorage<EventGift> */
+    #[Inline(foreignField: 'gift', linkedModel: EventGift::class)]
+    protected ObjectStorage $eventRelations;
 
     /** @var ObjectStorage<FileReference> */
     #[File]
@@ -73,10 +64,6 @@ class Gift extends AbstractEntity
     #[Check]
     protected ?bool $redeemed = null;
 
-    #[Column(nullable: true)]
-    #[Number]
-    protected ?int $year = null;
-
     public function __construct()
     {
         $this->initializeObject();
@@ -87,6 +74,11 @@ class Gift extends AbstractEntity
         $this->donors->attach($contact);
 
         return $this;
+    }
+
+    public function addEventRelation(EventGift $eventRelation): void
+    {
+        $this->eventRelations->attach($eventRelation);
     }
 
     public function addRecipient(Contact $contact): self
@@ -106,16 +98,23 @@ class Gift extends AbstractEntity
         return $this->donors;
     }
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws ImplementationException
-     * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
-     */
-    public function getEvents(): array
+    public function getEventRelationByUid(int $uid): EventGift
     {
-        return GeneralUtility::makeInstance(ObjectService::class)
-            ->resolveMmRelationWithDifferentTables($this, 'events', [Event::class]);
+        foreach ($this->eventRelations as $eventRelation) {
+            if ($eventRelation->getUid() === $uid) {
+                return $eventRelation;
+            }
+        }
+
+        throw new InvalidArgumentException(
+            __CLASS__ . ': Event relation with UID ' . $uid . ' was not found!', 1731501874
+        );
+    }
+
+    /** @return ObjectStorage<EventGift> */
+    public function getEventRelations(): ObjectStorage
+    {
+        return $this->eventRelations;
     }
 
     public function getImages(): ObjectStorage
@@ -138,14 +137,10 @@ class Gift extends AbstractEntity
         return $this->redeemed;
     }
 
-    public function getYear(): ?int
-    {
-        return $this->year;
-    }
-
     public function initializeObject(): void
     {
         $this->donors = new ObjectStorage();
+        $this->eventRelations = new ObjectStorage();
         $this->images = new ObjectStorage();
         $this->recipients = new ObjectStorage();
     }
@@ -154,6 +149,13 @@ class Gift extends AbstractEntity
     {
         $this->donors->removeAll($this->donors);
         $this->recipients->removeAll($this->recipients);
+
+        return $this;
+    }
+
+    public function removeEventRelation(EventGift $eventRelation): self
+    {
+        $this->eventRelations->detach($eventRelation);
 
         return $this;
     }
@@ -196,13 +198,6 @@ class Gift extends AbstractEntity
     public function setRedeemed(?bool $redeemed): self
     {
         $this->redeemed = $redeemed;
-
-        return $this;
-    }
-
-    public function setYear(?int $year): self
-    {
-        $this->year = $year;
 
         return $this;
     }

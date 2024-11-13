@@ -12,19 +12,30 @@ namespace PSB\PsbGiftLog\Controller;
 
 use JsonException;
 use PSB\PsbContacts\Domain\Demand\ContactDemand;
+use PSB\PsbContacts\Domain\Model\Contact;
+use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
 use PSB\PsbContacts\Domain\Repository\ContactRepository;
+use PSB\PsbContacts\Domain\Repository\EventRepository as ContactEventRepository;
 use PSB\PsbContacts\Service\ContactService;
 use PSB\PsbFoundation\Attribute\PluginAction;
+use PSB\PsbFoundation\Service\GlobalVariableProviders\RequestParameterProvider;
+use PSB\PsbFoundation\Service\GlobalVariableService;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
+use PSB\PsbGiftLog\Domain\Model\Event;
 use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
 use PSB\PsbGiftLog\Domain\Model\Gift;
-use PSB\PsbGiftLog\Domain\Model\PsbContacts\Event as ContactEvent;
+use PSB\PsbGiftLog\Domain\Model\Relation\EventGift;
+use PSB\PsbGiftLog\Domain\Repository\EventRepository as GiftLogEventRepository;
 use PSB\PsbGiftLog\Domain\Repository\GiftRepository;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
+use function is_array;
 
 /**
  * Class GiftController
@@ -38,14 +49,17 @@ class GiftController extends ActionController
     public const string CACHE_TAG = 'tx_psbgiftlog';
 
     public function __construct(
-        protected ContactRepository $contactRepository,
-        protected ContactService    $contactService,
-        protected GiftRepository    $giftRepository,
+        protected ContactRepository      $contactRepository,
+        protected ContactService         $contactService,
+        protected ContactEventRepository $contactEventRepository,
+        protected GiftLogEventRepository $giftLogEventRepository,
+        protected GiftRepository         $giftRepository,
     ) {
     }
 
     /**
      * @throws IllegalObjectTypeException
+     * @throws JsonException
      * @throws NoSuchCacheGroupException
      */
     #[PluginAction(uncached: true)]
@@ -54,7 +68,6 @@ class GiftController extends ActionController
         ContactEvent $contactEvent = null,
         GiftLogEvent $giftLogEvent = null,
     ): ResponseInterface {
-        die('Not ready yet!');
         $this->processRelations($this->request->getArgument('gift'), $gift);
         $this->giftRepository->add($gift);
         $this->deletePagesCache(self::CACHE_TAG);
@@ -126,7 +139,44 @@ class GiftController extends ActionController
     }
 
     /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
      * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
+    private function collectEvents(?ContactEvent $contactEvent): array
+    {
+        $events = [];
+
+        /** @var Event $event */
+        foreach ($this->giftLogEventRepository->findAll() as $event) {
+            $events[] = [
+                'label' => $event->getName(),
+                'value' => $event::class . ':' . $event->getUid(),
+            ];
+        }
+
+        if (null !== $contactEvent) {
+            /** @var Contact $contact */
+            foreach ($contactEvent->getContacts() as $contact) {
+                /** @var ContactEvent $event */
+                foreach ($contact->getEventsInDescendingOrder() as $event) {
+                    $events[] = [
+                        'label' => $event->getLabel(),
+                        'value' => $event::class . ':' . $event->getUid(),
+                    ];
+                }
+            }
+        }
+
+        return $events;
+    }
+
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
      */
     private function prepareForm(
         ContactEvent $contactEvent = null,
@@ -138,6 +188,7 @@ class GiftController extends ActionController
         $this->view->assignMultiple([
             'allContacts'  => $this->contactService->getAsJson($allContactsDemand),
             'contactEvent' => $contactEvent,
+            'events'       => $this->collectEvents($contactEvent),
             'gift'         => $gift,
             'giftLogEvent' => $giftLogEvent,
         ]);
@@ -147,6 +198,15 @@ class GiftController extends ActionController
      * @throws JsonException
      */
     private function processRelations(array $arguments, Gift $gift): void
+    {
+        $this->updateContacts($arguments, $gift);
+        $this->updateEvents($arguments, $gift);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    private function updateContacts(array $arguments, Gift $gift): void
     {
         $gift->removeAllContacts();
 
@@ -167,6 +227,58 @@ class GiftController extends ActionController
                         $gift->addRecipient($contact);
                     }
                 }
+            }
+        }
+    }
+
+    private function updateEventRelationProperties(
+        EventGift $relation,
+        array     $entityData,
+    ): void {
+        [
+            $eventClass,
+            $uid,
+        ] = explode(':', $entityData['event']);
+
+        if (ContactEvent::class === $eventClass) {
+            $event = $this->contactEventRepository->findByUid($uid);
+        } else {
+            $event = $this->giftLogEventRepository->findByUid($uid);
+        }
+
+        $relation->setEvent($event);
+        $relation->setYear($entityData['year']);
+    }
+
+    private function updateEvents(array $arguments, Gift $gift): void
+    {
+        $existingEntities = clone $gift->getEventRelations();
+
+        $updatedEntities = $this->request->hasArgument('eventGiftRelation') ? $this->request->getArgument(
+            'eventGiftRelation'
+        ) : [];
+        $newEntities = GlobalVariableService::get(RequestParameterProvider::class . '.eventGiftRelation', false);
+
+        if (is_array($updatedEntities)) {
+            foreach ($updatedEntities as $uid => $entityData) {
+                $entity = $gift->getEventRelationByUid($uid);
+                $this->updateEventRelationProperties($entity, $arguments);
+                $existingEntities->detach($entity);
+            }
+        }
+
+        if (0 < $existingEntities->count()) {
+            // Detach entities that were removed.
+            foreach ($existingEntities as $entity) {
+                $gift->removeEventRelation($entity);
+            }
+        }
+
+        if (is_array($newEntities)) {
+            foreach ($newEntities as $entityData) {
+                $relation = new EventGift();
+                $this->updateEventRelationProperties($relation, $entityData);
+                $gift->addEventRelation($relation);
             }
         }
     }

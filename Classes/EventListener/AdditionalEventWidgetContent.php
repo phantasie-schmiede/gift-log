@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace PSB\PsbGiftLog\EventListener;
 
+use PSB\PsbContacts\Domain\Repository\EventRepository as ContactEventRepository;
 use PSB\PsbContacts\Event\AdditionalEventWidgetContentEvent;
 use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
 use PSB\PsbGiftLog\Data\ExtensionInformation;
 use PSB\PsbGiftLog\Domain\Demand\GiftDemand;
 use PSB\PsbGiftLog\Domain\Repository\GiftRepository;
-use PSB\PsbGiftLog\Domain\Repository\PsbContacts\EventRepository as ContactEventRepository;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;

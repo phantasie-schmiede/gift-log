@@ -2,6 +2,8 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
+
 <f:form
     action="create"
     arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
@@ -28,4 +30,32 @@
         </button>
     </div>
 </f:form>
+
+<div
+    class="d-none"
+    id="templateEventGiftRelation">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button
+                aria-controls="accordionEventGiftRelation-###uid###"
+                aria-expanded="false"
+                class="accordion-button collapsed"
+                _data-bs-target="#accordionEventGiftRelation-###uid###"
+                data-bs-toggle="collapse"
+                type="button">
+                <psbFoundation:translate id="eventGiftRelation:newRelation" />
+            </button>
+        </h2>
+        <div
+            class="accordion-collapse collapse"
+            data-bs-parent="#accordionEventGiftRelation"
+            id="accordionEventGiftRelation-###uid###">
+            <div class="accordion-body">
+                <f:render
+                    arguments="{_all}"
+                    partial="FormFields/EventGiftRelation" />
+            </div>
+        </div>
+    </div>
+</div>
 </html>
