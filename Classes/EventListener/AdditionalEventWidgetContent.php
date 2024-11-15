@@ -14,12 +14,11 @@ use PSB\PsbContacts\Domain\Repository\EventRepository as ContactEventRepository;
 use PSB\PsbContacts\Event\AdditionalEventWidgetContentEvent;
 use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
 use PSB\PsbGiftLog\Data\ExtensionInformation;
-use PSB\PsbGiftLog\Domain\Demand\GiftDemand;
-use PSB\PsbGiftLog\Domain\Repository\GiftRepository;
+use PSB\PsbGiftLog\Domain\Demand\EventGiftDemand;
+use PSB\PsbGiftLog\Domain\Repository\Relation\EventGiftRepository;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
-use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 
 /**
  * Class AdditionalEventWidgetContent
@@ -32,17 +31,14 @@ readonly class AdditionalEventWidgetContent
     public function __construct(
         protected ContactEventRepository $contactEventRepository,
         protected ExtensionInformation   $extensionInformation,
-        protected GiftRepository         $giftRepository,
+        protected EventGiftRepository    $eventGiftRepository,
         protected ViewFactoryInterface   $viewFactory,
     ) {
     }
 
-    /**
-     * @throws InvalidQueryException
-     */
     public function __invoke(AdditionalEventWidgetContentEvent $event): void
     {
-        $demand = (new GiftDemand())->setEvent($event->getEvent());
+        $demand = (new EventGiftDemand())->setContactEvent($event->getEvent());
 
         $viewFactoryData = new ViewFactoryData(
                templatePathAndFilename: FilePathUtility::getPrivateResourcePath(
@@ -58,7 +54,7 @@ readonly class AdditionalEventWidgetContent
                 $event->getEvent()
                     ->getUid()
             ),
-            'hasGifts' => $this->giftRepository->findByDemand($demand)
+            'hasGifts' => $this->eventGiftRepository->findByDemand($demand)
                     ?->count() > 0,
         ]);
 

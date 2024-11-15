@@ -18,7 +18,6 @@ use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
 use PSB\PsbGiftLog\Domain\Repository\Relation\EventGiftRepository;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 
 /**
  * Class HistoryController
@@ -46,10 +45,10 @@ class HistoryController extends ActionController
         $demand->setEvent($contactEvent ?? $giftLogEvent);
 
         $this->view->assignMultiple([
-            'contactEvent' => $contactEvent,
-            'event'        => $giftLogEvent ?? $contactEvent,
-            'giftLogEvent' => $giftLogEvent,
-            'gifts'        => $this->eventGiftRepository->findByDemand($demand),
+            'contactEvent'  => $contactEvent,
+            'event'         => $giftLogEvent ?? $contactEvent,
+            'giftLogEvent'  => $giftLogEvent,
+            'giftRelations' => $this->eventGiftRepository->findByDemand($demand),
         ]);
 
         return $this->htmlResponse();

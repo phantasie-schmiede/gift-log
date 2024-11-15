@@ -8,9 +8,15 @@
         id="{f:if(condition: event.nextAnniversary, then: 'giftsForEvent.{event.type.value}', else: 'giftsForEvent.{event.type.value}.anniversary')}" />
 </h1>
 
-<f:if condition="{gifts}">
+<f:if condition="{giftRelations}">
     <f:then>
-
+        <ul>
+            <f:for as="giftRelation" each="{giftRelations}">
+                <li>
+                    {giftRelation.gift.donors.0.fullName}
+                </li>
+            </f:for>
+        </ul>
     </f:then>
     <f:else>
         <div class="alert alert-info text-center">
