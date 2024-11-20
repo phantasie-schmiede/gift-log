@@ -11,9 +11,13 @@
                 <source>Event-gift-relation</source>
                 <target>Ereignis-Geschenk-Verknüpfung</target>
             </trans-unit>
-            <trans-unit id="event">
-                <source>Event</source>
-                <target>Ereignis</target>
+            <trans-unit id="contactEvent">
+                <source>Personal event</source>
+                <target>Persönliches Ereignis</target>
+            </trans-unit>
+            <trans-unit id="giftLogEvent">
+                <source>Common event</source>
+                <target>Allgemeines Ereignis</target>
             </trans-unit>
             <trans-unit id="year">
                 <source>Year</source>

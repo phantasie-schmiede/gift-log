@@ -24,7 +24,11 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  *
  * @package PSB\PsbGiftLog\Domain\Model\Relation
  */
-#[Ctrl(label: 'year')]
+#[Ctrl(defaultSortBy: 'year DESC', label: 'year', labelAlt: [
+    'contactEvent',
+    'giftLogEvent',
+    'gift',
+],     labelAltForce: true)]
 class EventGift extends AbstractEntity
 {
     #[Select(foreignTableWhere: 'ORDER BY date DESC', linkedModel: ContactEvent::class, prependItem: Select::EMPTY_DEFAULT_ITEM)]

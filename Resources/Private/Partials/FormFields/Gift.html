@@ -25,33 +25,22 @@
 <div
     class="accordion accordion-flush mb-3"
     id="accordionEventGiftRelation">
-    <f:for
-        as="record"
-        each="{gift.events}">
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button
-                    aria-controls="accordionEventGiftRelation-{record.uid}"
-                    aria-expanded="false"
-                    class="accordion-button collapsed"
-                    data-bs-target="#accordionEventGiftRelation-{record.uid}"
-                    data-bs-toggle="collapse"
-                    type="button">
-                    {record.compactValue}compactValue
-                </button>
-            </h2>
-            <div
-                class="accordion-collapse collapse"
-                data-bs-parent="#accordionEventGiftRelation"
-                id="accordionEventGiftRelation-{record.uid}">
-                <div class="accordion-body">
-                    <f:render
-                        arguments="{_all}"
-                        partial="FormFields/EventGiftRelation" />
-                </div>
-            </div>
-        </div>
-    </f:for>
+    <f:if condition="{preselectedEvent}">
+        <f:then>
+            <f:render
+                arguments="{_all}"
+                partial="FormFields/EventGiftRelation" />
+        </f:then>
+        <f:else>
+            <f:for
+                as="record"
+                each="{gift.events}">
+                <f:render
+                    arguments="{_all}"
+                    partial="FormFields/EventGiftRelation" />
+            </f:for>
+        </f:else>
+    </f:if>
 </div>
 
 <div class="mb-3">
@@ -92,7 +81,7 @@
         autocomplete="off"
         class="form-control psb-templates-clear-input"
         data-psb-autocomplete-items="{allContacts}"
-        data-psb-autocomplete-preselection=""
+        data-psb-autocomplete-preselection="{preselectedContacts}"
         data-psb-autocomplete-selection-target="#gift-recipients-selection"
         data-psb-autocomplete-value-target="#gift-recipients-value"
         placeholder="{psbFoundation:translate(id: 'gift:recipients')}"

@@ -19,7 +19,7 @@
                 <source>From</source>
                 <target>Von</target>
             </trans-unit>
-            <trans-unit id="events">
+            <trans-unit id="eventRelations">
                 <source>Events</source>
                 <target>Ereignisse</target>
             </trans-unit>

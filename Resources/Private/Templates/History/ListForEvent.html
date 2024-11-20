@@ -8,15 +8,52 @@
         id="{f:if(condition: event.nextAnniversary, then: 'giftsForEvent.{event.type.value}', else: 'giftsForEvent.{event.type.value}.anniversary')}" />
 </h1>
 
-<f:if condition="{giftRelations}">
+<f:if condition="{giftRelationsGroupedByYear}">
     <f:then>
-        <ul>
-            <f:for as="giftRelation" each="{giftRelations}">
-                <li>
-                    {giftRelation.gift.donors.0.fullName}
-                </li>
+        <f:for
+            as="giftRelationGroupeds"
+            each="{giftRelationsGroupedByYear}"
+            key="year">
+            <h2>
+                {year}
+            </h2>
+            <f:for
+                as="giftRelationGroup"
+                each="{giftRelationGroupeds}">
+                <h3>
+                    {giftRelationGroup.label}
+                </h3>
+
+                <f:for
+                    as="giftRelation"
+                    each="{giftRelationGroup.relations}">
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-2">
+                                <f:comment>
+                                    <!--
+                                    <f:image
+                                    class="img-fluid rounded-start"
+                                    height="200"
+                                    image="" />
+                                    -->
+                                </f:comment>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card-body">
+                                    <h5 class="card-title">{giftRelation.gift.description}</h5>
+                                    <p class="card-text">Von: {giftRelation.gift.donorList}</p>
+
+                                    <f:if condition="{giftRelation.gift.recipientList} != {contactEvent.contactsAsEnumeration}">
+                                        <p class="card-text">An: {giftRelation.gift.recipientList}</p>
+                                    </f:if>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </f:for>
             </f:for>
-        </ul>
+        </f:for>
     </f:then>
     <f:else>
         <div class="alert alert-info text-center">

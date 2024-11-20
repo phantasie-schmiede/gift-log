@@ -95,7 +95,10 @@ class GiftController extends ActionController
     }
 
     /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
      * @throws JsonException
+     * @throws NotFoundExceptionInterface
      */
     #[PluginAction(uncached: true)]
     public function editAction(
@@ -109,7 +112,10 @@ class GiftController extends ActionController
     }
 
     /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
      * @throws JsonException
+     * @throws NotFoundExceptionInterface
      */
     #[PluginAction(uncached: true)]
     public function newAction(
@@ -134,7 +140,8 @@ class GiftController extends ActionController
         $this->deletePagesCache(self::CACHE_TAG);
 
         return $this->redirect(
-            actionName: 'show', arguments: ['gift' => $gift]
+            actionName: 'show',
+            arguments: ['gift' => $gift]
         );
     }
 
@@ -184,6 +191,20 @@ class GiftController extends ActionController
         GiftLogEvent $giftLogEvent = null,
     ): void {
         $allContactsDemand = new ContactDemand();
+
+        if (null !== $contactEvent) {
+            $preselectedContacts = [];
+
+            /** @var Contact $contact */
+            foreach ($contactEvent->getContacts() as $contact) {
+                $preselectedContacts[] = [
+                    'label' => $contact->getDisplayName(),
+                    'value' => $contact->getUid(),
+                ];
+            }
+
+            $this->view->assign('preselectedContacts', json_encode($preselectedContacts, JSON_THROW_ON_ERROR));
+        }
 
         $this->view->assignMultiple([
             'allContacts'  => $this->contactService->getAsJson($allContactsDemand),
@@ -247,7 +268,7 @@ class GiftController extends ActionController
         }
 
         $relation->setEvent($event);
-        $relation->setYear($entityData['year']);
+        $relation->setYear((int)$entityData['year']);
     }
 
     private function updateEvents(array $arguments, Gift $gift): void
@@ -261,6 +282,15 @@ class GiftController extends ActionController
 
         if (is_array($updatedEntities)) {
             foreach ($updatedEntities as $uid => $entityData) {
+                /*
+                 * Preselected entities are new entities, but are delivered in the plugin namespace because they are
+                 * initially rendered inside the f:form-tag. So we have to move them to the right array.
+                 */
+                if ('true' === $entityData['preselection']) {
+                    $newEntities[] = $entityData;
+                    continue;
+                }
+
                 $entity = $gift->getEventRelationByUid($uid);
                 $this->updateEventRelationProperties($entity, $arguments);
                 $existingEntities->detach($entity);

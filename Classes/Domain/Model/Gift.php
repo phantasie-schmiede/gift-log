@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace PSB\PsbGiftLog\Domain\Model;
 
 use InvalidArgumentException;
+use JsonException;
 use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbFoundation\Attribute\TCA\Column;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
@@ -21,6 +22,10 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
 use PSB\PsbGiftLog\Domain\Model\Relation\EventGift;
+use PSB\PsbTemplates\Utility\StringUtility;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -46,7 +51,7 @@ class Gift extends AbstractEntity
     protected ObjectStorage $donors;
 
     /** @var ObjectStorage<EventGift> */
-    #[Inline(foreignField: 'gift', linkedModel: EventGift::class)]
+    #[Inline(foreignDefaultSortBy: 'year', foreignField: 'gift', linkedModel: EventGift::class)]
     protected ObjectStorage $eventRelations;
 
     /** @var ObjectStorage<FileReference> */
@@ -93,6 +98,18 @@ class Gift extends AbstractEntity
         return $this->description;
     }
 
+    /**
+     * @return string
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
+    public function getDonorList(): string
+    {
+        return $this->createList($this->donors);
+    }
+
     public function getDonors(): ObjectStorage
     {
         return $this->donors;
@@ -125,6 +142,18 @@ class Gift extends AbstractEntity
     public function getNotes(): string
     {
         return $this->notes;
+    }
+
+    /**
+     * @return string
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
+    public function getRecipientList(): string
+    {
+        return $this->createList($this->recipients);
     }
 
     public function getRecipients(): ObjectStorage
@@ -200,5 +229,23 @@ class Gift extends AbstractEntity
         $this->redeemed = $redeemed;
 
         return $this;
+    }
+
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
+    private function createList(ObjectStorage $contacts): string
+    {
+        $names = [];
+
+        /** @var Contact $contact */
+        foreach ($contacts as $contact) {
+            $names[] = $contact->getFullName();
+        }
+
+        return StringUtility::createEnumeration($names);
     }
 }

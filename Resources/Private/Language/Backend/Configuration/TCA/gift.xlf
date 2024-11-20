@@ -15,7 +15,7 @@
             <trans-unit id="donors">
                 <source>From</source>
             </trans-unit>
-            <trans-unit id="events">
+            <trans-unit id="eventRelations">
                 <source>Events</source>
             </trans-unit>
             <trans-unit id="images">

@@ -1,7 +1,8 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
+    xmlns:psbGiftLog="http://typo3.org/ns/PSB/PsbGiftLog/ViewHelpers">
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_gift_log/Resources/Private/Language/Backend/Configuration/TCA/eventGift.xlf" />
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
 
@@ -13,9 +14,20 @@
 <f:if condition="{record}">
     <f:then>
         <f:variable
+            name="preSelectedValue"
+            value="{psbGiftLog:eventIdentifier(event: record.event)}" />
+        <f:variable
             name="uid"
             value="{record.uid}" />
     </f:then>
+    <f:else if="{preselectedEvent}">
+        <f:variable
+            name="preSelectedValue"
+            value="{psbGiftLog:eventIdentifier(event: preselectedEvent)}" />
+        <f:variable
+            name="uid"
+            value="{f:format.date(date: 'now', format: 'U')}" />
+    </f:else>
     <f:else>
         <f:variable
             name="uid"
@@ -23,38 +35,71 @@
     </f:else>
 </f:if>
 
-<div class="form-floating mb-3">
-    <f:form.select
-        class="form-select"
-        optionLabelField="label"
-        optionValueField="value"
-        options="{events}"
-        name="eventGiftRelation[{uid}][event]"
-        value="{record.event}">
-    </f:form.select>
-    <label
-        class="form-label">
-        <psbFoundation:translate id="eventGift:event" />
-    </label>
-</div>
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button
+            aria-controls="accordionEventGiftRelation-{uid}"
+            aria-expanded="{f:if(condition: '{preselectedEvent}', then: 'true', else: 'false')}"
+            class="accordion-button{f:if(condition: '{preselectedEvent}', else: ' collapsed')}"
+            {f:if(condition: '{record} || {preselectedEvent}', else: '_')}data-bs-target="#accordionEventGiftRelation-{uid}"
+            data-bs-toggle="collapse"
+            type="button">
+            <f:if condition="{record}">
+                <f:then>
+                    {record.compactValue}
+                </f:then>
+                <f:else>
+                    <psbFoundation:translate id="eventGiftRelation:newRelation" />
+                </f:else>
+            </f:if>
+        </button>
+    </h2>
+    <div
+        class="accordion-collapse{f:if(condition: '{preselectedEvent}', else: ' collapse')}"
+        data-bs-parent="#accordionEventGiftRelation"
+        id="accordionEventGiftRelation-{uid}">
+        <div class="accordion-body">
+            <div class="form-floating mb-3">
+                <f:form.select
+                    class="form-select"
+                    optionLabelField="label"
+                    optionValueField="value"
+                    options="{events}"
+                    name="eventGiftRelation[{uid}][event]"
+                    value="{preSelectedValue}">
+                </f:form.select>
+                <label
+                    class="form-label">
+                    <psbFoundation:translate id="eventGift:event" />
+                </label>
+            </div>
 
-<div class="form-floating mb-3">
-    <f:form.textfield
-        class="form-control"
-        name="eventGiftRelation[{uid}][year]"
-        placeholder="{psbFoundation:translate(id: 'eventGift:year')}"
-        type="number"
-        value="{record.year -> f:or(alternative: '{f:format.date(date: \'now\', format: \'Y\')}')}" />
-    <label
-        class="form-label">
-        <psbFoundation:translate id="eventGift:year" />
-    </label>
-</div>
+            <div class="form-floating mb-3">
+                <f:form.textfield
+                    class="form-control"
+                    name="eventGiftRelation[{uid}][year]"
+                    placeholder="{psbFoundation:translate(id: 'eventGift:year')}"
+                    type="number"
+                    value="{record.year -> f:or(alternative: '{f:format.date(date: \'now\', format: \'Y\')}')}" />
+                <label
+                    class="form-label">
+                    <psbFoundation:translate id="eventGift:year" />
+                </label>
+            </div>
 
-<div
-    class="btn btn-danger"
-    data-psb-delete-mode="closest"
-    data-psb-delete-target=".accordion-item">
-    <psbFoundation:translate id="eventGiftRelation:remove" />
+            <f:if condition="{preselectedEvent}">
+                <f:form.hidden
+                name="eventGiftRelation[{uid}][preselection]"
+                value="true" />
+            </f:if>
+
+            <div
+                class="btn btn-danger"
+                data-psb-delete-mode="closest"
+                data-psb-delete-target=".accordion-item">
+                <psbFoundation:translate id="eventGiftRelation:remove" />
+            </div>
+        </div>
+    </div>
 </div>
 </html>

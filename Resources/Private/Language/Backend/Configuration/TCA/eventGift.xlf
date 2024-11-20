@@ -9,8 +9,11 @@
             <trans-unit id="ctrl.title">
                 <source>Event-gift-relation</source>
             </trans-unit>
-            <trans-unit id="event">
-                <source>Event</source>
+            <trans-unit id="contactEvent">
+                <source>Personal event</source>
+            </trans-unit>
+            <trans-unit id="giftLogEvent">
+                <source>Common event</source>
             </trans-unit>
             <trans-unit id="year">
                 <source>Year</source>

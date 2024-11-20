@@ -10,14 +10,20 @@ declare(strict_types=1);
 
 namespace PSB\PsbGiftLog\Controller;
 
+use JsonException;
 use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
 use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
 use PSB\PsbGiftLog\Domain\Demand\EventGiftDemand;
 use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
+use PSB\PsbGiftLog\Domain\Model\Relation\EventGift;
 use PSB\PsbGiftLog\Domain\Repository\Relation\EventGiftRepository;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * Class HistoryController
@@ -35,6 +41,12 @@ class HistoryController extends ActionController
     ) {
     }
 
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
     #[PluginAction(default: true)]
     public function listForEventAction(
         ContactEvent $contactEvent = null,
@@ -45,12 +57,59 @@ class HistoryController extends ActionController
         $demand->setEvent($contactEvent ?? $giftLogEvent);
 
         $this->view->assignMultiple([
-            'contactEvent'  => $contactEvent,
-            'event'         => $giftLogEvent ?? $contactEvent,
-            'giftLogEvent'  => $giftLogEvent,
-            'giftRelations' => $this->eventGiftRepository->findByDemand($demand),
+            'contactEvent'               => $contactEvent,
+            'event'                      => $giftLogEvent ?? $contactEvent,
+            'giftLogEvent'               => $giftLogEvent,
+            'giftRelationsGroupedByYear' => $this->groupRelations($this->eventGiftRepository->findByDemand($demand)),
         ]);
 
         return $this->htmlResponse();
+    }
+
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
+    private function groupRelations(QueryResultInterface $eventGiftRelations): array
+    {
+        $groups = [];
+
+        /** @var EventGift $eventGiftRelation */
+        foreach ($eventGiftRelations as $eventGiftRelation) {
+            $year = $eventGiftRelation->getYear();
+            $groupKeyElements = [$year];
+
+            foreach ($eventGiftRelation->getGift()
+                         ->getEventRelations() as $eventRelation) {
+                $event = $eventRelation->getEvent();
+
+                if ($event instanceof ContactEvent) {
+                    $label = $event->getType()
+                        ->getLabel();
+                } else {
+                    $label = $event->getName();
+                }
+
+                $groupKeyElements[] = $eventRelation->getYear() . '_' . $label;
+            }
+
+            $key = implode('-', $groupKeyElements);
+            sort($groupKeyElements);
+
+            if (isset($groups[$year][$key]['relations'])) {
+                $groups[$year][$key]['relations'][] = $eventGiftRelation;
+            } else {
+                $groups[$year][$key] = [
+                    'label'     => 'placeholder',
+                    'relations' => [$eventGiftRelation],
+                ];
+            }
+        }
+
+        krsort($groups);
+
+        return $groups;
     }
 }
