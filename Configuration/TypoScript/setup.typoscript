@@ -1,6 +1,10 @@
 plugin {
   tx_psbgiftlog {
     persistence.storagePid = {$plugin.tx_psbcontacts.persistence.storagePid}
+
+    view {
+      partialRootPaths.10 = {$plugin.tx_psbtemplates.view.partialRootPath}
+    }
   }
 
   tx_psbgiftlog_gift.view.defaultPid = auto

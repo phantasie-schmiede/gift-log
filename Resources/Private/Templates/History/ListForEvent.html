@@ -1,11 +1,12 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
+    xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers">
 <h1 class="text-center">
     <psbFoundation:translate
         arguments="{anniversary: event.nextAnniversary, persons: event.contactsAsEnumeration}"
-        id="{f:if(condition: event.nextAnniversary, then: 'giftsForEvent.{event.type.value}', else: 'giftsForEvent.{event.type.value}.anniversary')}" />
+        id="{f:if(condition: event.nextAnniversary, then: 'giftsForEvent.{event.type.value}.anniversary', else: 'giftsForEvent.{event.type.value}')}" />
 </h1>
 
 <f:if condition="{giftRelationsGroupedByYear}">
@@ -14,45 +15,91 @@
             as="giftRelationGroupeds"
             each="{giftRelationsGroupedByYear}"
             key="year">
-            <h2>
-                {year}
+            <h2 class="align-items-center d-flex">
+                <psbTemplates:svgIcon
+                    height="24"
+                    identifier="psb-templates-calendar-range"
+                    width="24" />
+                <span class="ms-1">
+                    {year}
+                </span>
             </h2>
-            <f:for
-                as="giftRelationGroup"
-                each="{giftRelationGroupeds}">
-                <h3>
-                    {giftRelationGroup.label}
-                </h3>
 
+            <div class="mb-4">
                 <f:for
-                    as="giftRelation"
-                    each="{giftRelationGroup.relations}">
-                    <div class="card mb-3">
-                        <div class="row g-0">
-                            <div class="col-md-2">
+                    as="giftRelationGroup"
+                    each="{giftRelationGroupeds}">
+                    <h3 class="mt-3">
+                        {giftRelationGroup.label}
+                    </h3>
+
+                    <f:render
+                        arguments="{
+                        configuration: {
+                            autoHeight: true,
+                            breakpoints: {
+                                576: {
+                                    slidesPerView: 2,
+                                    spaceBetween: 20
+                                },
+                                768: {
+                                    slidesPerView: 3,
+                                    spaceBetween: 30
+                                },
+                                1200: {
+                                    slidesPerView: 4,
+                                    spaceBetween: 40
+                                }
+                            },
+                            breakpointsBase: 'container',
+                            pagination: {
+                                clickable: true
+                            },
+                            showNavigation: true,
+                            slidesPerView: 1,
+                            spaceBetween: 10
+                        },
+                        id: 'contact-images',
+                    }"
+                        contentAs="slides"
+                        partial="Component/Swiper">
+
+                        <f:variable name="giftRelationGroupCount" value="{giftRelationGroup.relations -> f:count()}" />
+
+                        <f:for
+                            as="giftRelation"
+                            each="{giftRelationGroup.relations}">
+                            <div class="card h-100 swiper-slide">
                                 <f:comment>
                                     <!--
                                     <f:image
-                                    class="img-fluid rounded-start"
-                                    height="200"
-                                    image="" />
+                                        class="card-img-top"
+                                        image="" />
                                     -->
                                 </f:comment>
-                            </div>
-                            <div class="col-md-10">
-                                <div class="card-body">
-                                    <h5 class="card-title">{giftRelation.gift.description}</h5>
-                                    <p class="card-text">Von: {giftRelation.gift.donorList}</p>
 
-                                    <f:if condition="{giftRelation.gift.recipientList} != {contactEvent.contactsAsEnumeration}">
-                                        <p class="card-text">An: {giftRelation.gift.recipientList}</p>
+                                <div class="card-body pb-4">
+                                    <h5 class="card-title">{giftRelation.gift.description}</h5>
+                                    <p class="card-text">
+                                        Von: {giftRelation.gift.donorList}
+
+                                        <f:if condition="{giftRelation.gift.recipientList} != {contactEvent.contactsAsEnumeration}">
+                                            <br>
+                                            An: {giftRelation.gift.recipientList}
+                                        </f:if>
+                                    </p>
+
+                                    <f:if condition="{giftRelation.gift.notes}">
+                                        <p class="card-text">
+                                            {giftRelation.gift.notes}
+                                        </p>
                                     </f:if>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </f:for>
+                    </f:render>
                 </f:for>
-            </f:for>
+            </div>
         </f:for>
     </f:then>
     <f:else>

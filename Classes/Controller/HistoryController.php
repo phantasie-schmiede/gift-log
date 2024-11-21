@@ -14,10 +14,12 @@ use JsonException;
 use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
 use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
+use PSB\PsbFoundation\Utility\LocalizationUtility;
 use PSB\PsbGiftLog\Domain\Demand\EventGiftDemand;
 use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
 use PSB\PsbGiftLog\Domain\Model\Relation\EventGift;
 use PSB\PsbGiftLog\Domain\Repository\Relation\EventGiftRepository;
+use PSB\PsbTemplates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -79,6 +81,7 @@ class HistoryController extends ActionController
         /** @var EventGift $eventGiftRelation */
         foreach ($eventGiftRelations as $eventGiftRelation) {
             $year = $eventGiftRelation->getYear();
+            $labelParts = [];
             $groupKeyElements = [$year];
 
             foreach ($eventGiftRelation->getGift()
@@ -86,23 +89,34 @@ class HistoryController extends ActionController
                 $event = $eventRelation->getEvent();
 
                 if ($event instanceof ContactEvent) {
-                    $label = $event->getType()
+                    $eventName = $event->getType()
                         ->getLabel();
+                    $anniversary = $event->getAnniversaryForYear($eventRelation->getYear());
+
+                    if ($anniversary > 0) {
+                        $labelParts[] = $anniversary . '. ' . LocalizationUtility::translate(
+                                'LLL:EXT:psb_contacts/Resources/Private/Language/Frontend/EventWidget/display.xlf:type.' . $event->getType(
+                                )->value . '.anniversary'
+                            );
+                    } else {
+                        $labelParts[] = $eventName;
+                    }
                 } else {
-                    $label = $event->getName();
+                    $eventName = $event->getName();
+                    $labelParts[] = $eventName . ' ' . $eventRelation->getYear();
                 }
 
-                $groupKeyElements[] = $eventRelation->getYear() . '_' . $label;
+                $groupKeyElements[] = $eventRelation->getYear() . '_' . $eventName;
             }
 
-            $key = implode('-', $groupKeyElements);
             sort($groupKeyElements);
+            $key = implode('-', $groupKeyElements);
 
             if (isset($groups[$year][$key]['relations'])) {
                 $groups[$year][$key]['relations'][] = $eventGiftRelation;
             } else {
                 $groups[$year][$key] = [
-                    'label'     => 'placeholder',
+                    'label'     => StringUtility::createEnumeration($labelParts),
                     'relations' => [$eventGiftRelation],
                 ];
             }
