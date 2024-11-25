@@ -3,7 +3,7 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
     xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers">
-<h1 class="text-center">
+<h1 class="mb-3 text-center">
     <psbFoundation:translate
         arguments="{anniversary: event.nextAnniversary, persons: event.contactsAsEnumeration}"
         id="{f:if(condition: event.nextAnniversary, then: 'giftsForEvent.{event.type.value}.anniversary', else: 'giftsForEvent.{event.type.value}')}" />
@@ -20,7 +20,7 @@
                     height="24"
                     identifier="psb-templates-calendar-range"
                     width="24" />
-                <span class="ms-1">
+                <span class="ms-2">
                     {year}
                 </span>
             </h2>
