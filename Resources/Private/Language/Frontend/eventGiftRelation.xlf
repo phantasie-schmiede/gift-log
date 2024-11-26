@@ -9,11 +9,17 @@
             <trans-unit id="addEvent">
                 <source>Add event</source>
             </trans-unit>
+            <trans-unit id="event">
+                <source>Event</source>
+            </trans-unit>
             <trans-unit id="newRelation">
                 <source>&#60;Event&#62;</source>
             </trans-unit>
             <trans-unit id="remove">
                 <source>Remove</source>
+            </trans-unit>
+            <trans-unit id="year">
+                <source>Year</source>
             </trans-unit>
         </body>
     </file>

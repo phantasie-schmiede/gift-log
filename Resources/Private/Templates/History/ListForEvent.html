@@ -95,6 +95,13 @@
                                         </p>
                                     </f:if>
                                 </div>
+
+                                <f:link.action
+                                    action="edit"
+                                    arguments="{gift: giftRelation.gift}"
+                                    class="stretched-link"
+                                    controller="Gift">
+                                </f:link.action>
                             </div>
                         </f:for>
                     </f:render>

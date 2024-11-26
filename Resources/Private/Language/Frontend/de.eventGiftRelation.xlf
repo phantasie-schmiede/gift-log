@@ -11,6 +11,10 @@
                 <source>Add event</source>
                 <target>Ereignis hinzufügen</target>
             </trans-unit>
+            <trans-unit id="event">
+                <source>Event</source>
+                <target>Ereignis</target>
+            </trans-unit>
             <trans-unit id="newRelation">
                 <source>&#60;Event&#62;</source>
                 <target>&#60;Ereignis&#62;</target>
@@ -18,6 +22,10 @@
             <trans-unit id="remove">
                 <source>Remove</source>
                 <target>Entfernen</target>
+            </trans-unit>
+            <trans-unit id="year">
+                <source>Year</source>
+                <target>Jahr</target>
             </trans-unit>
         </body>
     </file>

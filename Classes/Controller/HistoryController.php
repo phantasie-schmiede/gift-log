@@ -14,7 +14,6 @@ use JsonException;
 use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
 use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
-use PSB\PsbFoundation\Utility\LocalizationUtility;
 use PSB\PsbGiftLog\Domain\Demand\EventGiftDemand;
 use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
 use PSB\PsbGiftLog\Domain\Model\Relation\EventGift;
@@ -89,15 +88,11 @@ class HistoryController extends ActionController
                 $event = $eventRelation->getEvent();
 
                 if ($event instanceof ContactEvent) {
-                    $eventName = $event->getType()
-                        ->getLabel();
+                    $eventName = $event->getLabel();
                     $anniversary = $event->getAnniversaryForYear($eventRelation->getYear());
 
                     if ($anniversary > 0) {
-                        $labelParts[] = $anniversary . '. ' . LocalizationUtility::translate(
-                                'LLL:EXT:psb_contacts/Resources/Private/Language/Frontend/EventWidget/display.xlf:type.' . $event->getType(
-                                )->value . '.anniversary'
-                            );
+                        $labelParts[] = $anniversary . '. ' . $eventName;
                     } else {
                         $labelParts[] = $eventName;
                     }
