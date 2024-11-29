@@ -72,13 +72,14 @@ class GiftController extends ActionController
         $this->giftRepository->add($gift);
         $this->deletePagesCache(self::CACHE_TAG);
 
-        if (null !== $contactEvent) {
-            $arguments = ['contactEvent' => $contactEvent];
-        } else {
-            $arguments = ['giftLogEvent' => $giftLogEvent];
-        }
-
-        return $this->redirect('listForEvent', 'History', null, $arguments);
+        return $this->redirect(
+            actionName    : 'listForEvent',
+            controllerName: 'History',
+            arguments: [
+                'contactEvent' => $contactEvent,
+                'giftLogEvent' => $giftLogEvent,
+            ]
+        );
     }
 
     /**
@@ -86,12 +87,22 @@ class GiftController extends ActionController
      * @throws IllegalObjectTypeException
      */
     #[PluginAction(uncached: true)]
-    public function deleteAction(Gift $gift): ResponseInterface
-    {
+    public function deleteAction(
+        Gift         $gift,
+        ContactEvent $contactEvent = null,
+        GiftLogEvent $giftLogEvent = null,
+    ): ResponseInterface {
         $this->giftRepository->remove($gift);
         $this->deletePagesCache(self::CACHE_TAG);
 
-        return $this->redirect('list');
+        return $this->redirect(
+            actionName    : 'listForEvent',
+            controllerName: 'History',
+            arguments: [
+                'contactEvent' => $contactEvent,
+                'giftLogEvent' => $giftLogEvent,
+            ]
+        );
     }
 
     /**
@@ -130,18 +141,27 @@ class GiftController extends ActionController
 
     /**
      * @throws IllegalObjectTypeException
+     * @throws JsonException
      * @throws NoSuchCacheGroupException
      * @throws UnknownObjectException
      */
     #[PluginAction(uncached: true)]
-    public function updateAction(Gift $gift): ResponseInterface
-    {
+    public function updateAction(
+        Gift         $gift,
+        ContactEvent $contactEvent = null,
+        GiftLogEvent $giftLogEvent = null,
+    ): ResponseInterface {
+        $this->processRelations($this->request->getArgument('gift'), $gift);
         $this->giftRepository->update($gift);
         $this->deletePagesCache(self::CACHE_TAG);
 
         return $this->redirect(
-            actionName: 'show',
-            arguments: ['gift' => $gift]
+            actionName    : 'listForEvent',
+            controllerName: 'History',
+            arguments: [
+                'contactEvent' => $contactEvent,
+                'giftLogEvent' => $giftLogEvent,
+            ]
         );
     }
 
@@ -192,18 +212,45 @@ class GiftController extends ActionController
     ): void {
         $allContactsDemand = new ContactDemand();
 
-        if (null !== $contactEvent) {
-            $preselectedContacts = [];
+        if (null !== $gift) {
+            $donors = $gift->getDonors();
+            $recipients = $gift->getRecipients();
+
+            $preselectedDonors = [];
+            $preselectedRecipients = [];
+
+            /** @var Contact $donor */
+            foreach ($donors as $donor) {
+                $preselectedDonors[] = [
+                    'label' => $donor->getDisplayName(),
+                    'value' => $donor->getUid(),
+                ];
+            }
+
+            /** @var Contact $recipient */
+            foreach ($recipients as $recipient) {
+                $preselectedRecipients[] = [
+                    'label' => $recipient->getDisplayName(),
+                    'value' => $recipient->getUid(),
+                ];
+            }
+
+            $this->view->assignMultiple([
+                'preselectedDonors'     => json_encode($preselectedDonors, JSON_THROW_ON_ERROR),
+                'preselectedRecipients' => json_encode($preselectedRecipients, JSON_THROW_ON_ERROR),
+            ]);
+        } elseif (null !== $contactEvent) {
+            $preselectedRecipients = [];
 
             /** @var Contact $contact */
             foreach ($contactEvent->getContacts() as $contact) {
-                $preselectedContacts[] = [
+                $preselectedRecipients[] = [
                     'label' => $contact->getDisplayName(),
                     'value' => $contact->getUid(),
                 ];
             }
 
-            $this->view->assign('preselectedContacts', json_encode($preselectedContacts, JSON_THROW_ON_ERROR));
+            $this->view->assign('preselectedRecipients', json_encode($preselectedRecipients, JSON_THROW_ON_ERROR));
         }
 
         $this->view->assignMultiple([

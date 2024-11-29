@@ -6,6 +6,7 @@
 
 <f:form
     action="update"
+    arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
     enctype="multipart/form-data"
     method="post"
     name="gift"
@@ -14,11 +15,11 @@
         arguments="{_all}"
         partial="FormFields/Gift" />
 
-    <div class="col-12 mt-3">
+    <div class="d-flex mt-3">
         <f:link.action
             action="listForEvent"
             arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
-            class="bg-secondary-subtle btn"
+            class="bg-secondary-subtle btn me-2"
             controller="History">
             <psbFoundation:translate id="cancel" />
         </f:link.action>
@@ -27,8 +28,62 @@
             type="submit">
             <psbFoundation:translate id="save" />
         </button>
+        <a
+            class="bg-danger btn ms-auto rounded-circle"
+            data-bs-target="#delete-gift-{gift.uid}-modal"
+            data-bs-toggle="modal"
+            href="#">
+            <core:icon
+                identifier="psb-templates-trash"
+                size="small"
+                title="{psbFoundation:translate(id: 'delete')}" />
+        </a>
     </div>
 </f:form>
+
+<div
+    aria-labelledby="delete-gift-{gift.uid}-modal-label"
+    aria-modal="true"
+    class="fade modal"
+    id="delete-gift-{gift.uid}-modal"
+    role="dialog"
+    tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1
+                    class="modal-title fs-5"
+                    id="delete-gift-{gift.uid}-modal-label">
+                    <psbFoundation:translate id="modal:title" />
+                </h1>
+                <button
+                    aria-label="Close"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    type="button"></button>
+            </div>
+            <div class="modal-body">
+                <psbFoundation:translate
+                    arguments="{name: gift.description}"
+                    id="modal:body" />
+            </div>
+            <div class="modal-footer">
+                <button
+                    class="bg-secondary-subtle btn"
+                    data-bs-dismiss="modal"
+                    type="button">
+                    <psbFoundation:translate id="modal:cancel" />
+                </button>
+                <f:link.action
+                    action="delete"
+                    arguments="{contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}"
+                    class="btn btn-danger">
+                    <psbFoundation:translate id="modal:delete" />
+                </f:link.action>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div
     class="d-none"

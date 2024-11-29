@@ -12,6 +12,9 @@
             <trans-unit id="contactEvent">
                 <source>Personal event</source>
             </trans-unit>
+            <trans-unit id="gift">
+                <source>Gift</source>
+            </trans-unit>
             <trans-unit id="giftLogEvent">
                 <source>Common event</source>
             </trans-unit>

@@ -15,6 +15,10 @@
                 <source>Personal event</source>
                 <target>Persönliches Ereignis</target>
             </trans-unit>
+            <trans-unit id="gift">
+                <source>Gift</source>
+                <target>Geschenk</target>
+            </trans-unit>
             <trans-unit id="giftLogEvent">
                 <source>Common event</source>
                 <target>Allgemeines Ereignis</target>

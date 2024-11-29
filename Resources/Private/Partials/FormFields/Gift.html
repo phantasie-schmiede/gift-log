@@ -58,7 +58,7 @@
         autocomplete="off"
         class="form-control psb-templates-clear-input"
         data-psb-autocomplete-items="{allContacts}"
-        data-psb-autocomplete-preselection=""
+        data-psb-autocomplete-preselection="{preselectedDonors}"
         data-psb-autocomplete-selection-target="#gift-donors-selection"
         data-psb-autocomplete-value-target="#gift-donors-value"
         placeholder="{psbFoundation:translate(id: 'gift:donors')}"
@@ -73,7 +73,7 @@
     </ul>
     <f:form.hidden
         id="gift-donors-value"
-        property="donors" />
+        name="gift[donors]" />
 </div>
 
 <div class="form-floating mb-3">
@@ -81,7 +81,7 @@
         autocomplete="off"
         class="form-control psb-templates-clear-input"
         data-psb-autocomplete-items="{allContacts}"
-        data-psb-autocomplete-preselection="{preselectedContacts}"
+        data-psb-autocomplete-preselection="{preselectedRecipients}"
         data-psb-autocomplete-selection-target="#gift-recipients-selection"
         data-psb-autocomplete-value-target="#gift-recipients-value"
         placeholder="{psbFoundation:translate(id: 'gift:recipients')}"
@@ -96,7 +96,7 @@
     </ul>
     <f:form.hidden
         id="gift-recipients-value"
-        property="recipients" />
+        name="gift[recipients]" />
 </div>
 
 <div class="form-floating mb-3">

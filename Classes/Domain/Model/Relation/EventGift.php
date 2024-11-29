@@ -44,6 +44,11 @@ class EventGift extends AbstractEntity
     #[Number]
     protected ?int $year = null;
 
+    public function getContactEvent(): ?ContactEvent
+    {
+        return $this->contactEvent;
+    }
+
     public function getEvent(): ContactEvent|GiftLogEvent
     {
         return $this->contactEvent ?? $this->giftLogEvent;
@@ -52,6 +57,11 @@ class EventGift extends AbstractEntity
     public function getGift(): ?Gift
     {
         return $this->gift;
+    }
+
+    public function getGiftLogEvent(): ?GiftLogEvent
+    {
+        return $this->giftLogEvent;
     }
 
     public function getYear(): ?int
