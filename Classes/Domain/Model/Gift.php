@@ -26,6 +26,7 @@ use PSB\PsbTemplates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Core\Resource\DuplicationBehavior;
 use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -57,7 +58,9 @@ class Gift extends AbstractEntity
     protected ObjectStorage $eventRelations;
 
     /** @var ObjectStorage<FileReference> */
-    #[File]
+    #[File(allowed                   : [
+        'common-image-types',
+    ],     uploadDuplicationBehaviour: DuplicationBehavior::RENAME, uploadFileNameGeneratorPartSeparator: '_', uploadFileNameGeneratorProperties: ['uid'], uploadTargetFolder: 'user_upload/psb_gift_log/images',)]
     protected ObjectStorage $images;
 
     #[Text]

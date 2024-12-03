@@ -122,4 +122,10 @@
         <psbFoundation:translate id="gift:notes" />
     </label>
 </div>
+
+<div class="mb-3">
+    <f:render
+        arguments="{id: 'images-gift-{gift.uid}', multiple: 1, name: 'images'}"
+        partial="Component/Form/Upload" />
+</div>
 </html>

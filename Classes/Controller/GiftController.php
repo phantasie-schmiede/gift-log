@@ -18,8 +18,10 @@ use PSB\PsbContacts\Domain\Repository\ContactRepository;
 use PSB\PsbContacts\Domain\Repository\EventRepository as ContactEventRepository;
 use PSB\PsbContacts\Service\ContactService;
 use PSB\PsbFoundation\Attribute\PluginAction;
+use PSB\PsbFoundation\Exceptions\MisconfiguredTcaException;
 use PSB\PsbFoundation\Service\GlobalVariableProviders\RequestParameterProvider;
 use PSB\PsbFoundation\Service\GlobalVariableService;
+use PSB\PsbFoundation\Service\UploadService;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
 use PSB\PsbGiftLog\Domain\Model\Event;
 use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
@@ -30,11 +32,14 @@ use PSB\PsbGiftLog\Domain\Repository\GiftRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use ReflectionException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use function is_array;
 
 /**
@@ -49,18 +54,26 @@ class GiftController extends ActionController
     public const string CACHE_TAG = 'tx_psbgiftlog';
 
     public function __construct(
-        protected ContactRepository      $contactRepository,
-        protected ContactService         $contactService,
-        protected ContactEventRepository $contactEventRepository,
-        protected GiftLogEventRepository $giftLogEventRepository,
-        protected GiftRepository         $giftRepository,
+        protected readonly ContactRepository      $contactRepository,
+        protected readonly ContactService         $contactService,
+        protected readonly ContactEventRepository $contactEventRepository,
+        protected readonly GiftLogEventRepository $giftLogEventRepository,
+        protected readonly GiftRepository         $giftRepository,
+        protected readonly PersistenceManager     $persistenceManager,
+        protected readonly UploadService          $uploadService,
     ) {
     }
 
     /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
      * @throws IllegalObjectTypeException
      * @throws JsonException
+     * @throws MisconfiguredTcaException
      * @throws NoSuchCacheGroupException
+     * @throws NotFoundExceptionInterface
+     * @throws PropertyNotAccessibleException
+     * @throws ReflectionException
      */
     #[PluginAction(uncached: true)]
     public function createAction(
@@ -70,6 +83,8 @@ class GiftController extends ActionController
     ): ResponseInterface {
         $this->processRelations($this->request->getArgument('gift'), $gift);
         $this->giftRepository->add($gift);
+        $this->persistenceManager->persistAll();
+        $this->updateImages($gift);
         $this->deletePagesCache(self::CACHE_TAG);
 
         return $this->redirect(
@@ -140,9 +155,15 @@ class GiftController extends ActionController
     }
 
     /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
      * @throws IllegalObjectTypeException
      * @throws JsonException
+     * @throws MisconfiguredTcaException
      * @throws NoSuchCacheGroupException
+     * @throws NotFoundExceptionInterface
+     * @throws PropertyNotAccessibleException
+     * @throws ReflectionException
      * @throws UnknownObjectException
      */
     #[PluginAction(uncached: true)]
@@ -153,6 +174,7 @@ class GiftController extends ActionController
     ): ResponseInterface {
         $this->processRelations($this->request->getArgument('gift'), $gift);
         $this->giftRepository->update($gift);
+        $this->updateImages($gift);
         $this->deletePagesCache(self::CACHE_TAG);
 
         return $this->redirect(
@@ -358,5 +380,21 @@ class GiftController extends ActionController
                 $gift->addEventRelation($relation);
             }
         }
+    }
+
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws MisconfiguredTcaException
+     * @throws NotFoundExceptionInterface
+     * @throws PropertyNotAccessibleException
+     * @throws ReflectionException
+     */
+    private function updateImages(Gift $gift): void
+    {
+        $this->uploadService->fromRequest(
+            $gift,
+            $this->request
+        );
     }
 }

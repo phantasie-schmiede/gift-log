@@ -69,36 +69,37 @@
                         <f:for
                             as="giftRelation"
                             each="{giftRelationGroup.relations}">
+                            <f:variable
+                                name="gift"
+                                value="{giftRelation.gift}" />
                             <div class="card h-100 swiper-slide">
-                                <f:comment>
-                                    <!--
+                                <f:if condition="{gift.images}">
                                     <f:image
-                                        class="card-img-top"
-                                        image="" />
-                                    -->
-                                </f:comment>
+                                        class="card-img-top h-auto"
+                                        image="{gift.images.0}" />
+                                </f:if>
 
                                 <div class="card-body pb-4">
-                                    <h5 class="card-title">{giftRelation.gift.description}</h5>
+                                    <h5 class="card-title">{gift.description}</h5>
                                     <p class="card-text">
-                                        Von: {giftRelation.gift.donorList}
+                                        Von: {gift.donorList}
 
-                                        <f:if condition="{giftRelation.gift.recipientList} != {contactEvent.contactsAsEnumeration}">
+                                        <f:if condition="{gift.recipientList} != {contactEvent.contactsAsEnumeration}">
                                             <br>
-                                            An: {giftRelation.gift.recipientList}
+                                            An: {gift.recipientList}
                                         </f:if>
                                     </p>
 
-                                    <f:if condition="{giftRelation.gift.notes}">
+                                    <f:if condition="{gift.notes}">
                                         <p class="card-text">
-                                            {giftRelation.gift.notes}
+                                            {gift.notes}
                                         </p>
                                     </f:if>
                                 </div>
 
                                 <f:link.action
                                     action="edit"
-                                    arguments="{contactEvent: contactEvent, gift: giftRelation.gift, giftLogEvent: giftLogEvent}"
+                                    arguments="{contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}"
                                     class="stretched-link"
                                     controller="Gift">
                                 </f:link.action>
