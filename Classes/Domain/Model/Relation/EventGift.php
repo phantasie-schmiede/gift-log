@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace PSB\PsbGiftLog\Domain\Model\Relation;
 
+use JsonException;
 use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
 use PSB\PsbFoundation\Attribute\TCA\Column;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Number;
@@ -17,6 +18,9 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
 use PSB\PsbGiftLog\Domain\Model\Gift;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
@@ -43,6 +47,19 @@ class EventGift extends AbstractEntity
     #[Column(nullable: true)]
     #[Number]
     protected ?int $year = null;
+
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
+    public function getCompactValue(): string
+    {
+        return '(' . $this->year . ') ' . ($this->contactEvent ? $this->contactEvent->getLabel(
+                $this->year
+            ) : $this->giftLogEvent->getName());
+    }
 
     public function getContactEvent(): ?ContactEvent
     {

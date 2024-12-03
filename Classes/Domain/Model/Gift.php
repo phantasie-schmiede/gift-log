@@ -26,6 +26,7 @@ use PSB\PsbTemplates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
@@ -51,6 +52,7 @@ class Gift extends AbstractEntity
     protected ObjectStorage $donors;
 
     /** @var ObjectStorage<EventGift> */
+    #[Cascade(['value' => 'remove'])]
     #[Inline(foreignDefaultSortBy: 'year', foreignField: 'gift', linkedModel: EventGift::class)]
     protected ObjectStorage $eventRelations;
 
@@ -110,6 +112,7 @@ class Gift extends AbstractEntity
         return $this->createList($this->donors);
     }
 
+    /** @return ObjectStorage<Contact> */
     public function getDonors(): ObjectStorage
     {
         return $this->donors;
@@ -134,6 +137,7 @@ class Gift extends AbstractEntity
         return $this->eventRelations;
     }
 
+    /** @return ObjectStorage<FileReference> */
     public function getImages(): ObjectStorage
     {
         return $this->images;
@@ -156,6 +160,7 @@ class Gift extends AbstractEntity
         return $this->createList($this->recipients);
     }
 
+    /** @return ObjectStorage<Contact> */
     public function getRecipients(): ObjectStorage
     {
         return $this->recipients;

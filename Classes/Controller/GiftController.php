@@ -339,7 +339,7 @@ class GiftController extends ActionController
                 }
 
                 $entity = $gift->getEventRelationByUid($uid);
-                $this->updateEventRelationProperties($entity, $arguments);
+                $this->updateEventRelationProperties($entity, $entityData);
                 $existingEntities->detach($entity);
             }
         }

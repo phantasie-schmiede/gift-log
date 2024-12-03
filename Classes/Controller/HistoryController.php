@@ -88,14 +88,8 @@ class HistoryController extends ActionController
                 $event = $eventRelation->getEvent();
 
                 if ($event instanceof ContactEvent) {
-                    $eventName = $event->getLabel();
-                    $anniversary = $event->getAnniversaryForYear($eventRelation->getYear());
-
-                    if ($anniversary > 0) {
-                        $labelParts[] = $anniversary . '. ' . $eventName;
-                    } else {
-                        $labelParts[] = $eventName;
-                    }
+                    $eventName = $event->getLabel($eventRelation->getYear());
+                    $labelParts[] = $eventName;
                 } else {
                     $eventName = $event->getName();
                     $labelParts[] = $eventName . ' ' . $eventRelation->getYear();
