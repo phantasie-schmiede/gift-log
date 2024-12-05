@@ -11,12 +11,15 @@ declare(strict_types=1);
 namespace PSB\PsbGiftLog\Controller;
 
 use JsonException;
+use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
 use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
 use PSB\PsbGiftLog\Domain\Demand\EventGiftDemand;
+use PSB\PsbGiftLog\Domain\Demand\GiftDemand;
 use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
 use PSB\PsbGiftLog\Domain\Model\Relation\EventGift;
+use PSB\PsbGiftLog\Domain\Repository\GiftRepository;
 use PSB\PsbGiftLog\Domain\Repository\Relation\EventGiftRepository;
 use PSB\PsbTemplates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
@@ -24,6 +27,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
@@ -39,7 +43,26 @@ class HistoryController extends ActionController
 
     public function __construct(
         protected EventGiftRepository $eventGiftRepository,
+        protected GiftRepository      $giftRepository,
     ) {
+    }
+
+    /**
+     * @throws InvalidQueryException
+     */
+    #[PluginAction]
+    public function listForContactAction(Contact $contact): ResponseInterface
+    {
+        $this->setCacheTags(self::CACHE_TAG);
+        $demand = new GiftDemand();
+        $demand->setContact($contact);
+
+        $this->view->assignMultiple([
+            'contact' => $contact,
+            'gifts'   => $this->giftRepository->findByDemand($demand),
+        ]);
+
+        return $this->htmlResponse();
     }
 
     /**

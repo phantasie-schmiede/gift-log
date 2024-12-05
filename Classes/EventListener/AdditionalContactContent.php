@@ -50,7 +50,8 @@ readonly class AdditionalContactContent
 
         $demand = (new GiftDemand())->setContact($event->getContact());
         $view->assignMultiple([
-            'gifts' => $this->giftRepository->findByDemand($demand),
+            'contact' => $event->getContact(),
+            'gifts'   => $this->giftRepository->findByDemand($demand),
         ]);
 
         $event->addContent($view->render());

@@ -5,36 +5,15 @@
 <psbFoundation:translation.registerLanguageFile file="EXT:psb_contacts/Resources/Private/Language/Frontend/Contact/show.xlf" />
 
 <f:if condition="{gifts}">
-    <dt class="col-3">Geschenke</dt>
-    <dd class="col-9">
-        <ul>
-            <f:for
-                as="gift"
-                each="{gifts}">
-                <li>
-                    <strong>
-                        <f:for
-                            as="event"
-                            each="{gift.events}"
-                            iteration="eventIterator">
-                            <f:if condition="{event.name}">
-                                <f:then>
-                                    <strong>{event.name}</strong><f:if condition="!{eventIterator.isLast}">,</f:if>
-                                </f:then>
-                                <f:else>
-                                    <psbFoundation:translate
-                                        default="{event.label}"
-                                        id="show:event.type.{event.label}" /><f:if condition="!{eventIterator.isLast}">,</f:if>
-                                </f:else>
-                            </f:if>
-                        </f:for>
-                        {gift.year}
-                    </strong>
-                    von <f:for as="donor" each="{gift.donors}">{donor.displayName}</f:for>:
-                    <span>{gift.description}</span>
-                </li>
-            </f:for>
-        </ul>
-    </dd>
+    <h3 class="mt-3">Geschenke</h3>
+    <f:link.action
+        action="listForContact"
+        arguments="{contact: contact}"
+        controller="History"
+        extensionName="PsbGiftLog"
+        pluginName="History">
+        <psbFoundation:translate id="showAllGifts" />
+        Test
+    </f:link.action>
 </f:if>
 </html>

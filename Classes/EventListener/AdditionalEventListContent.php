@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace PSB\PsbGiftLog\EventListener;
 
 use PSB\PsbContacts\Domain\Repository\EventRepository as ContactEventRepository;
-use PSB\PsbContacts\Event\AdditionalEventWidgetContentEvent;
+use PSB\PsbContacts\Event\AdditionalEventListContentEvent;
 use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
 use PSB\PsbGiftLog\Data\ExtensionInformation;
 use PSB\PsbGiftLog\Domain\Demand\EventGiftDemand;
@@ -21,12 +21,12 @@ use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
 /**
- * Class AdditionalEventWidgetContent
+ * Class AdditionalEventListContent
  *
  * @package PSB\PsbGiftLog\EventListener
  */
-#[AsEventListener(identifier: 'PsbGiftLog/AdditionalEventWidgetContent')]
-readonly class AdditionalEventWidgetContent
+#[AsEventListener(identifier: 'PsbGiftLog/AdditionalEventListContent')]
+readonly class AdditionalEventListContent
 {
     public function __construct(
         protected ContactEventRepository $contactEventRepository,
@@ -36,14 +36,14 @@ readonly class AdditionalEventWidgetContent
     ) {
     }
 
-    public function __invoke(AdditionalEventWidgetContentEvent $event): void
+    public function __invoke(AdditionalEventListContentEvent $event): void
     {
         $demand = (new EventGiftDemand())->setContactEvent($event->getEvent());
 
         $viewFactoryData = new ViewFactoryData(
                templatePathAndFilename: FilePathUtility::getPrivateResourcePath(
                 $this->extensionInformation,
-                'Templates/Event/AdditionalEventWidgetContent.html'
+                'Templates/Event/AdditionalEventListContent.html'
             ), request                : $event->getRequest(),
         );
         $view = $this->viewFactory->create($viewFactoryData);
