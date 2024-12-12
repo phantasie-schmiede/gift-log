@@ -355,7 +355,7 @@ class GiftController extends ActionController
                  * Preselected entities are new entities, but are delivered in the plugin namespace because they are
                  * initially rendered inside the f:form-tag. So we have to move them to the right array.
                  */
-                if ('true' === $entityData['preselection']) {
+                if (isset($entityData['preselection']) && 'true' === $entityData['preselection']) {
                     $newEntities[] = $entityData;
                     continue;
                 }
