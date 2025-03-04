@@ -9,6 +9,15 @@
             <trans-unit id="addEvent">
                 <source>Add event</source>
             </trans-unit>
+            <trans-unit id="dyn.eventGroup.common">
+                <source>Common</source>
+            </trans-unit>
+            <trans-unit id="dyn.eventGroup.others">
+                <source>Others</source>
+            </trans-unit>
+            <trans-unit id="dyn.eventGroup.related">
+                <source>Related</source>
+            </trans-unit>
             <trans-unit id="event">
                 <source>Event</source>
             </trans-unit>

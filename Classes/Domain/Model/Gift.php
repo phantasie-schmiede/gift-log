@@ -13,6 +13,7 @@ namespace PSB\PsbGiftLog\Domain\Model;
 use InvalidArgumentException;
 use JsonException;
 use PSB\PsbContacts\Domain\Model\Contact;
+use PSB\PsbContacts\Utility\ContactUtility;
 use PSB\PsbFoundation\Attribute\TCA\Column;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
 use PSB\PsbFoundation\Attribute\TCA\ColumnType\File;
@@ -22,7 +23,6 @@ use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
 use PSB\PsbFoundation\Attribute\TCA\Ctrl;
 use PSB\PsbFoundation\Enum\SelectRenderType;
 use PSB\PsbGiftLog\Domain\Model\Relation\EventGift;
-use PSB\PsbTemplates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
@@ -112,7 +112,7 @@ class Gift extends AbstractEntity
      */
     public function getDonorList(): string
     {
-        return $this->createList($this->donors);
+        return ContactUtility::createEnumeration($this->donors->toArray());
     }
 
     /** @return ObjectStorage<Contact> */
@@ -160,7 +160,7 @@ class Gift extends AbstractEntity
      */
     public function getRecipientList(): string
     {
-        return $this->createList($this->recipients);
+        return ContactUtility::createEnumeration($this->recipients->toArray());
     }
 
     /** @return ObjectStorage<Contact> */
@@ -237,23 +237,5 @@ class Gift extends AbstractEntity
         $this->redeemed = $redeemed;
 
         return $this;
-    }
-
-    /**
-     * @throws AspectNotFoundException
-     * @throws ContainerExceptionInterface
-     * @throws JsonException
-     * @throws NotFoundExceptionInterface
-     */
-    private function createList(ObjectStorage $contacts): string
-    {
-        $names = [];
-
-        /** @var Contact $contact */
-        foreach ($contacts as $contact) {
-            $names[] = $contact->getFullName();
-        }
-
-        return StringUtility::createEnumeration($names);
     }
 }

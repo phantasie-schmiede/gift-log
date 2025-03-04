@@ -22,6 +22,7 @@ class EventGiftDemand
 {
     protected ?ContactEvent $contactEvent = null;
     protected ?GiftLogEvent $giftLogEvent = null;
+    protected array         $gifts        = [];
 
     public function getContactEvent(): ?ContactEvent
     {
@@ -31,6 +32,11 @@ class EventGiftDemand
     public function getGiftLogEvent(): ?GiftLogEvent
     {
         return $this->giftLogEvent;
+    }
+
+    public function getGifts(): array
+    {
+        return $this->gifts;
     }
 
     public function setContactEvent(ContactEvent $contactEvent): self
@@ -52,6 +58,13 @@ class EventGiftDemand
     public function setGiftLogEvent(GiftLogEvent $giftLogEvent): self
     {
         $this->giftLogEvent = $giftLogEvent;
+
+        return $this;
+    }
+
+    public function setGifts(array $gifts): self
+    {
+        $this->gifts = $gifts;
 
         return $this;
     }

@@ -11,6 +11,18 @@
                 <source>Add event</source>
                 <target>Ereignis hinzufügen</target>
             </trans-unit>
+            <trans-unit id="dyn.eventGroup.common">
+                <source>Common</source>
+                <target>Allgemein</target>
+            </trans-unit>
+            <trans-unit id="dyn.eventGroup.others">
+                <source>Others</source>
+                <target>Andere</target>
+            </trans-unit>
+            <trans-unit id="dyn.eventGroup.related">
+                <source>Related</source>
+                <target>Persönlich</target>
+            </trans-unit>
             <trans-unit id="event">
                 <source>Event</source>
                 <target>Ereignis</target>

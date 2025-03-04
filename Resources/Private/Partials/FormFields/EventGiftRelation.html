@@ -61,11 +61,26 @@
             <div class="form-floating mb-3">
                 <f:form.select
                     class="form-select"
-                    optionLabelField="label"
-                    optionValueField="value"
-                    options="{events}"
                     name="eventGiftRelation[{uid}][event]"
                     value="{preSelectedValue}">
+                    <f:for
+                        as="eventGroup"
+                        each="{eventGroups}"
+                        key="groupIdentifier">
+                        <f:variable
+                            name="groupLabel"
+                            value="{psbFoundation:translate(id: 'eventGiftRelation:dyn.eventGroup.{groupIdentifier}')}" />
+
+                        <f:form.select.optgroup additionalAttributes="{label: groupLabel}">
+                            <f:for
+                                as="event"
+                                each="{eventGroup}">
+                                <f:form.select.option value="{event.value}">
+                                    {event.label}
+                                </f:form.select.option>
+                            </f:for>
+                        </f:form.select.optgroup>
+                    </f:for>
                 </f:form.select>
                 <label
                     class="form-label">

@@ -15,6 +15,7 @@ use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
 use PSB\PsbFoundation\Attribute\PluginAction;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
+use PSB\PsbFoundation\Utility\LocalizationUtility;
 use PSB\PsbGiftLog\Domain\Demand\EventGiftDemand;
 use PSB\PsbGiftLog\Domain\Demand\GiftDemand;
 use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
@@ -48,18 +49,28 @@ class HistoryController extends ActionController
     }
 
     /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
      * @throws InvalidQueryException
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
      */
     #[PluginAction]
     public function listForContactAction(Contact $contact): ResponseInterface
     {
         $this->setCacheTags(self::CACHE_TAG);
-        $demand = new GiftDemand();
-        $demand->setContact($contact);
+        $giftDemand = new GiftDemand();
+        $giftDemand->setContact($contact);
+        $gifts = $this->giftRepository->findByDemand($giftDemand)
+            ->toArray();
+        $relationDemand = new EventGiftDemand();
+        $relationDemand->setGifts($gifts);
 
         $this->view->assignMultiple([
-            'contact' => $contact,
-            'gifts'   => $this->giftRepository->findByDemand($demand),
+            'contact'                    => $contact,
+            'giftRelationsGroupedByYear' => $this->groupRelations(
+                $this->eventGiftRepository->findByDemand($relationDemand)
+            ),
         ]);
 
         return $this->htmlResponse();
@@ -112,6 +123,13 @@ class HistoryController extends ActionController
 
                 if ($event instanceof ContactEvent) {
                     $eventName = $event->getLabel($eventRelation->getYear());
+                    $eventName = LocalizationUtility::translate(
+                        key      : 'LLL:EXT:psb_contacts/Resources/Private/Language/Frontend/EventWidget/display.xlf:eventTitle',
+                        arguments: [
+                            'persons' => $event->getContactsAsEnumeration(),
+                            'type'    => $eventName,
+                        ]
+                    );
                     $labelParts[] = $eventName;
                 } else {
                     $eventName = $event->getName();

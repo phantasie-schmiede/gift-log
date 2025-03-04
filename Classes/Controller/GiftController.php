@@ -23,7 +23,6 @@ use PSB\PsbFoundation\Service\GlobalVariableProviders\RequestParameterProvider;
 use PSB\PsbFoundation\Service\GlobalVariableService;
 use PSB\PsbFoundation\Service\UploadService;
 use PSB\PsbFoundation\Traits\ControllerCacheTrait;
-use PSB\PsbGiftLog\Domain\Model\Event;
 use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
 use PSB\PsbGiftLog\Domain\Model\Gift;
 use PSB\PsbGiftLog\Domain\Model\Relation\EventGift;
@@ -40,6 +39,7 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
+use function in_array;
 use function is_array;
 
 /**
@@ -129,10 +129,11 @@ class GiftController extends ActionController
     #[PluginAction(uncached: true)]
     public function editAction(
         Gift         $gift,
+        Contact      $contact = null,
         ContactEvent $contactEvent = null,
         GiftLogEvent $giftLogEvent = null,
     ): ResponseInterface {
-        $this->prepareForm($contactEvent, $gift, $giftLogEvent);
+        $this->prepareForm($contact, $contactEvent, $gift, $giftLogEvent);
 
         return $this->htmlResponse();
     }
@@ -145,11 +146,12 @@ class GiftController extends ActionController
      */
     #[PluginAction(uncached: true)]
     public function newAction(
+        Contact      $contact = null,
         ContactEvent $contactEvent = null,
         Gift         $gift = null,
         GiftLogEvent $giftLogEvent = null,
     ): ResponseInterface {
-        $this->prepareForm($contactEvent, $gift, $giftLogEvent);
+        $this->prepareForm($contact, $contactEvent, $gift, $giftLogEvent);
 
         return $this->htmlResponse();
     }
@@ -169,6 +171,7 @@ class GiftController extends ActionController
     #[PluginAction(uncached: true)]
     public function updateAction(
         Gift         $gift,
+        Contact      $contact = null,
         ContactEvent $contactEvent = null,
         GiftLogEvent $giftLogEvent = null,
     ): ResponseInterface {
@@ -177,13 +180,23 @@ class GiftController extends ActionController
         $this->updateImages($gift);
         $this->deletePagesCache(self::CACHE_TAG);
 
-        return $this->redirect(
-            actionName    : 'listForEvent',
-            controllerName: 'History',
-            arguments: [
+        if ($contact instanceof Contact) {
+            $actionName = 'listForContact';
+            $arguments = [
+                'contact' => $contact,
+            ];
+        } else {
+            $actionName = 'listForEvent';
+            $arguments = [
                 'contactEvent' => $contactEvent,
                 'giftLogEvent' => $giftLogEvent,
-            ]
+            ];
+        }
+
+        return $this->redirect(
+            actionName    : $actionName,
+            controllerName: 'History',
+            arguments     : $arguments
         );
     }
 
@@ -193,32 +206,73 @@ class GiftController extends ActionController
      * @throws JsonException
      * @throws NotFoundExceptionInterface
      */
-    private function collectEvents(?ContactEvent $contactEvent): array
+    private function addEventToEventGroup(array &$eventGroups, ContactEvent $event, string $key): array
     {
-        $events = [];
+        $eventGroups[$key][] = [
+            'label' => $event->getLabel() . ' (' . $event->getContactsAsEnumeration() . ')',
+            'value' => $event::class . ':' . $event->getUid(),
+        ];
 
-        /** @var Event $event */
+        return $eventGroups;
+    }
+
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
+    private function collectEvents(?Contact $contact, ?ContactEvent $contactEvent): array
+    {
+        $eventGroups = [];
+        $collectedContactEventUids = [];
+
+        if ($contact instanceof Contact) {
+            foreach ($contact->getEvents() as $event) {
+                $this->addEventToEventGroup($eventGroups, $event, 'related');
+                $collectedContactEventUids[] = $event->getUid();
+            }
+        }
+
+        if (null !== $contactEvent) {
+            /** @var Contact $eventContact */
+            foreach ($contactEvent->getContacts() as $eventContact) {
+                /** @var ContactEvent $event */
+                foreach ($eventContact->getEventsInDescendingOrder() as $event) {
+                    if (in_array($event->getUid(), $collectedContactEventUids, true)) {
+                        continue;
+                    }
+
+                    $this->addEventToEventGroup($eventGroups, $event, 'related');
+                    $collectedContactEventUids[] = $event->getUid();
+                }
+            }
+        }
+
+        /** @var GiftLogEvent $event */
         foreach ($this->giftLogEventRepository->findAll() as $event) {
-            $events[] = [
+            $eventGroups['common'][] = [
                 'label' => $event->getName(),
                 'value' => $event::class . ':' . $event->getUid(),
             ];
         }
 
-        if (null !== $contactEvent) {
-            /** @var Contact $contact */
-            foreach ($contactEvent->getContacts() as $contact) {
-                /** @var ContactEvent $event */
-                foreach ($contact->getEventsInDescendingOrder() as $event) {
-                    $events[] = [
-                        'label' => $event->getLabel(),
-                        'value' => $event::class . ':' . $event->getUid(),
-                    ];
-                }
+        foreach ($this->contactEventRepository->findAll() as $event) {
+            if (in_array($event->getUid(), $collectedContactEventUids, true)) {
+                continue;
             }
+
+            $this->addEventToEventGroup($eventGroups, $event, 'others');
         }
 
-        return $events;
+        foreach ($eventGroups as &$eventGroup) {
+            usort(
+                $eventGroup,
+                static fn(array $a, array $b) => $a['label'] <=> $b['label']
+            );
+        }
+
+        return $eventGroups;
     }
 
     /**
@@ -228,6 +282,7 @@ class GiftController extends ActionController
      * @throws NotFoundExceptionInterface
      */
     private function prepareForm(
+        Contact      $contact = null,
         ContactEvent $contactEvent = null,
         Gift         $gift = null,
         GiftLogEvent $giftLogEvent = null,
@@ -264,11 +319,11 @@ class GiftController extends ActionController
         } elseif (null !== $contactEvent) {
             $preselectedRecipients = [];
 
-            /** @var Contact $contact */
-            foreach ($contactEvent->getContacts() as $contact) {
+            /** @var Contact $eventContact */
+            foreach ($contactEvent->getContacts() as $eventContact) {
                 $preselectedRecipients[] = [
-                    'label' => $contact->getDisplayName(),
-                    'value' => $contact->getUid(),
+                    'label' => $eventContact->getDisplayName(),
+                    'value' => $eventContact->getUid(),
                 ];
             }
 
@@ -277,8 +332,9 @@ class GiftController extends ActionController
 
         $this->view->assignMultiple([
             'allContacts'  => $this->contactService->getAsJson($allContactsDemand),
+            'contact'      => $contact,
             'contactEvent' => $contactEvent,
-            'events'       => $this->collectEvents($contactEvent),
+            'eventGroups'  => $this->collectEvents($contact, $contactEvent),
             'gift'         => $gift,
             'giftLogEvent' => $giftLogEvent,
         ]);

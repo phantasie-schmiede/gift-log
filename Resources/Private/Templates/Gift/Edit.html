@@ -9,7 +9,7 @@
 
 <f:form
     action="update"
-    arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
+    arguments="{contact: contact, contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
     enctype="multipart/form-data"
     method="post"
     name="gift"
@@ -19,9 +19,28 @@
         partial="FormFields/Gift" />
 
     <div class="d-flex mt-3">
+        <f:if condition="{contact}">
+            <f:then>
+                <f:variable
+                    name="action"
+                    value="listForContact" />
+                <f:variable
+                    name="arguments"
+                    value="{contact: contact}" />
+            </f:then>
+            <f:else>
+                <f:variable
+                    name="action"
+                    value="listForEvent" />
+                <f:variable
+                    name="arguments"
+                    value="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}" />
+            </f:else>
+        </f:if>
+
         <f:link.action
-            action="listForEvent"
-            arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
+            action="{action}"
+            arguments="{arguments}"
             class="bg-secondary-subtle btn me-2"
             controller="History">
             <psbFoundation:translate id="cancel" />

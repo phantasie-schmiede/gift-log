@@ -3,5 +3,7 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
     xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers">
-<h1>Gifts</h1>
+<f:render
+    arguments="{contact: contact, giftRelationsGroupedByYear: giftRelationsGroupedByYear}"
+    partial="GiftList" />
 </html>

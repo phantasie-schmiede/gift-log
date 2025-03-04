@@ -1,121 +1,16 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
-    xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers">
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
 <h1 class="mb-3 text-center">
     <psbFoundation:translate
         arguments="{anniversary: event.nextAnniversary, persons: event.contactsAsEnumeration}"
         id="{f:if(condition: event.nextAnniversary, then: 'giftsForEvent.{event.type.value}.anniversary', else: 'giftsForEvent.{event.type.value}')}" />
 </h1>
 
-<f:if condition="{giftRelationsGroupedByYear}">
-    <f:then>
-        <f:for
-            as="giftRelationGroupeds"
-            each="{giftRelationsGroupedByYear}"
-            key="year">
-            <h2 class="align-items-center d-flex">
-                <psbTemplates:svgIcon
-                    height="24"
-                    identifier="psb-templates-calendar-range"
-                    width="24" />
-                <span class="ms-2">
-                    {year}
-                </span>
-            </h2>
-
-            <div class="mb-4">
-                <f:for
-                    as="giftRelationGroup"
-                    each="{giftRelationGroupeds}">
-                    <h3 class="mt-3">
-                        {giftRelationGroup.label}
-                    </h3>
-
-                    <f:render
-                        arguments="{
-                        configuration: {
-                            autoHeight: true,
-                            breakpoints: {
-                                576: {
-                                    slidesPerView: 2,
-                                    spaceBetween: 20
-                                },
-                                768: {
-                                    slidesPerView: 3,
-                                    spaceBetween: 30
-                                },
-                                1200: {
-                                    slidesPerView: 4,
-                                    spaceBetween: 40
-                                }
-                            },
-                            breakpointsBase: 'container',
-                            pagination: {
-                                clickable: true
-                            },
-                            showNavigation: true,
-                            slidesPerView: 1,
-                            spaceBetween: 10
-                        },
-                        id: 'contact-images',
-                    }"
-                        contentAs="slides"
-                        partial="Component/Swiper">
-
-                        <f:variable name="giftRelationGroupCount" value="{giftRelationGroup.relations -> f:count()}" />
-
-                        <f:for
-                            as="giftRelation"
-                            each="{giftRelationGroup.relations}">
-                            <f:variable
-                                name="gift"
-                                value="{giftRelation.gift}" />
-                            <div class="card h-100 swiper-slide">
-                                <f:if condition="{gift.images}">
-                                    <f:image
-                                        class="card-img-top h-auto"
-                                        image="{gift.images.0}" />
-                                </f:if>
-
-                                <div class="card-body pb-4">
-                                    <h5 class="card-title">{gift.description}</h5>
-                                    <p class="card-text">
-                                        Von: {gift.donorList}
-
-                                        <f:if condition="{gift.recipientList} != {contactEvent.contactsAsEnumeration}">
-                                            <br>
-                                            An: {gift.recipientList}
-                                        </f:if>
-                                    </p>
-
-                                    <f:if condition="{gift.notes}">
-                                        <p class="card-text">
-                                            {gift.notes}
-                                        </p>
-                                    </f:if>
-                                </div>
-
-                                <f:link.action
-                                    action="edit"
-                                    arguments="{contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}"
-                                    class="stretched-link"
-                                    controller="Gift">
-                                </f:link.action>
-                            </div>
-                        </f:for>
-                    </f:render>
-                </f:for>
-            </div>
-        </f:for>
-    </f:then>
-    <f:else>
-        <div class="alert alert-info text-center">
-            <psbFoundation:translate id="noGiftsForEvent" />
-        </div>
-    </f:else>
-</f:if>
+<f:render
+    arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent, giftRelationsGroupedByYear: giftRelationsGroupedByYear}"
+    partial="GiftList" />
 
 <f:link.action
     action="new"

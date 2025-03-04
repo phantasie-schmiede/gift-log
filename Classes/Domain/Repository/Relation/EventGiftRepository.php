@@ -33,6 +33,16 @@ class EventGiftRepository extends Repository
             $constraints[] = $query->equals('giftLogEvent', $demand->getGiftLogEvent());
         }
 
+        if ([] !== $demand->getGifts()) {
+            $orConstraints = [];
+
+            foreach ($demand->getGifts() as $gift) {
+                $orConstraints[] = $query->equals('gift', $gift);
+            }
+
+            $constraints[] = $query->logicalOr(...$orConstraints);
+        }
+
         QueryUtility::applyConstraints($constraints, $query);
 
         return $query->execute();
