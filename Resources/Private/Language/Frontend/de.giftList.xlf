@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file datatype="plaintext"
+        date="2025-03-04T22:56:00+01:00"
+        original="messages"
+        product-name="psb_gift_log"
+        source-language="en"
+        target-language="de">
+        <body>
+            <trans-unit id="noGifts">
+                <source>No gifts have been entered yet.</source>
+                <target>Es wurden noch keine Geschenke eingetragen.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

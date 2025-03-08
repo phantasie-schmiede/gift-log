@@ -51,9 +51,6 @@
             <trans-unit id="giftsForEvent.wedding.anniversary">
                 <source>Gifts for wedding anniversary of {persons}</source>
             </trans-unit>
-            <trans-unit id="noGiftsForEvent">
-                <source>No gifts have been entered yet.</source>
-            </trans-unit>
         </body>
     </file>
 </xliff>

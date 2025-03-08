@@ -3,6 +3,8 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
     xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers">
+<psbFoundation:translation.registerLanguageFile file="EXT:psb_gift_log/Resources/Private/Language/Frontend/giftList.xlf" />
+
 <f:if condition="{giftRelationsGroupedByYear}">
     <f:then>
         <f:for
@@ -108,7 +110,7 @@
     </f:then>
     <f:else>
         <div class="alert alert-info text-center">
-            <psbFoundation:translate id="noGifts" />
+            <psbFoundation:translate id="giftList:noGifts" />
         </div>
     </f:else>
 </f:if>
