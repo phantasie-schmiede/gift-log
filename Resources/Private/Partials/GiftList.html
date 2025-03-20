@@ -31,32 +31,32 @@
 
                     <f:render
                         arguments="{
-                        configuration: {
-                            autoHeight: true,
-                            breakpoints: {
-                                576: {
-                                    slidesPerView: 2,
-                                    spaceBetween: 20
+                            configuration: {
+                                autoHeight: true,
+                                breakpoints: {
+                                    576: {
+                                        slidesPerView: 2,
+                                        spaceBetween: 20
+                                    },
+                                    768: {
+                                        slidesPerView: 3,
+                                        spaceBetween: 30
+                                    },
+                                    1200: {
+                                        slidesPerView: 4,
+                                        spaceBetween: 40
+                                    }
                                 },
-                                768: {
-                                    slidesPerView: 3,
-                                    spaceBetween: 30
+                                breakpointsBase: 'container',
+                                navigation: true,
+                                pagination: {
+                                    clickable: true
                                 },
-                                1200: {
-                                    slidesPerView: 4,
-                                    spaceBetween: 40
-                                }
+                                slidesPerView: 1,
+                                spaceBetween: 10
                             },
-                            breakpointsBase: 'container',
-                            pagination: {
-                                clickable: true
-                            },
-                            showNavigation: true,
-                            slidesPerView: 1,
-                            spaceBetween: 10
-                        },
-                        id: 'contact-images',
-                    }"
+                            id: 'gift-images',
+                        }"
                         contentAs="slides"
                         partial="Component/Swiper">
 
@@ -70,37 +70,39 @@
                             <f:variable
                                 name="gift"
                                 value="{giftRelation.gift}" />
-                            <div class="card h-100 swiper-slide">
-                                <f:if condition="{gift.images}">
-                                    <f:image
-                                        class="card-img-top h-auto"
-                                        image="{gift.images.0}" />
-                                </f:if>
-
-                                <div class="card-body pb-4">
-                                    <h5 class="card-title">{gift.description}</h5>
-                                    <p class="card-text">
-                                        Von: {gift.donorList}
-
-                                        <f:if condition="{gift.recipientList} != {contactEvent.contactsAsEnumeration}">
-                                            <br>
-                                            An: {gift.recipientList}
-                                        </f:if>
-                                    </p>
-
-                                    <f:if condition="{gift.notes}">
-                                        <p class="card-text">
-                                            {gift.notes}
-                                        </p>
+                            <div class="swiper-slide">
+                                <div class="card h-100">
+                                    <f:if condition="{gift.images}">
+                                        <f:image
+                                            class="card-img-top h-auto"
+                                            image="{gift.images.0}" />
                                     </f:if>
-                                </div>
 
-                                <f:link.action
-                                    action="edit"
-                                    arguments="{contact: contact, contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}"
-                                    class="stretched-link"
-                                    controller="Gift">
-                                </f:link.action>
+                                    <div class="card-body pb-4">
+                                        <h5 class="card-title">{gift.description}</h5>
+                                        <p class="card-text">
+                                            Von: {gift.donorList}
+
+                                            <f:if condition="{gift.recipientList} != {contactEvent.contactsAsEnumeration}">
+                                                <br>
+                                                An: {gift.recipientList}
+                                            </f:if>
+                                        </p>
+
+                                        <f:if condition="{gift.notes}">
+                                            <p class="card-text">
+                                                {gift.notes}
+                                            </p>
+                                        </f:if>
+                                    </div>
+
+                                    <f:link.action
+                                        action="edit"
+                                        arguments="{contact: contact, contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}"
+                                        class="stretched-link"
+                                        controller="Gift">
+                                    </f:link.action>
+                                </div>
                             </div>
                         </f:for>
                     </f:render>
