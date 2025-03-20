@@ -1,7 +1,8 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
+    xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers">
 <psbFoundation:translation.registerLanguageFile
     file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
     name="modal" />
@@ -51,15 +52,12 @@
             <psbFoundation:translate id="save" />
         </button>
 
-        <f:variable
-            name="iconTitle"
-            value="{psbFoundation:translate(id: 'delete')}" />
-
         <f:render
             arguments="{
-                classes: 'bg-danger btn ms-auto rounded-circle',
+                classes: 'bg-danger btn ms-auto',
                 modalId: 'delete-gift-{gift.uid}-modal',
-                text: '{core:icon(identifier: \'psb-templates-trash\', size: \'small\', title: iconTitle)}',
+                text: '{psbTemplates:svgIcon(identifier: \'psb-templates-trash\')}',
+                title: '{psbFoundation:translate(id: \'delete\')}'
             }"
             partial="Component/Modal/Toggle" />
     </div>
