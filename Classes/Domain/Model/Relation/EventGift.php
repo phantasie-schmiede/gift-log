@@ -35,7 +35,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 ],     labelAltForce: true)]
 class EventGift extends AbstractEntity
 {
-    #[Select(foreignTableWhere: 'ORDER BY date DESC', linkedModel: ContactEvent::class, prependItem: Select::EMPTY_DEFAULT_ITEM)]
+    #[Select(foreignTableWhere: 'ORDER BY year DESC, month DESC, day DESC', linkedModel: ContactEvent::class, prependItem: Select::EMPTY_DEFAULT_ITEM)]
     protected ?ContactEvent $contactEvent = null;
 
     #[Select(linkedModel: Gift::class)]
