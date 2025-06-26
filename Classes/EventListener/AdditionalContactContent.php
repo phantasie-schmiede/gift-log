@@ -8,13 +8,13 @@ declare(strict_types=1);
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbGiftLog\EventListener;
+namespace PSBits\GiftLog\EventListener;
 
 use PSB\PsbContacts\Event\AdditionalContactContentEvent;
-use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
-use PSB\PsbGiftLog\Data\ExtensionInformation;
-use PSB\PsbGiftLog\Domain\Demand\GiftDemand;
-use PSB\PsbGiftLog\Domain\Repository\GiftRepository;
+use PSBits\Foundation\Utility\Configuration\FilePathUtility;
+use PSBits\GiftLog\Data\ExtensionInformation;
+use PSBits\GiftLog\Domain\Demand\GiftDemand;
+use PSBits\GiftLog\Domain\Repository\GiftRepository;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
@@ -23,9 +23,9 @@ use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 /**
  * Class AdditionalContactContent
  *
- * @package PSB\PsbGiftLog\EventListener
+ * @package PSBits\GiftLog\EventListener
  */
-#[AsEventListener(identifier: 'PsbGiftLog/AdditionalContactContent')]
+#[AsEventListener(identifier: 'GiftLog/AdditionalContactContent')]
 readonly class AdditionalContactContent
 {
     public function __construct(

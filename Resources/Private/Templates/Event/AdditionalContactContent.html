@@ -1,16 +1,16 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
 <f:if condition="{gifts}">
     <h3 class="mt-3">Geschenke</h3>
     <f:link.action
         action="listForContact"
         arguments="{contact: contact}"
         controller="History"
-        extensionName="PsbGiftLog"
+        extensionName="GiftLog"
         pluginName="History">
-        <psbFoundation:translate id="showAllGifts" />
+        <foundation:translate id="showAllGifts" />
         Alle anzeigen
     </f:link.action>
 </f:if>

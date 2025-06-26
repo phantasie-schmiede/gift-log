@@ -8,16 +8,16 @@ declare(strict_types=1);
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbGiftLog\Domain\Model;
+namespace PSBits\GiftLog\Domain\Model;
 
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Input;
-use PSB\PsbFoundation\Attribute\TCA\Ctrl;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Input;
+use PSBits\Foundation\Attribute\TCA\Ctrl;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * Class Event
  *
- * @package PSB\PsbGiftLog\Domain\Model
+ * @package PSBits\GiftLog\Domain\Model
  */
 #[Ctrl(label: 'name')]
 class Event extends AbstractEntity

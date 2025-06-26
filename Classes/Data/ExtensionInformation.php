@@ -8,18 +8,18 @@ declare(strict_types=1);
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbGiftLog\Data;
+namespace PSBits\GiftLog\Data;
 
-use PSB\PsbFoundation\Data\AbstractExtensionInformation;
-use PSB\PsbFoundation\Data\PluginConfiguration;
-use PSB\PsbGiftLog\Controller\GiftController;
-use PSB\PsbGiftLog\Controller\HistoryController;
+use PSBits\Foundation\Data\AbstractExtensionInformation;
+use PSBits\Foundation\Data\PluginConfiguration;
+use PSBits\GiftLog\Controller\GiftController;
+use PSBits\GiftLog\Controller\HistoryController;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class ExtensionInformation
  *
- * @package PSB\PsbGiftLog\Data
+ * @package PSBits\GiftLog\Data
  */
 class ExtensionInformation extends AbstractExtensionInformation
 {

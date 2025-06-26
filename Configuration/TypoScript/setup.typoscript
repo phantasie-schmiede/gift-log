@@ -1,5 +1,5 @@
 plugin {
-  tx_psbgiftlog {
+  tx_giftlog {
     persistence.storagePid = {$plugin.tx_psbcontacts.persistence.storagePid}
 
     view {
@@ -7,6 +7,6 @@ plugin {
     }
   }
 
-  tx_psbgiftlog_gift.view.defaultPid = auto
-  tx_psbgiftlog_history.view.defaultPid = auto
+  tx_giftlog_gift.view.defaultPid = auto
+  tx_giftlog_history.view.defaultPid = auto
 }

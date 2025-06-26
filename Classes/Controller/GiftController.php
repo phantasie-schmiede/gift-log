@@ -8,7 +8,7 @@ declare(strict_types=1);
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbGiftLog\Controller;
+namespace PSBits\GiftLog\Controller;
 
 use JsonException;
 use PSB\PsbContacts\Domain\Demand\ContactDemand;
@@ -17,17 +17,17 @@ use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
 use PSB\PsbContacts\Domain\Repository\ContactRepository;
 use PSB\PsbContacts\Domain\Repository\EventRepository as ContactEventRepository;
 use PSB\PsbContacts\Service\ContactService;
-use PSB\PsbFoundation\Attribute\PluginAction;
-use PSB\PsbFoundation\Exceptions\MisconfiguredTcaException;
-use PSB\PsbFoundation\Service\GlobalVariableProviders\RequestParameterProvider;
-use PSB\PsbFoundation\Service\GlobalVariableService;
-use PSB\PsbFoundation\Service\UploadService;
-use PSB\PsbFoundation\Traits\ControllerCacheTrait;
-use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
-use PSB\PsbGiftLog\Domain\Model\Gift;
-use PSB\PsbGiftLog\Domain\Model\Relation\EventGift;
-use PSB\PsbGiftLog\Domain\Repository\EventRepository as GiftLogEventRepository;
-use PSB\PsbGiftLog\Domain\Repository\GiftRepository;
+use PSBits\Foundation\Attribute\PluginAction;
+use PSBits\Foundation\Exceptions\MisconfiguredTcaException;
+use PSBits\Foundation\Service\GlobalVariableProviders\RequestParameterProvider;
+use PSBits\Foundation\Service\GlobalVariableService;
+use PSBits\Foundation\Service\UploadService;
+use PSBits\Foundation\Traits\ControllerCacheTrait;
+use PSBits\GiftLog\Domain\Model\Event as GiftLogEvent;
+use PSBits\GiftLog\Domain\Model\Gift;
+use PSBits\GiftLog\Domain\Model\Relation\EventGift;
+use PSBits\GiftLog\Domain\Repository\EventRepository as GiftLogEventRepository;
+use PSBits\GiftLog\Domain\Repository\GiftRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -45,13 +45,13 @@ use function is_array;
 /**
  * Class GiftController
  *
- * @package PSB\PsbGiftLog\Controller
+ * @package PSBits\GiftLog\Controller
  */
 class GiftController extends ActionController
 {
     use ControllerCacheTrait;
 
-    public const string CACHE_TAG = 'tx_psbgiftlog';
+    public const string CACHE_TAG = 'tx_giftlog';
 
     public function __construct(
         protected readonly ContactRepository      $contactRepository,

@@ -1,12 +1,12 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers">
-<psbFoundation:translation.registerLanguageFile
+<foundation:translation.registerLanguageFile
     file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
     name="modal" />
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
+<foundation:translation.registerLanguageFile file="EXT:gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
 
 <f:form
     action="update"
@@ -44,12 +44,12 @@
             arguments="{arguments}"
             class="bg-secondary-subtle btn me-2"
             controller="History">
-            <psbFoundation:translate id="cancel" />
+            <foundation:translate id="cancel" />
         </f:link.action>
         <button
             class="bg-primary-subtle btn"
             type="submit">
-            <psbFoundation:translate id="save" />
+            <foundation:translate id="save" />
         </button>
 
         <f:render
@@ -57,7 +57,7 @@
                 classes: 'bg-danger btn ms-auto',
                 modalId: 'delete-gift-{gift.uid}-modal',
                 text: '{psbTemplates:svgIcon(identifier: \'psb-templates-trash\')}',
-                title: '{psbFoundation:translate(id: \'delete\')}'
+                title: '{foundation:translate(id: \'delete\')}'
             }"
             partial="Component/Modal/Toggle" />
     </div>
@@ -65,10 +65,10 @@
 
 <f:render
     arguments="{
-        body: '{psbFoundation:translate(arguments: {name: gift.description}, id: \'modal:body\')}',
+        body: '{foundation:translate(arguments: {name: gift.description}, id: \'modal:body\')}',
         footer: '{f:render(arguments: {contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}, section: \'modalFooter\')}',
         id: 'delete-gift-{gift.uid}-modal',
-        title: '{psbFoundation:translate(id: \'modal:title\')}'
+        title: '{foundation:translate(id: \'modal:title\')}'
     }"
     partial="Component/Modal/Dialog" />
 
@@ -81,7 +81,7 @@
 </div>
 
 <f:section name="modalFooter">
-    <psbFoundation:translation.registerLanguageFile
+    <foundation:translation.registerLanguageFile
         file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
         name="modal" />
 
@@ -89,13 +89,13 @@
         class="bg-secondary-subtle btn"
         data-bs-dismiss="modal"
         type="button">
-        <psbFoundation:translate id="modal:cancel" />
+        <foundation:translate id="modal:cancel" />
     </button>
     <f:link.action
         action="delete"
         arguments="{contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}"
         class="btn btn-danger">
-        <psbFoundation:translate id="modal:delete" />
+        <foundation:translate id="modal:delete" />
     </f:link.action>
 </f:section>
 </html>

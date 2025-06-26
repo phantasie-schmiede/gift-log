@@ -8,14 +8,14 @@ declare(strict_types=1);
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbGiftLog\EventListener;
+namespace PSBits\GiftLog\EventListener;
 
 use PSB\PsbContacts\Domain\Repository\EventRepository as ContactEventRepository;
 use PSB\PsbContacts\Event\AdditionalEventListContentEvent;
-use PSB\PsbFoundation\Utility\Configuration\FilePathUtility;
-use PSB\PsbGiftLog\Data\ExtensionInformation;
-use PSB\PsbGiftLog\Domain\Demand\EventGiftDemand;
-use PSB\PsbGiftLog\Domain\Repository\Relation\EventGiftRepository;
+use PSBits\Foundation\Utility\Configuration\FilePathUtility;
+use PSBits\GiftLog\Data\ExtensionInformation;
+use PSBits\GiftLog\Domain\Demand\EventGiftDemand;
+use PSBits\GiftLog\Domain\Repository\Relation\EventGiftRepository;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\View\ViewFactoryInterface;
 /**
  * Class AdditionalEventListContent
  *
- * @package PSB\PsbGiftLog\EventListener
+ * @package PSBits\GiftLog\EventListener
  */
-#[AsEventListener(identifier: 'PsbGiftLog/AdditionalEventListContent')]
+#[AsEventListener(identifier: 'GiftLog/AdditionalEventListContent')]
 readonly class AdditionalEventListContent
 {
     public function __construct(

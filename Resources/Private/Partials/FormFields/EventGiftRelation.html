@@ -1,9 +1,9 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers"
-    xmlns:psbGiftLog="http://typo3.org/ns/PSB/PsbGiftLog/ViewHelpers">
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
+    xmlns:giftLog="http://typo3.org/ns/PSBits/GiftLog/ViewHelpers">
+<foundation:translation.registerLanguageFile file="EXT:gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
 
 <f:asset.script
     identifier="deleteContent"
@@ -14,7 +14,7 @@
     <f:then>
         <f:variable
             name="preSelectedValue"
-            value="{psbGiftLog:eventIdentifier(event: record.event)}" />
+            value="{giftLog:eventIdentifier(event: record.event)}" />
         <f:variable
             name="uid"
             value="{record.uid}" />
@@ -22,7 +22,7 @@
     <f:else if="{preselectedEvent}">
         <f:variable
             name="preSelectedValue"
-            value="{psbGiftLog:eventIdentifier(event: preselectedEvent)}" />
+            value="{giftLog:eventIdentifier(event: preselectedEvent)}" />
         <f:variable
             name="uid"
             value="{f:format.date(date: 'now', format: 'U')}" />
@@ -48,7 +48,7 @@
                     {record.compactValue}
                 </f:then>
                 <f:else>
-                    <psbFoundation:translate id="eventGiftRelation:newRelation" />
+                    <foundation:translate id="eventGiftRelation:newRelation" />
                 </f:else>
             </f:if>
         </button>
@@ -69,7 +69,7 @@
                         key="groupIdentifier">
                         <f:variable
                             name="groupLabel"
-                            value="{psbFoundation:translate(id: 'eventGiftRelation:dyn.eventGroup.{groupIdentifier}')}" />
+                            value="{foundation:translate(id: 'eventGiftRelation:dyn.eventGroup.{groupIdentifier}')}" />
 
                         <f:form.select.optgroup additionalAttributes="{label: groupLabel}">
                             <f:for
@@ -84,7 +84,7 @@
                 </f:form.select>
                 <label
                     class="form-label">
-                    <psbFoundation:translate id="eventGiftRelation:event" />
+                    <foundation:translate id="eventGiftRelation:event" />
                 </label>
             </div>
 
@@ -92,12 +92,12 @@
                 <f:form.textfield
                     class="form-control"
                     name="eventGiftRelation[{uid}][year]"
-                    placeholder="{psbFoundation:translate(id: 'eventGiftRelation:year')}"
+                    placeholder="{foundation:translate(id: 'eventGiftRelation:year')}"
                     type="number"
                     value="{record.year -> f:or(alternative: '{f:format.date(date: \'now\', format: \'Y\')}')}" />
                 <label
                     class="form-label">
-                    <psbFoundation:translate id="eventGiftRelation:year" />
+                    <foundation:translate id="eventGiftRelation:year" />
                 </label>
             </div>
 
@@ -111,7 +111,7 @@
                 class="btn btn-danger"
                 data-psb-delete-mode="closest"
                 data-psb-delete-target=".accordion-item">
-                <psbFoundation:translate id="eventGiftRelation:remove" />
+                <foundation:translate id="eventGiftRelation:remove" />
             </div>
         </div>
     </div>

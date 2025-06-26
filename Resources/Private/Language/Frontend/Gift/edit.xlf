@@ -3,7 +3,7 @@
     <file datatype="plaintext"
         date="2024-11-12T13:19:00+01:00"
         original="messages"
-        product-name="psb_gift_log"
+        product-name="gift_log"
         source-language="en">
         <body>
             <trans-unit id="cancel">

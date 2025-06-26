@@ -8,20 +8,20 @@ declare(strict_types=1);
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbGiftLog\Controller;
+namespace PSBits\GiftLog\Controller;
 
 use JsonException;
 use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
-use PSB\PsbFoundation\Attribute\PluginAction;
-use PSB\PsbFoundation\Traits\ControllerCacheTrait;
-use PSB\PsbFoundation\Utility\LocalizationUtility;
-use PSB\PsbGiftLog\Domain\Demand\EventGiftDemand;
-use PSB\PsbGiftLog\Domain\Demand\GiftDemand;
-use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
-use PSB\PsbGiftLog\Domain\Model\Relation\EventGift;
-use PSB\PsbGiftLog\Domain\Repository\GiftRepository;
-use PSB\PsbGiftLog\Domain\Repository\Relation\EventGiftRepository;
+use PSBits\Foundation\Attribute\PluginAction;
+use PSBits\Foundation\Traits\ControllerCacheTrait;
+use PSBits\Foundation\Utility\LocalizationUtility;
+use PSBits\GiftLog\Domain\Demand\EventGiftDemand;
+use PSBits\GiftLog\Domain\Demand\GiftDemand;
+use PSBits\GiftLog\Domain\Model\Event as GiftLogEvent;
+use PSBits\GiftLog\Domain\Model\Relation\EventGift;
+use PSBits\GiftLog\Domain\Repository\GiftRepository;
+use PSBits\GiftLog\Domain\Repository\Relation\EventGiftRepository;
 use PSB\PsbTemplates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -34,13 +34,13 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 /**
  * Class HistoryController
  *
- * @package PSB\PsbGiftLog\Controller
+ * @package PSBits\GiftLog\Controller
  */
 class HistoryController extends ActionController
 {
     use ControllerCacheTrait;
 
-    public const string CACHE_TAG = 'tx_psbgiftlog';
+    public const string CACHE_TAG = 'tx_giftlog';
 
     public function __construct(
         protected EventGiftRepository $eventGiftRepository,

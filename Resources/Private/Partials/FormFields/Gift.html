@@ -1,9 +1,9 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_gift_log/Resources/Private/Language/Backend/Configuration/TCA/gift.xlf" />
-<psbFoundation:translation.registerLanguageFile file="EXT:psb_gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
+<foundation:translation.registerLanguageFile file="EXT:gift_log/Resources/Private/Language/Backend/Configuration/TCA/gift.xlf" />
+<foundation:translation.registerLanguageFile file="EXT:gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
 
 <f:asset.script
     identifier="autoSizeTextArea"
@@ -49,7 +49,7 @@
         data-psb-copy-mode="append"
         data-psb-copy-source="#templateEventGiftRelation"
         data-psb-copy-target="#accordionEventGiftRelation">
-        <psbFoundation:translate id="eventGiftRelation:addEvent" />
+        <foundation:translate id="eventGiftRelation:addEvent" />
     </span>
 </div>
 
@@ -61,11 +61,11 @@
         data-psb-autocomplete-preselection="{preselectedDonors}"
         data-psb-autocomplete-selection-target="#gift-donors-selection"
         data-psb-autocomplete-value-target="#gift-donors-value"
-        placeholder="{psbFoundation:translate(id: 'gift:donors')}"
+        placeholder="{foundation:translate(id: 'gift:donors')}"
         type="text" />
     <label
         class="form-label">
-        <psbFoundation:translate id="gift:donors" />
+        <foundation:translate id="gift:donors" />
     </label>
     <ul
         class="list-group list-group-flush"
@@ -84,11 +84,11 @@
         data-psb-autocomplete-preselection="{preselectedRecipients}"
         data-psb-autocomplete-selection-target="#gift-recipients-selection"
         data-psb-autocomplete-value-target="#gift-recipients-value"
-        placeholder="{psbFoundation:translate(id: 'gift:recipients')}"
+        placeholder="{foundation:translate(id: 'gift:recipients')}"
         type="text" />
     <label
         class="form-label">
-        <psbFoundation:translate id="gift:recipients" />
+        <foundation:translate id="gift:recipients" />
     </label>
     <ul
         class="list-group list-group-flush"
@@ -103,11 +103,11 @@
     <f:form.textarea
         class="form-control psb-templates-auto-size"
         property="description"
-        placeholder="{psbFoundation:translate(id: 'gift:description')}"
+        placeholder="{foundation:translate(id: 'gift:description')}"
         value="{gift.description}" />
     <label
         class="form-label">
-        <psbFoundation:translate id="gift:description" />
+        <foundation:translate id="gift:description" />
     </label>
 </div>
 
@@ -115,11 +115,11 @@
     <f:form.textarea
         class="form-control psb-templates-auto-size"
         property="notes"
-        placeholder="{psbFoundation:translate(id: 'gift:notes')}"
+        placeholder="{foundation:translate(id: 'gift:notes')}"
         value="{gift.notes}" />
     <label
         class="form-label">
-        <psbFoundation:translate id="gift:notes" />
+        <foundation:translate id="gift:notes" />
     </label>
 </div>
 

@@ -8,15 +8,15 @@ declare(strict_types=1);
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbGiftLog\ViewHelpers;
+namespace PSBits\GiftLog\ViewHelpers;
 
-use PSB\PsbGiftLog\Service\EventService;
+use PSBits\GiftLog\Service\EventService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class EventIdentifierViewHelper
  *
- * @package PSB\PsbGiftLog\ViewHelpers
+ * @package PSBits\GiftLog\ViewHelpers
  */
 class EventIdentifierViewHelper extends AbstractViewHelper
 {

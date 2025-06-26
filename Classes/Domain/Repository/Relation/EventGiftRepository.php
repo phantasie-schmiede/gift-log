@@ -8,17 +8,17 @@ declare(strict_types=1);
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbGiftLog\Domain\Repository\Relation;
+namespace PSBits\GiftLog\Domain\Repository\Relation;
 
-use PSB\PsbFoundation\Utility\QueryUtility;
-use PSB\PsbGiftLog\Domain\Demand\EventGiftDemand;
+use PSBits\Foundation\Utility\QueryUtility;
+use PSBits\GiftLog\Domain\Demand\EventGiftDemand;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * Class EventGiftRepository
  *
- * @package PSB\PsbGiftLog\Domain\Repository\Relation
+ * @package PSBits\GiftLog\Domain\Repository\Relation
  */
 class EventGiftRepository extends Repository
 {

@@ -8,15 +8,15 @@ declare(strict_types=1);
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbGiftLog\Domain\Demand;
+namespace PSBits\GiftLog\Domain\Demand;
 
 use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
-use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
+use PSBits\GiftLog\Domain\Model\Event as GiftLogEvent;
 
 /**
  * Class EventGiftDemand
  *
- * @package PSB\PsbGiftLog\Domain\Demand
+ * @package PSBits\GiftLog\Domain\Demand
  */
 class EventGiftDemand
 {

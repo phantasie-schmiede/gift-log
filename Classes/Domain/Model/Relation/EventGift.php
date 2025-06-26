@@ -8,16 +8,16 @@ declare(strict_types=1);
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbGiftLog\Domain\Model\Relation;
+namespace PSBits\GiftLog\Domain\Model\Relation;
 
 use JsonException;
 use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
-use PSB\PsbFoundation\Attribute\TCA\Column;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Number;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
-use PSB\PsbFoundation\Attribute\TCA\Ctrl;
-use PSB\PsbGiftLog\Domain\Model\Event as GiftLogEvent;
-use PSB\PsbGiftLog\Domain\Model\Gift;
+use PSBits\Foundation\Attribute\TCA\Column;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Number;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
+use PSBits\Foundation\Attribute\TCA\Ctrl;
+use PSBits\GiftLog\Domain\Model\Event as GiftLogEvent;
+use PSBits\GiftLog\Domain\Model\Gift;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
@@ -26,7 +26,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * Class EventGift
  *
- * @package PSB\PsbGiftLog\Domain\Model\Relation
+ * @package PSBits\GiftLog\Domain\Model\Relation
  */
 #[Ctrl(defaultSortBy: 'year DESC', label: 'year', labelAlt: [
     'contactEvent',

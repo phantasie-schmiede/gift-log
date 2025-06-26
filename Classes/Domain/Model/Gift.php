@@ -8,21 +8,21 @@ declare(strict_types=1);
  * LICENSE.txt file that was distributed with this source code.
  */
 
-namespace PSB\PsbGiftLog\Domain\Model;
+namespace PSBits\GiftLog\Domain\Model;
 
 use InvalidArgumentException;
 use JsonException;
 use PSB\PsbContacts\Domain\Model\Contact;
 use PSB\PsbContacts\Utility\ContactUtility;
-use PSB\PsbFoundation\Attribute\TCA\Column;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Check;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\File;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Inline;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Select;
-use PSB\PsbFoundation\Attribute\TCA\ColumnType\Text;
-use PSB\PsbFoundation\Attribute\TCA\Ctrl;
-use PSB\PsbFoundation\Enum\SelectRenderType;
-use PSB\PsbGiftLog\Domain\Model\Relation\EventGift;
+use PSBits\Foundation\Attribute\TCA\Column;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Check;
+use PSBits\Foundation\Attribute\TCA\ColumnType\File;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Inline;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Select;
+use PSBits\Foundation\Attribute\TCA\ColumnType\Text;
+use PSBits\Foundation\Attribute\TCA\Ctrl;
+use PSBits\Foundation\Enum\SelectRenderType;
+use PSBits\GiftLog\Domain\Model\Relation\EventGift;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
@@ -35,14 +35,14 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Class Gift
  *
- * @package PSB\PsbGiftLog\Domain\Model
+ * @package PSBits\GiftLog\Domain\Model
  */
 #[Ctrl(label: 'description')]
 class Gift extends AbstractEntity
 {
     public const array MM_TABLES = [
-        'donors'     => 'tx_psbgiftlog_gift_contact_donor_mm',
-        'recipients' => 'tx_psbgiftlog_gift_contact_recipient_mm',
+        'donors'     => 'tx_giftlog_gift_contact_donor_mm',
+        'recipients' => 'tx_giftlog_gift_contact_recipient_mm',
     ];
 
     #[Text]
@@ -60,7 +60,7 @@ class Gift extends AbstractEntity
     /** @var ObjectStorage<FileReference> */
     #[File(allowed                   : [
         'common-image-types',
-    ],     uploadDuplicationBehaviour: DuplicationBehavior::RENAME, uploadFileNameGeneratorPartSeparator: '_', uploadFileNameGeneratorProperties: ['uid'], uploadTargetFolder: 'user_upload/psb_gift_log/images',)]
+    ],     uploadDuplicationBehaviour: DuplicationBehavior::RENAME, uploadFileNameGeneratorPartSeparator: '_', uploadFileNameGeneratorProperties: ['uid'], uploadTargetFolder: 'user_upload/gift_log/images',)]
     protected ObjectStorage $images;
 
     #[Text]

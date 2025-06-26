@@ -1,9 +1,9 @@
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:psbFoundation="http://typo3.org/ns/PSB/PsbFoundation/ViewHelpers">
+    xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
 <h1 class="mb-3 text-center">
-    <psbFoundation:translate
+    <foundation:translate
         arguments="{anniversary: event.nextAnniversary, persons: event.contactsAsEnumeration}"
         id="{f:if(condition: event.nextAnniversary, then: 'giftsForEvent.{event.type.value}.anniversary', else: 'giftsForEvent.{event.type.value}')}" />
 </h1>
@@ -21,6 +21,6 @@
     <core:icon
         identifier="psb-templates-plus-lg"
         size="small" />
-    <psbFoundation:translate id="enterNewGift" />
+    <foundation:translate id="enterNewGift" />
 </f:link.action>
 </html>

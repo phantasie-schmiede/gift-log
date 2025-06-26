@@ -8,13 +8,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "PSB\\PsbGiftLog\\": "Classes/"
+            "PSBits\\GiftLog\\": "Classes/"
         }
     },
     "description": "Keep a record of all the gifts you have received or given.",
     "extra": {
         "typo3/cms": {
-            "extension-key": "psb_gift_log"
+            "extension-key": "gift_log"
         }
     },
     "keywords": [
@@ -23,10 +23,10 @@
         "typo3"
     ],
     "license": "GPL-3.0-or-later",
-    "name": "psb/psb-gift-log",
+    "name": "psbits/gift-log",
     "require": {
-        "psb/psb-contacts": "@dev",
-        "psb/psb-foundation": "@dev"
+        "psbits/contact-book": "^0.1",
+        "psbits/foundation": "^3.0"
     },
     "type": "typo3-cms-extension"
 }
