@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace PSBits\GiftLog\EventListener;
 
-use PSB\PsbContacts\Domain\Repository\EventRepository as ContactEventRepository;
-use PSB\PsbContacts\Event\AdditionalEventListContentEvent;
+use PSBits\ContactBook\Domain\Repository\EventRepository as ContactEventRepository;
+use PSBits\ContactBook\Event\AdditionalEventListContentEvent;
 use PSBits\Foundation\Utility\Configuration\FilePathUtility;
 use PSBits\GiftLog\Data\ExtensionInformation;
 use PSBits\GiftLog\Domain\Demand\EventGiftDemand;

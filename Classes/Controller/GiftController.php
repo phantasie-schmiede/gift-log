@@ -11,12 +11,12 @@ declare(strict_types=1);
 namespace PSBits\GiftLog\Controller;
 
 use JsonException;
-use PSB\PsbContacts\Domain\Demand\ContactDemand;
-use PSB\PsbContacts\Domain\Model\Contact;
-use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
-use PSB\PsbContacts\Domain\Repository\ContactRepository;
-use PSB\PsbContacts\Domain\Repository\EventRepository as ContactEventRepository;
-use PSB\PsbContacts\Service\ContactService;
+use PSBits\ContactBook\Domain\Demand\ContactDemand;
+use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\Event as ContactEvent;
+use PSBits\ContactBook\Domain\Repository\ContactRepository;
+use PSBits\ContactBook\Domain\Repository\EventRepository as ContactEventRepository;
+use PSBits\ContactBook\Service\ContactService;
 use PSBits\Foundation\Attribute\PluginAction;
 use PSBits\Foundation\Exceptions\MisconfiguredTcaException;
 use PSBits\Foundation\Service\GlobalVariableProviders\RequestParameterProvider;

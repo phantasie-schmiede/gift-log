@@ -2,7 +2,7 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
-    xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers">
+    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
 <foundation:translation.registerLanguageFile file="EXT:gift_log/Resources/Private/Language/Frontend/giftList.xlf" />
 
 <f:if condition="{giftRelationsGroupedByYear}">
@@ -12,9 +12,9 @@
             each="{giftRelationsGroupedByYear}"
             key="year">
             <h2 class="align-items-center d-flex">
-                <psbTemplates:svgIcon
+                <templates:svgIcon
                     height="24"
-                    identifier="psb-templates-calendar-range"
+                    identifier="templates-calendar-range"
                     width="24" />
                 <span class="ms-2">
                     {year}

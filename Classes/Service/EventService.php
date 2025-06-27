@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace PSBits\GiftLog\Service;
 
-use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
+use PSBits\ContactBook\Domain\Model\Event as ContactEvent;
 use PSBits\GiftLog\Domain\Model\Event as GiftLogEvent;
 
 /**

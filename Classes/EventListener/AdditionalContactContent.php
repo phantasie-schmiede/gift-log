@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace PSBits\GiftLog\EventListener;
 
-use PSB\PsbContacts\Event\AdditionalContactContentEvent;
+use PSBits\ContactBook\Event\AdditionalContactContentEvent;
 use PSBits\Foundation\Utility\Configuration\FilePathUtility;
 use PSBits\GiftLog\Data\ExtensionInformation;
 use PSBits\GiftLog\Domain\Demand\GiftDemand;

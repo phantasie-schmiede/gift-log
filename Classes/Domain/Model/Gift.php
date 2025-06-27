@@ -12,8 +12,8 @@ namespace PSBits\GiftLog\Domain\Model;
 
 use InvalidArgumentException;
 use JsonException;
-use PSB\PsbContacts\Domain\Model\Contact;
-use PSB\PsbContacts\Utility\ContactUtility;
+use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\ContactBook\Utility\ContactUtility;
 use PSBits\Foundation\Attribute\TCA\Column;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Check;
 use PSBits\Foundation\Attribute\TCA\ColumnType\File;

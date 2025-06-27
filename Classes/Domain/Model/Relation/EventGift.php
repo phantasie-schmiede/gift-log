@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace PSBits\GiftLog\Domain\Model\Relation;
 
 use JsonException;
-use PSB\PsbContacts\Domain\Model\Event as ContactEvent;
+use PSBits\ContactBook\Domain\Model\Event as ContactEvent;
 use PSBits\Foundation\Attribute\TCA\Column;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Number;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Select;

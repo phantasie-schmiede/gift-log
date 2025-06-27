@@ -2,7 +2,7 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
-    xmlns:psbTemplates="http://typo3.org/ns/PSB/PsbTemplates/ViewHelpers">
+    xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
 <foundation:translation.registerLanguageFile
     file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
     name="modal" />
@@ -56,7 +56,7 @@
             arguments="{
                 classes: 'bg-danger btn ms-auto',
                 modalId: 'delete-gift-{gift.uid}-modal',
-                text: '{psbTemplates:svgIcon(identifier: \'psb-templates-trash\')}',
+                text: '{templates:svgIcon(identifier: \'templates-trash\')}',
                 title: '{foundation:translate(id: \'delete\')}'
             }"
             partial="Component/Modal/Toggle" />

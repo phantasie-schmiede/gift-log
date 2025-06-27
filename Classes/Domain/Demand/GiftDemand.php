@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace PSBits\GiftLog\Domain\Demand;
 
-use PSB\PsbContacts\Domain\Model\Contact;
+use PSBits\ContactBook\Domain\Model\Contact;
 
 /**
  * Class EventGiftDemand
