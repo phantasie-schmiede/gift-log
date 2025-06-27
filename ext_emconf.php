@@ -1,6 +1,6 @@
 <?php
 
-$EM_CONF[$EXTKEY] = [
+$EM_CONF[$_EXTKEY] = [
     'author'           => 'Daniel Ablass',
     'author_email'     => 'dn@phantasie-schmiede.de',
     'category'         => 'plugin',
