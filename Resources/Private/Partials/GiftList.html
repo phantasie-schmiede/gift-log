@@ -79,7 +79,9 @@
                                     </f:if>
 
                                     <div class="card-body pb-4">
-                                        <h5 class="card-title">{gift.description}</h5>
+                                        <h5 class="card-title">
+                                            <f:format.nl2br>{gift.description}</f:format.nl2br>
+                                        </h5>
                                         <p class="card-text">
                                             Von: {gift.donorList}
 
