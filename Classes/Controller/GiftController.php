@@ -299,7 +299,7 @@ class GiftController extends ActionController
             /** @var Contact $donor */
             foreach ($donors as $donor) {
                 $preselectedDonors[] = [
-                    'label' => $donor->getDisplayName(),
+                    'label' => $donor->getListName(),
                     'value' => $donor->getUid(),
                 ];
             }
@@ -307,7 +307,7 @@ class GiftController extends ActionController
             /** @var Contact $recipient */
             foreach ($recipients as $recipient) {
                 $preselectedRecipients[] = [
-                    'label' => $recipient->getDisplayName(),
+                    'label' => $recipient->getListName(),
                     'value' => $recipient->getUid(),
                 ];
             }
@@ -322,7 +322,7 @@ class GiftController extends ActionController
             /** @var Contact $eventContact */
             foreach ($contactEvent->getContacts() as $eventContact) {
                 $preselectedRecipients[] = [
-                    'label' => $eventContact->getDisplayName(),
+                    'label' => $eventContact->getListName(),
                     'value' => $eventContact->getUid(),
                 ];
             }
