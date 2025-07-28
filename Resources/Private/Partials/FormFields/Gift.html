@@ -46,9 +46,9 @@
 <div class="mb-3">
     <span
         class="bg-secondary-subtle btn"
-        data-psb-copy-mode="append"
-        data-psb-copy-source="#templateEventGiftRelation"
-        data-psb-copy-target="#accordionEventGiftRelation">
+        data-psbits-copy-mode="append"
+        data-psbits-copy-source="#templateEventGiftRelation"
+        data-psbits-copy-target="#accordionEventGiftRelation">
         <foundation:translate id="eventGiftRelation:addEvent" />
     </span>
 </div>
@@ -56,11 +56,11 @@
 <div class="form-floating mb-3">
     <input
         autocomplete="off"
-        class="form-control psb-templates-clear-input"
-        data-psb-autocomplete-items="{allContacts}"
-        data-psb-autocomplete-preselection="{preselectedDonors}"
-        data-psb-autocomplete-selection-target="#gift-donors-selection"
-        data-psb-autocomplete-value-target="#gift-donors-value"
+        class="form-control psbits-clear-input"
+        data-psbits-autocomplete-items="{allContacts}"
+        data-psbits-autocomplete-preselection="{preselectedDonors}"
+        data-psbits-autocomplete-selection-target="#gift-donors-selection"
+        data-psbits-autocomplete-value-target="#gift-donors-value"
         placeholder="{foundation:translate(id: 'gift:donors')}"
         type="text" />
     <label
@@ -79,11 +79,11 @@
 <div class="form-floating mb-3">
     <input
         autocomplete="off"
-        class="form-control psb-templates-clear-input"
-        data-psb-autocomplete-items="{allContacts}"
-        data-psb-autocomplete-preselection="{preselectedRecipients}"
-        data-psb-autocomplete-selection-target="#gift-recipients-selection"
-        data-psb-autocomplete-value-target="#gift-recipients-value"
+        class="form-control psbits-clear-input"
+        data-psbits-autocomplete-items="{allContacts}"
+        data-psbits-autocomplete-preselection="{preselectedRecipients}"
+        data-psbits-autocomplete-selection-target="#gift-recipients-selection"
+        data-psbits-autocomplete-value-target="#gift-recipients-value"
         placeholder="{foundation:translate(id: 'gift:recipients')}"
         type="text" />
     <label
@@ -101,7 +101,7 @@
 
 <div class="form-floating mb-3">
     <f:form.textarea
-        class="form-control psb-templates-auto-size"
+        class="form-control psbits-auto-size"
         property="description"
         placeholder="{foundation:translate(id: 'gift:description')}"
         value="{gift.description}" />
@@ -113,7 +113,7 @@
 
 <div class="form-floating mb-3">
     <f:form.textarea
-        class="form-control psb-templates-auto-size"
+        class="form-control psbits-auto-size"
         property="notes"
         placeholder="{foundation:translate(id: 'gift:notes')}"
         value="{gift.notes}" />
