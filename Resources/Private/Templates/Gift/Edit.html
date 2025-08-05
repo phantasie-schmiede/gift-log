@@ -66,7 +66,7 @@
 <f:render
     arguments="{
         body: '{foundation:translate(arguments: {name: gift.description}, id: \'modal:body\')}',
-        footer: '{f:render(arguments: {contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}, section: \'modalFooter\')}',
+        footer: '{f:render(arguments: {contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}, section: \'ModalFooter\')}',
         id: 'delete-gift-{gift.uid}-modal',
         title: '{foundation:translate(id: \'modal:title\')}'
     }"
@@ -80,7 +80,7 @@
         partial="FormFields/EventGiftRelation" />
 </div>
 
-<f:section name="modalFooter">
+<f:section name="ModalFooter">
     <foundation:translation.registerLanguageFile
         file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
         name="modal" />
