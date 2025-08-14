@@ -17,10 +17,6 @@
     identifier="copyContent"
     src="EXT:templates/Resources/Public/JavaScript/copyContent.js"
     type="module" />
-<f:asset.script
-    identifier="inputAutocomplete"
-    src="EXT:templates/Resources/Public/JavaScript/inputAutocomplete.js"
-    type="module" />
 
 <div
     class="accordion accordion-flush mb-3"
@@ -54,49 +50,41 @@
 </div>
 
 <div class="form-floating mb-3">
-    <input
-        autocomplete="off"
-        class="form-control psbits-clear-input"
-        data-psbits-autocomplete-items="{allContacts}"
-        data-psbits-autocomplete-preselection="{preselectedDonors}"
-        data-psbits-autocomplete-selection-target="#gift-donors-selection"
-        data-psbits-autocomplete-value-target="#gift-donors-value"
-        placeholder="{foundation:translate(id: 'gift:donors')}"
-        type="text" />
-    <label
-        class="form-label">
-        <foundation:translate id="gift:donors" />
-    </label>
-    <ul
-        class="list-group list-group-flush"
-        id="gift-donors-selection">
-    </ul>
-    <f:form.hidden
-        id="gift-donors-value"
-        name="gift[donors]" />
+    <f:render
+        arguments="{
+            altValueField: 1,
+            filterOptions: {
+                itemSearchField: 'searchTerms',
+                preferText: 1,
+            },
+            id: 'gift-donors',
+            label: '{foundation:translate(id: \'gift:donors\')}',
+            listClass: 'js-autocomplete-contacts',
+            multiple: 1,
+            name: 'gift[donors]',
+            preselection: gift.donorUidsAsJson
+        }"
+        contentAs="renderedItems"
+        partial="Component/InputAutocomplete" />
 </div>
 
 <div class="form-floating mb-3">
-    <input
-        autocomplete="off"
-        class="form-control psbits-clear-input"
-        data-psbits-autocomplete-items="{allContacts}"
-        data-psbits-autocomplete-preselection="{preselectedRecipients}"
-        data-psbits-autocomplete-selection-target="#gift-recipients-selection"
-        data-psbits-autocomplete-value-target="#gift-recipients-value"
-        placeholder="{foundation:translate(id: 'gift:recipients')}"
-        type="text" />
-    <label
-        class="form-label">
-        <foundation:translate id="gift:recipients" />
-    </label>
-    <ul
-        class="list-group list-group-flush"
-        id="gift-recipients-selection">
-    </ul>
-    <f:form.hidden
-        id="gift-recipients-value"
-        name="gift[recipients]" />
+    <f:render
+        arguments="{
+            altValueField: 1,
+            filterOptions: {
+                itemSearchField: 'searchTerms',
+                preferText: 1,
+            },
+            id: 'gift-recipients',
+            label: '{foundation:translate(id: \'gift:recipients\')}',
+            listClass: 'js-autocomplete-contacts',
+            multiple: 1,
+            name: 'gift[recipients]',
+            preselection: gift.recipientUidsAsJson
+        }"
+        contentAs="renderedItems"
+        partial="Component/InputAutocomplete" />
 </div>
 
 <div class="form-floating mb-3">

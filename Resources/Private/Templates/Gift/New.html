@@ -8,6 +8,10 @@
     name="preselectedEvent"
     value="{contactEvent -> f:or(alternative: giftLogEvent)}" />
 
+<f:render
+    arguments="{contact: contact, loadContacts: true}"
+    partial="AjaxRequests" />
+
 <f:form
     action="create"
     arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}"

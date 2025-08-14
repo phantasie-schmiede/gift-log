@@ -124,7 +124,7 @@ class HistoryController extends ActionController
                 if ($event instanceof ContactEvent) {
                     $eventName = $event->getLabel($eventRelation->getYear());
                     $eventName = LocalizationUtility::translate(
-                        key      : 'LLL:EXT:psb_contacts/Resources/Private/Language/Frontend/EventWidget/display.xlf:eventTitle',
+                        key      : 'LLL:EXT:contact_book/Resources/Private/Language/Frontend/EventWidget/display.xlf:eventTitle',
                         arguments: [
                             'persons' => $event->getContactsAsEnumeration(),
                             'type'    => $eventName,

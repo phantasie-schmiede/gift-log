@@ -287,51 +287,15 @@ class GiftController extends ActionController
         Gift         $gift = null,
         GiftLogEvent $giftLogEvent = null,
     ): void {
-        $allContactsDemand = new ContactDemand();
+        if (null === $gift && null !== $contactEvent) {
+            $gift = new Gift();
 
-        if (null !== $gift) {
-            $donors = $gift->getDonors();
-            $recipients = $gift->getRecipients();
-
-            $preselectedDonors = [];
-            $preselectedRecipients = [];
-
-            /** @var Contact $donor */
-            foreach ($donors as $donor) {
-                $preselectedDonors[] = [
-                    'label' => $donor->getListName(),
-                    'value' => $donor->getUid(),
-                ];
-            }
-
-            /** @var Contact $recipient */
-            foreach ($recipients as $recipient) {
-                $preselectedRecipients[] = [
-                    'label' => $recipient->getListName(),
-                    'value' => $recipient->getUid(),
-                ];
-            }
-
-            $this->view->assignMultiple([
-                'preselectedDonors'     => json_encode($preselectedDonors, JSON_THROW_ON_ERROR),
-                'preselectedRecipients' => json_encode($preselectedRecipients, JSON_THROW_ON_ERROR),
-            ]);
-        } elseif (null !== $contactEvent) {
-            $preselectedRecipients = [];
-
-            /** @var Contact $eventContact */
             foreach ($contactEvent->getContacts() as $eventContact) {
-                $preselectedRecipients[] = [
-                    'label' => $eventContact->getListName(),
-                    'value' => $eventContact->getUid(),
-                ];
+                $gift->addRecipient($eventContact);
             }
-
-            $this->view->assign('preselectedRecipients', json_encode($preselectedRecipients, JSON_THROW_ON_ERROR));
         }
 
         $this->view->assignMultiple([
-            'allContacts'  => $this->contactService->getAsJson($allContactsDemand),
             'contact'      => $contact,
             'contactEvent' => $contactEvent,
             'eventGroups'  => $this->collectEvents($contact, $contactEvent),

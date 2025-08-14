@@ -14,6 +14,7 @@ use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Utility\ContactUtility;
+use PSBits\ContactBook\Utility\JsonUtility;
 use PSBits\Foundation\Attribute\TCA\Column;
 use PSBits\Foundation\Attribute\TCA\ColumnType\Check;
 use PSBits\Foundation\Attribute\TCA\ColumnType\File;
@@ -115,6 +116,14 @@ class Gift extends AbstractEntity
         return ContactUtility::createEnumeration($this->donors->toArray());
     }
 
+    /**
+     * @throws JsonException
+     */
+    public function getDonorUidsAsJson(): false|string
+    {
+        return JsonUtility::getUidsAsJsonArray(...$this->donors);
+    }
+
     /** @return ObjectStorage<Contact> */
     public function getDonors(): ObjectStorage
     {
@@ -161,6 +170,14 @@ class Gift extends AbstractEntity
     public function getRecipientList(): string
     {
         return ContactUtility::createEnumeration($this->recipients->toArray());
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function getRecipientUidsAsJson(): false|string
+    {
+        return JsonUtility::getUidsAsJsonArray(...$this->recipients);
     }
 
     /** @return ObjectStorage<Contact> */

@@ -2,7 +2,8 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
-    xmlns:giftLog="http://typo3.org/ns/PSBits/GiftLog/ViewHelpers">
+    xmlns:giftLog="http://typo3.org/ns/PSBits/GiftLog/ViewHelpers"
+    xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers">
 <foundation:translation.registerLanguageFile file="EXT:gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
 
 <f:asset.script
@@ -36,12 +37,30 @@
 
 <div class="accordion-item">
     <h2 class="accordion-header">
-        <button
-            aria-controls="accordionEventGiftRelation-{uid}"
-            aria-expanded="{f:if(condition: '{preselectedEvent}', then: 'true', else: 'false')}"
+        <f:if condition="{record} || {preselectedEvent}">
+            <f:then>
+                <f:variable
+                    name="additionalAttributes"
+                    value="{data-bs-target: '#accordionEventGiftRelation-{uid}'}" />
+            </f:then>
+            <f:else>
+                <f:variable
+                    name="additionalAttributes"
+                    value="{_data-bs-target: '#accordionEventGiftRelation-{uid}'}" />
+            </f:else>
+        </f:if>
+
+        <psbvh:tag
+            additionalAttributes="{additionalAttributes}"
+            aria="{
+                controls: 'accordionEventGiftRelation-{uid}',
+                expanded: '{f:if(condition: preselectedEvent, then: \'true\', else: \'false\')}'
+            }"
             class="accordion-button{f:if(condition: '{preselectedEvent}', else: ' collapsed')}"
-            {f:if(condition: '{record} || {preselectedEvent}', else: '_')}data-bs-target="#accordionEventGiftRelation-{uid}"
-            data-bs-toggle="collapse"
+            data="{
+                bs-toggle: 'collapse',
+            }"
+            tag="button"
             type="button">
             <f:if condition="{record}">
                 <f:then>
@@ -51,7 +70,7 @@
                     <foundation:translate id="eventGiftRelation:newRelation" />
                 </f:else>
             </f:if>
-        </button>
+        </psbvh:tag>
     </h2>
     <div
         class="accordion-collapse{f:if(condition: '{preselectedEvent}', else: ' collapse')}"

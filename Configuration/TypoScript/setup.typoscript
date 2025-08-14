@@ -3,7 +3,10 @@ plugin {
     persistence.storagePid = {$plugin.tx_contactbook.persistence.storagePid}
 
     view {
-      partialRootPaths.10 = {$plugin.tx_templates.view.partialRootPath}
+      partialRootPaths {
+        10 = {$plugin.tx_contactbook.view.partialRootPath}
+        20 = {$plugin.tx_templates.view.partialRootPath}
+      }
     }
   }
 

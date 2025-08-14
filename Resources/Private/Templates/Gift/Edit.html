@@ -4,9 +4,13 @@
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
 <foundation:translation.registerLanguageFile
-    file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+    file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
     name="modal" />
 <foundation:translation.registerLanguageFile file="EXT:gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
+
+<f:render
+    arguments="{contact: contact, loadContacts: true}"
+    partial="AjaxRequests" />
 
 <f:form
     action="update"
@@ -82,7 +86,7 @@
 
 <f:section name="ModalFooter">
     <foundation:translation.registerLanguageFile
-        file="EXT:psb_contacts/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+        file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
         name="modal" />
 
     <button
