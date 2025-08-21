@@ -51,6 +51,14 @@
                 <source>Gifts for the anniversary of the divorce of {persons}</source>
                 <target>Geschenke zum Jahrestag der Scheidung von {persons}</target>
             </trans-unit>
+            <trans-unit id="giftsForEvent.firstDayAtSchool">
+                <source>Gifts for the first day at school of {persons}</source>
+                <target>Geschenke zur Einschulung von {persons}</target>
+            </trans-unit>
+            <trans-unit id="giftsForEvent.firstDayAtSchool.anniversary">
+                <source>Gifts for the anniversary of the first day at school of {persons}</source>
+                <target>Geschenke zum Jahrestag der Einschulung von {persons}</target>
+            </trans-unit>
             <trans-unit id="giftsForEvent.other">
                 <source>Gifts for an event of {persons}</source>
                 <target>Geschenke zu einem Ereignis von {persons}</target>
