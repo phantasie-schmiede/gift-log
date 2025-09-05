@@ -70,11 +70,15 @@
 <f:render
     arguments="{
         body: '{foundation:translate(arguments: {name: gift.description}, id: \'modal:body\')}',
-        footer: '{f:render(arguments: {contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}, section: \'ModalFooter\')}',
         id: 'delete-gift-{gift.uid}-modal',
         title: '{foundation:translate(id: \'modal:title\')}'
     }"
-    partial="Component/Modal/Dialog" />
+    contentAs="footer"
+    partial="Component/Modal/Dialog">
+    <f:render
+        arguments="{contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}"
+        section="ModalFooter" />
+</f:render>
 
 <div
     class="d-none"
