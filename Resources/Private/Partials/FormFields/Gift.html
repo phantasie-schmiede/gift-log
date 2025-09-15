@@ -64,7 +64,6 @@
             name: 'gift[donors]',
             preselection: gift.donorUidsAsJson
         }"
-        contentAs="renderedItems"
         partial="Component/InputAutocomplete" />
 </div>
 
@@ -83,15 +82,14 @@
             name: 'gift[recipients]',
             preselection: gift.recipientUidsAsJson
         }"
-        contentAs="renderedItems"
         partial="Component/InputAutocomplete" />
 </div>
 
 <div class="form-floating mb-3">
     <f:form.textarea
         class="form-control psbits-auto-size"
-        property="description"
         placeholder="{foundation:translate(id: 'gift:description')}"
+        property="description"
         value="{gift.description}" />
     <label
         class="form-label">
