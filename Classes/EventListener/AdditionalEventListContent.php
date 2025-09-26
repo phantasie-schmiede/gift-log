@@ -10,15 +10,16 @@ declare(strict_types=1);
 
 namespace PSBits\GiftLog\EventListener;
 
+use JsonException;
 use PSBits\ContactBook\Domain\Repository\EventRepository as ContactEventRepository;
 use PSBits\ContactBook\Event\AdditionalEventListContentEvent;
-use PSBits\Foundation\Utility\Configuration\FilePathUtility;
 use PSBits\GiftLog\Data\ExtensionInformation;
 use PSBits\GiftLog\Domain\Demand\EventGiftDemand;
 use PSBits\GiftLog\Domain\Repository\Relation\EventGiftRepository;
+use PSBits\Templates\Service\ViewService;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\View\ViewFactoryData;
-use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
 /**
  * Class AdditionalEventListContent
@@ -32,21 +33,23 @@ readonly class AdditionalEventListContent
         protected ContactEventRepository $contactEventRepository,
         protected ExtensionInformation   $extensionInformation,
         protected EventGiftRepository    $eventGiftRepository,
-        protected ViewFactoryInterface   $viewFactory,
+        protected ViewService            $viewService,
     ) {
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     */
     public function __invoke(AdditionalEventListContentEvent $event): void
     {
         $demand = (new EventGiftDemand())->setContactEvent($event->getEvent());
-
-        $viewFactoryData = new ViewFactoryData(
-               templatePathAndFilename: FilePathUtility::getPrivateResourcePath(
-                $this->extensionInformation,
-                'Templates/Event/AdditionalEventListContent.html'
-            ), request                : $event->getRequest(),
+        $view = $this->viewService->createStandaloneView(
+            $this->extensionInformation,
+            $event->getRequest(),
+            'Event/AdditionalEventListContent'
         );
-        $view = $this->viewFactory->create($viewFactoryData);
 
         $view->assignMultiple([
             // Transform an original event to an extended one.

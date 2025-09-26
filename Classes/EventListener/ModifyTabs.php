@@ -11,23 +11,19 @@ declare(strict_types=1);
 namespace PSBits\GiftLog\EventListener;
 
 use JsonException;
-use PSBits\ContactBook\Data\ExtensionInformation as ContactBookExtensionInformation;
 use PSBits\ContactBook\Event\ModifyTabsEvent;
-use PSBits\FamilyTree\Domain\Repository\ContactRepository;
 use PSBits\Foundation\Utility\Configuration\FilePathUtility;
 use PSBits\Foundation\Utility\LocalizationUtility;
 use PSBits\GiftLog\Data\ExtensionInformation;
 use PSBits\GiftLog\Domain\Demand\GiftDemand;
 use PSBits\GiftLog\Domain\Repository\GiftRepository;
-use PSBits\Templates\Data\ExtensionInformation as TemplatesExtensionInformation;
+use PSBits\Templates\Service\ViewService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\View\ViewFactoryData;
-use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 
 /**
@@ -39,12 +35,9 @@ use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 readonly class ModifyTabs
 {
     public function __construct(
-        protected ContactBookExtensionInformation $contactBookExtensionInformation,
-        protected ContactRepository               $contactRepository,
-        protected ExtensionInformation            $extensionInformation,
-        protected GiftRepository                  $giftRepository,
-        protected TemplatesExtensionInformation   $templatesExtensionInformation,
-        protected ViewFactoryInterface            $viewFactory,
+        protected ExtensionInformation $extensionInformation,
+        protected GiftRepository       $giftRepository,
+        protected ViewService          $viewService,
     ) {
     }
 
@@ -57,20 +50,11 @@ readonly class ModifyTabs
      */
     public function __invoke(ModifyTabsEvent $event): void
     {
-        $viewFactoryData = new ViewFactoryData(
-               partialRootPaths       : [
-                FilePathUtility::getPrivateResourcePath(
-                    $this->contactBookExtensionInformation
-                ) . 'Partials/',
-                FilePathUtility::getPrivateResourcePath(
-                    $this->templatesExtensionInformation
-                ) . 'Partials/',
-            ], templatePathAndFilename: FilePathUtility::getPrivateResourcePath(
+        $view = $this->viewService->createStandaloneView(
             $this->extensionInformation,
-            'Templates/Event/AdditionalContactContent.html'
-        ),     request                : $event->getRequest(),
+            $event->getRequest(),
+            'Event/AdditionalContactContent'
         );
-        $view = $this->viewFactory->create($viewFactoryData);
 
         $demand = (new GiftDemand())->setContact($event->getContact());
         $view->assignMultiple([
