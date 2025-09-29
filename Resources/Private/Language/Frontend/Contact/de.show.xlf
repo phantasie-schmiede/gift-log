@@ -11,6 +11,10 @@
                 <source>Gifts</source>
                 <target>Geschenke</target>
             </trans-unit>
+            <trans-unit id="newGift">
+                <source>Add new gift</source>
+                <target>Neues Geschenk hinzufügen</target>
+            </trans-unit>
             <trans-unit id="noGifts">
                 <source>There are no gifts recorded for {name} yet.</source>
                 <target>Es wurden noch keine Geschenke für {name} eingetragen.</target>

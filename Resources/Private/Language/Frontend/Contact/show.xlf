@@ -9,6 +9,9 @@
             <trans-unit id="gifts">
                 <source>Gifts</source>
             </trans-unit>
+            <trans-unit id="newGift">
+                <source>Add new gift</source>
+            </trans-unit>
             <trans-unit id="noGifts">
                 <source>There are no gifts recorded for {name} yet.</source>
             </trans-unit>

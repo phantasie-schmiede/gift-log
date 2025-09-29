@@ -4,7 +4,7 @@
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
 <foundation:translation.registerLanguageFile file="EXT:gift_log/Resources/Private/Language/Frontend/Contact/show.xlf" />
 
-<h3 class="mt-3">
+<h3 class="mb-3">
     <foundation:translate id="show:gifts" />
 </h3>
 
@@ -27,4 +27,15 @@
         </div>
     </f:else>
 </f:if>
+
+<f:link.action
+    action="new"
+    class="bg-primary-subtle btn"
+    controller="Gift"
+    pluginName="Gift">
+    <core:icon
+        identifier="templates-plus-lg"
+        size="small" />
+    <foundation:translate id="show:newGift" />
+</f:link.action>
 </html>
