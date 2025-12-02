@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace PSBits\GiftLog\Controller;
 
 use JsonException;
-use PSBits\ContactBook\Domain\Demand\ContactDemand;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Domain\Model\Event as ContactEvent;
 use PSBits\ContactBook\Domain\Repository\ContactRepository;
@@ -77,24 +76,16 @@ class GiftController extends ActionController
      */
     #[PluginAction(uncached: true)]
     public function createAction(
-        Gift         $gift,
-        ContactEvent $contactEvent = null,
-        GiftLogEvent $giftLogEvent = null,
+        Gift          $gift,
+        ?Contact      $contact = null,
+        ?ContactEvent $contactEvent = null,
+        ?GiftLogEvent $giftLogEvent = null,
     ): ResponseInterface {
         $this->processRelations($this->request->getArgument('gift'), $gift);
         $this->giftRepository->add($gift);
         $this->persistenceManager->persistAll();
-        $this->updateImages($gift);
-        $this->deletePagesCache(self::CACHE_TAG);
 
-        return $this->redirect(
-            actionName    : 'listForEvent',
-            controllerName: 'History',
-            arguments: [
-                'contactEvent' => $contactEvent,
-                'giftLogEvent' => $giftLogEvent,
-            ]
-        );
+        return $this->finishUpdateAndRedirect($gift, $contact, $contactEvent, $giftLogEvent);
     }
 
     /**
@@ -103,9 +94,9 @@ class GiftController extends ActionController
      */
     #[PluginAction(uncached: true)]
     public function deleteAction(
-        Gift         $gift,
-        ContactEvent $contactEvent = null,
-        GiftLogEvent $giftLogEvent = null,
+        Gift          $gift,
+        ?ContactEvent $contactEvent = null,
+        ?GiftLogEvent $giftLogEvent = null,
     ): ResponseInterface {
         $this->giftRepository->remove($gift);
         $this->deletePagesCache(self::CACHE_TAG);
@@ -128,10 +119,10 @@ class GiftController extends ActionController
      */
     #[PluginAction(uncached: true)]
     public function editAction(
-        Gift         $gift,
-        Contact      $contact = null,
-        ContactEvent $contactEvent = null,
-        GiftLogEvent $giftLogEvent = null,
+        Gift          $gift,
+        ?Contact      $contact = null,
+        ?ContactEvent $contactEvent = null,
+        ?GiftLogEvent $giftLogEvent = null,
     ): ResponseInterface {
         $this->prepareForm($contact, $contactEvent, $gift, $giftLogEvent);
 
@@ -146,10 +137,10 @@ class GiftController extends ActionController
      */
     #[PluginAction(uncached: true)]
     public function newAction(
-        Contact      $contact = null,
-        ContactEvent $contactEvent = null,
-        Gift         $gift = null,
-        GiftLogEvent $giftLogEvent = null,
+        ?Contact      $contact = null,
+        ?ContactEvent $contactEvent = null,
+        ?Gift         $gift = null,
+        ?GiftLogEvent $giftLogEvent = null,
     ): ResponseInterface {
         $this->prepareForm($contact, $contactEvent, $gift, $giftLogEvent);
 
@@ -170,34 +161,15 @@ class GiftController extends ActionController
      */
     #[PluginAction(uncached: true)]
     public function updateAction(
-        Gift         $gift,
-        Contact      $contact = null,
-        ContactEvent $contactEvent = null,
-        GiftLogEvent $giftLogEvent = null,
+        Gift          $gift,
+        ?Contact      $contact = null,
+        ?ContactEvent $contactEvent = null,
+        ?GiftLogEvent $giftLogEvent = null,
     ): ResponseInterface {
         $this->processRelations($this->request->getArgument('gift'), $gift);
         $this->giftRepository->update($gift);
-        $this->updateImages($gift);
-        $this->deletePagesCache(self::CACHE_TAG);
 
-        if ($contact instanceof Contact) {
-            $actionName = 'listForContact';
-            $arguments = [
-                'contact' => $contact,
-            ];
-        } else {
-            $actionName = 'listForEvent';
-            $arguments = [
-                'contactEvent' => $contactEvent,
-                'giftLogEvent' => $giftLogEvent,
-            ];
-        }
-
-        return $this->redirect(
-            actionName    : $actionName,
-            controllerName: 'History',
-            arguments     : $arguments
-        );
+        return $this->finishUpdateAndRedirect($gift, $contact, $contactEvent, $giftLogEvent);
     }
 
     /**
@@ -278,6 +250,44 @@ class GiftController extends ActionController
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws MisconfiguredTcaException
+     * @throws NoSuchCacheGroupException
+     * @throws NotFoundExceptionInterface
+     * @throws PropertyNotAccessibleException
+     * @throws ReflectionException
+     */
+    private function finishUpdateAndRedirect(
+        Gift          $gift,
+        ?Contact      $contact,
+        ?ContactEvent $contactEvent,
+        ?GiftLogEvent $giftLogEvent,
+    ): ResponseInterface {
+        $this->updateImages($gift);
+        $this->deletePagesCache(self::CACHE_TAG);
+
+        if ($contact instanceof Contact) {
+            $actionName = 'listForContact';
+            $arguments = [
+                'contact' => $contact,
+            ];
+        } else {
+            $actionName = 'listForEvent';
+            $arguments = [
+                'contactEvent' => $contactEvent,
+                'giftLogEvent' => $giftLogEvent,
+            ];
+        }
+
+        return $this->redirect(
+            actionName    : $actionName,
+            controllerName: 'History',
+            arguments     : $arguments
+        );
+    }
+
+    /**
+     * @throws AspectNotFoundException
+     * @throws ContainerExceptionInterface
      * @throws JsonException
      * @throws NotFoundExceptionInterface
      */
@@ -310,7 +320,7 @@ class GiftController extends ActionController
     private function processRelations(array $arguments, Gift $gift): void
     {
         $this->updateContacts($arguments, $gift);
-        $this->updateEvents($arguments, $gift);
+        $this->updateEvents($gift);
     }
 
     /**
@@ -360,7 +370,7 @@ class GiftController extends ActionController
         $relation->setYear((int)$entityData['year']);
     }
 
-    private function updateEvents(array $arguments, Gift $gift): void
+    private function updateEvents(Gift $gift): void
     {
         $existingEntities = clone $gift->getEventRelations();
 

@@ -8,10 +8,6 @@
         id="{f:if(condition: event.nextAnniversary, then: 'giftsForEvent.{event.type.value}.anniversary', else: 'giftsForEvent.{event.type.value}')}" />
 </h1>
 
-<f:render
-    arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent, giftRelationsGroupedByYear: giftRelationsGroupedByYear}"
-    partial="GiftList" />
-
 <f:link.action
     action="new"
     arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
@@ -23,4 +19,8 @@
         size="small" />
     <foundation:translate id="enterNewGift" />
 </f:link.action>
+
+<f:render
+    arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent, giftRelationsGroupedByYear: giftRelationsGroupedByYear}"
+    partial="GiftList" />
 </html>

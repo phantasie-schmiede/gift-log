@@ -14,7 +14,7 @@
 
 <f:form
     action="create"
-    arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
+    arguments="{contact: contact, contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
     enctype="multipart/form-data"
     method="post"
     name="gift"
@@ -24,13 +24,29 @@
         partial="FormFields/Gift" />
 
     <div class="col-12 mt-3">
-        <f:link.action
-            action="listForEvent"
-            arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
-            class="bg-secondary-subtle btn"
-            controller="History">
-            <foundation:translate id="cancel" />
-        </f:link.action>
+        <f:if condition="{contact}">
+            <f:then>
+                <f:link.action
+                    action="show"
+                    arguments="{contact: contact}"
+                    class="bg-secondary-subtle btn"
+                    controller="Contact"
+                    extensionName="ContactBook"
+                    pluginName="ContactList">
+                    <foundation:translate id="cancel" />
+                </f:link.action>
+            </f:then>
+            <f:else>
+                <f:link.action
+                    action="listForEvent"
+                    arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
+                    class="bg-secondary-subtle btn"
+                    controller="History">
+                    <foundation:translate id="cancel" />
+                </f:link.action>
+            </f:else>
+        </f:if>
+
         <button
             class="bg-primary-subtle btn"
             type="submit">

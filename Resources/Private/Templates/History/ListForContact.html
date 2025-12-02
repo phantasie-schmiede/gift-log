@@ -3,6 +3,18 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
+<f:link.action
+    action="new"
+    arguments="{contact: contact}"
+    class="bg-primary-subtle btn mt-3"
+    controller="Gift"
+    pluginName="Gift">
+    <core:icon
+        identifier="templates-plus-lg"
+        size="small" />
+    <foundation:translate id="enterNewGift" />
+</f:link.action>
+
 <f:render
     arguments="{contact: contact, giftRelationsGroupedByYear: giftRelationsGroupedByYear}"
     partial="GiftList" />
