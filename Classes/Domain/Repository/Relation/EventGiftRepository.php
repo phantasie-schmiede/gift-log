@@ -12,16 +12,21 @@ namespace PSBits\GiftLog\Domain\Repository\Relation;
 
 use PSBits\Foundation\Utility\QueryUtility;
 use PSBits\GiftLog\Domain\Demand\EventGiftDemand;
+use PSBits\GiftLog\Domain\Model\Relation\EventGift;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * Class EventGiftRepository
+ * @extends Repository<EventGift>
  *
  * @package PSBits\GiftLog\Domain\Repository\Relation
  */
 class EventGiftRepository extends Repository
 {
+    /**
+     * @return QueryResultInterface<int, EventGift>
+     */
     public function findByDemand(EventGiftDemand $demand): QueryResultInterface
     {
         $constraints = [];

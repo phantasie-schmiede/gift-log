@@ -173,6 +173,9 @@ class GiftController extends ActionController
     }
 
     /**
+     * @param array<string, list<array{label: string, value: string}>> $eventGroups
+     *
+     * @return array<string, list<array{label: string, value: string}>>
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws JsonException
@@ -189,6 +192,7 @@ class GiftController extends ActionController
     }
 
     /**
+     * @return array<string, list<array{label: string, value: string}>>
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws JsonException
@@ -315,6 +319,8 @@ class GiftController extends ActionController
     }
 
     /**
+     * @param array<string, mixed> $arguments
+     *
      * @throws JsonException
      */
     private function processRelations(array $arguments, Gift $gift): void
@@ -324,6 +330,8 @@ class GiftController extends ActionController
     }
 
     /**
+     * @param array<string, mixed> $arguments
+     *
      * @throws JsonException
      */
     private function updateContacts(array $arguments, Gift $gift): void
@@ -351,6 +359,9 @@ class GiftController extends ActionController
         }
     }
 
+    /**
+     * @param array<string, mixed> $entityData
+     */
     private function updateEventRelationProperties(
         EventGift $relation,
         array     $entityData,
@@ -361,13 +372,15 @@ class GiftController extends ActionController
         ] = explode(':', $entityData['event']);
 
         if (ContactEvent::class === $eventClass) {
-            $event = $this->contactEventRepository->findByUid($uid);
+            $event = $this->contactEventRepository->findByUid((int)$uid);
         } else {
-            $event = $this->giftLogEventRepository->findByUid($uid);
+            $event = $this->giftLogEventRepository->findByUid((int)$uid);
         }
 
-        $relation->setEvent($event);
-        $relation->setYear((int)$entityData['year']);
+        if (null !== $event) {
+            $relation->setEvent($event);
+            $relation->setYear((int)$entityData['year']);
+        }
     }
 
     private function updateEvents(Gift $gift): void

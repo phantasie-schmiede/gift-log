@@ -58,7 +58,7 @@ readonly class AdditionalEventListContent
                     ->getUid()
             ),
             'hasGifts' => $this->eventGiftRepository->findByDemand($demand)
-                    ?->count() > 0,
+                    ->count() > 0,
         ]);
 
         $event->addContent($view->render());

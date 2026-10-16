@@ -11,10 +11,20 @@
             "PSBits\\GiftLog\\": "Classes/"
         }
     },
+    "config": {
+        "allow-plugins": {
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true
+        },
+        "bin-dir": ".Build/bin",
+        "sort-packages": true,
+        "vendor-dir": ".Build/vendor"
+    },
     "description": "Keep a record of all the gifts you have received or given.",
     "extra": {
         "typo3/cms": {
-            "extension-key": "gift_log"
+            "extension-key": "gift_log",
+            "web-dir": ".Build/public"
         }
     },
     "keywords": [
@@ -23,7 +33,23 @@
         "typo3"
     ],
     "license": "GPL-3.0-or-later",
+    "minimum-stability": "dev",
     "name": "psbits/gift-log",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:phantasie-schmiede/contact-book.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:phantasie-schmiede/frontend-users.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:phantasie-schmiede/templates.git"
+        }
+    ],
     "require": {
         "php": "^8.3",
         "psbits/contact-book": "@dev",

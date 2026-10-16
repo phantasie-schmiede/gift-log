@@ -221,6 +221,9 @@ class Gift extends AbstractEntity
         return $this;
     }
 
+    /**
+     * @param ObjectStorage<Contact> $donors
+     */
     public function setDonors(ObjectStorage $donors): self
     {
         $this->donors = $donors;
@@ -228,6 +231,9 @@ class Gift extends AbstractEntity
         return $this;
     }
 
+    /**
+     * @param ObjectStorage<FileReference> $images
+     */
     public function setImages(ObjectStorage $images): self
     {
         $this->images = $images;
@@ -242,6 +248,9 @@ class Gift extends AbstractEntity
         return $this;
     }
 
+    /**
+     * @param ObjectStorage<Contact> $recipients
+     */
     public function setRecipients(ObjectStorage $recipients): self
     {
         $this->recipients = $recipients;

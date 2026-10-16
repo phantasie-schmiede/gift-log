@@ -26,6 +26,7 @@ use PSBits\Templates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
+use ReflectionException;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
@@ -102,10 +103,14 @@ class HistoryController extends ActionController
     }
 
     /**
+     * @param QueryResultInterface<int, EventGift> $eventGiftRelations
+     *
+     * @return array<int, array<string, array{label: string, relations: list<EventGift>}>>
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws JsonException
      * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     private function groupRelations(QueryResultInterface $eventGiftRelations): array
     {

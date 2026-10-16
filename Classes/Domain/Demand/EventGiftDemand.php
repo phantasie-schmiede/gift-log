@@ -12,6 +12,7 @@ namespace PSBits\GiftLog\Domain\Demand;
 
 use PSBits\ContactBook\Domain\Model\Event as ContactEvent;
 use PSBits\GiftLog\Domain\Model\Event as GiftLogEvent;
+use PSBits\GiftLog\Domain\Model\Gift;
 
 /**
  * Class EventGiftDemand
@@ -22,6 +23,7 @@ class EventGiftDemand
 {
     protected ?ContactEvent $contactEvent = null;
     protected ?GiftLogEvent $giftLogEvent = null;
+    /** @var list<Gift> */
     protected array         $gifts        = [];
 
     public function getContactEvent(): ?ContactEvent
@@ -34,6 +36,9 @@ class EventGiftDemand
         return $this->giftLogEvent;
     }
 
+    /**
+     * @return list<Gift>
+     */
     public function getGifts(): array
     {
         return $this->gifts;
@@ -62,6 +67,9 @@ class EventGiftDemand
         return $this;
     }
 
+    /**
+     * @param list<Gift> $gifts
+     */
     public function setGifts(array $gifts): self
     {
         $this->gifts = $gifts;
