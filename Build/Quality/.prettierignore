@@ -3,3 +3,6 @@
 ../../.github
 ../../.idea
 ../../node_modules
+../../Build/Testing
+# Prettier HTML parser fails on namespaced Fluid markup; template is valid Fluid.
+../../Resources/Private/Partials/GiftList.html
