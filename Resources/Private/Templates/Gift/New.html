@@ -2,64 +2,65 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
+    <foundation:translation.registerLanguageFile
+        file="EXT:gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
 
-<f:variable
-    name="preselectedEvent"
-    value="{contactEvent -> f:or(alternative: giftLogEvent)}" />
+    <f:variable
+        name="preselectedEvent"
+        value="{contactEvent -> f:or(alternative: giftLogEvent)}" />
 
-<f:render
-    arguments="{contact: contact, loadContacts: true}"
-    partial="AjaxRequests" />
-
-<f:form
-    action="create"
-    arguments="{contact: contact, contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
-    enctype="multipart/form-data"
-    method="post"
-    name="gift"
-    object="{gift}">
     <f:render
-        arguments="{_all}"
-        partial="FormFields/Gift" />
+        arguments="{contact: contact, loadContacts: true}"
+        partial="AjaxRequests" />
 
-    <div class="col-12 mt-3">
-        <f:if condition="{contact}">
-            <f:then>
-                <f:link.action
-                    action="show"
-                    arguments="{contact: contact}"
-                    class="bg-secondary-subtle btn"
-                    controller="Contact"
-                    extensionName="ContactBook"
-                    pluginName="ContactList">
-                    <foundation:translate id="cancel" />
-                </f:link.action>
-            </f:then>
-            <f:else>
-                <f:link.action
-                    action="listForEvent"
-                    arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
-                    class="bg-secondary-subtle btn"
-                    controller="History">
-                    <foundation:translate id="cancel" />
-                </f:link.action>
-            </f:else>
-        </f:if>
+    <f:form
+        action="create"
+        arguments="{contact: contact, contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
+        enctype="multipart/form-data"
+        method="post"
+        name="gift"
+        object="{gift}">
+        <f:render
+            arguments="{_all}"
+            partial="FormFields/Gift" />
 
-        <button
-            class="bg-primary-subtle btn"
-            type="submit">
-            <foundation:translate id="save" />
-        </button>
+        <div class="col-12 mt-3">
+            <f:if condition="{contact}">
+                <f:then>
+                    <f:link.action
+                        action="show"
+                        arguments="{contact: contact}"
+                        class="bg-secondary-subtle btn"
+                        controller="Contact"
+                        extensionName="ContactBook"
+                        pluginName="ContactList">
+                        <foundation:translate id="cancel" />
+                    </f:link.action>
+                </f:then>
+                <f:else>
+                    <f:link.action
+                        action="listForEvent"
+                        arguments="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
+                        class="bg-secondary-subtle btn"
+                        controller="History">
+                        <foundation:translate id="cancel" />
+                    </f:link.action>
+                </f:else>
+            </f:if>
+
+            <button
+                class="bg-primary-subtle btn"
+                type="submit">
+                <foundation:translate id="save" />
+            </button>
+        </div>
+    </f:form>
+
+    <div
+        class="d-none"
+        id="templateEventGiftRelation">
+        <f:render
+            arguments="{_all}"
+            partial="FormFields/EventGiftRelation" />
     </div>
-</f:form>
-
-<div
-    class="d-none"
-    id="templateEventGiftRelation">
-    <f:render
-        arguments="{_all}"
-        partial="FormFields/EventGiftRelation" />
-</div>
 </html>

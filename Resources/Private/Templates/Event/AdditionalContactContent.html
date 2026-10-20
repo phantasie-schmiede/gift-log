@@ -2,42 +2,43 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:gift_log/Resources/Private/Language/Frontend/Contact/show.xlf" />
+    <foundation:translation.registerLanguageFile
+        file="EXT:gift_log/Resources/Private/Language/Frontend/Contact/show.xlf" />
 
-<h3 class="mb-3">
-    <foundation:translate id="show:gifts" />
-</h3>
+    <h3 class="mb-3">
+        <foundation:translate id="show:gifts" />
+    </h3>
 
-<f:if condition="{gifts}">
-    <f:then>
-        <f:link.action
-            action="listForContact"
-            arguments="{contact: contact}"
-            controller="History"
-            extensionName="GiftLog"
-            pluginName="History">
-            <foundation:translate id="show:showAllGifts" />
-        </f:link.action>
-    </f:then>
-    <f:else>
-        <div class="alert alert-info">
-            <foundation:translate
-                arguments="{name: contact.shortName}"
-                id="show:noGifts" />
-        </div>
-    </f:else>
-</f:if>
+    <f:if condition="{gifts}">
+        <f:then>
+            <f:link.action
+                action="listForContact"
+                arguments="{contact: contact}"
+                controller="History"
+                extensionName="GiftLog"
+                pluginName="History">
+                <foundation:translate id="show:showAllGifts" />
+            </f:link.action>
+        </f:then>
+        <f:else>
+            <div class="alert alert-info">
+                <foundation:translate
+                    arguments="{name: contact.shortName}"
+                    id="show:noGifts" />
+            </div>
+        </f:else>
+    </f:if>
 
-<f:link.action
-    action="new"
-    arguments="{contact: contact}"
-    class="bg-primary-subtle btn"
-    controller="Gift"
-    extensionName="GiftLog"
-    pluginName="Gift">
-    <core:icon
-        identifier="templates-plus-lg"
-        size="small" />
-    <foundation:translate id="show:newGift" />
-</f:link.action>
+    <f:link.action
+        action="new"
+        arguments="{contact: contact}"
+        class="bg-primary-subtle btn"
+        controller="Gift"
+        extensionName="GiftLog"
+        pluginName="Gift">
+        <core:icon
+            identifier="templates-plus-lg"
+            size="small" />
+        <foundation:translate id="show:newGift" />
+    </f:link.action>
 </html>

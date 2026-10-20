@@ -3,107 +3,108 @@
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:templates="http://typo3.org/ns/PSBits/Templates/ViewHelpers">
-<foundation:translation.registerLanguageFile
-    file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
-    name="modal" />
-<foundation:translation.registerLanguageFile file="EXT:gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
+    <foundation:translation.registerLanguageFile
+        file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+        name="modal" />
+    <foundation:translation.registerLanguageFile
+        file="EXT:gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
 
-<f:render
-    arguments="{contact: contact, loadContacts: true}"
-    partial="AjaxRequests" />
-
-<f:form
-    action="update"
-    arguments="{contact: contact, contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
-    enctype="multipart/form-data"
-    method="post"
-    name="gift"
-    object="{gift}">
     <f:render
-        arguments="{_all}"
-        partial="FormFields/Gift" />
+        arguments="{contact: contact, loadContacts: true}"
+        partial="AjaxRequests" />
 
-    <div class="d-flex mt-3">
-        <f:if condition="{contact}">
-            <f:then>
-                <f:variable
-                    name="action"
-                    value="listForContact" />
-                <f:variable
-                    name="arguments"
-                    value="{contact: contact}" />
-            </f:then>
-            <f:else>
-                <f:variable
-                    name="action"
-                    value="listForEvent" />
-                <f:variable
-                    name="arguments"
-                    value="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}" />
-            </f:else>
-        </f:if>
-
-        <f:link.action
-            action="{action}"
-            arguments="{arguments}"
-            class="bg-secondary-subtle btn me-2"
-            controller="History">
-            <foundation:translate id="cancel" />
-        </f:link.action>
-        <button
-            class="bg-primary-subtle btn"
-            type="submit">
-            <foundation:translate id="save" />
-        </button>
-
+    <f:form
+        action="update"
+        arguments="{contact: contact, contactEvent: contactEvent, giftLogEvent: giftLogEvent}"
+        enctype="multipart/form-data"
+        method="post"
+        name="gift"
+        object="{gift}">
         <f:render
-            arguments="{
+            arguments="{_all}"
+            partial="FormFields/Gift" />
+
+        <div class="d-flex mt-3">
+            <f:if condition="{contact}">
+                <f:then>
+                    <f:variable
+                        name="action"
+                        value="listForContact" />
+                    <f:variable
+                        name="arguments"
+                        value="{contact: contact}" />
+                </f:then>
+                <f:else>
+                    <f:variable
+                        name="action"
+                        value="listForEvent" />
+                    <f:variable
+                        name="arguments"
+                        value="{contactEvent: contactEvent, giftLogEvent: giftLogEvent}" />
+                </f:else>
+            </f:if>
+
+            <f:link.action
+                action="{action}"
+                arguments="{arguments}"
+                class="bg-secondary-subtle btn me-2"
+                controller="History">
+                <foundation:translate id="cancel" />
+            </f:link.action>
+            <button
+                class="bg-primary-subtle btn"
+                type="submit">
+                <foundation:translate id="save" />
+            </button>
+
+            <f:render
+                arguments="{
                 classes: 'bg-danger btn ms-auto',
                 modalId: 'delete-gift-{gift.uid}-modal',
                 text: '{templates:svgIcon(identifier: \'templates-trash\')}',
                 title: '{foundation:translate(id: \'delete\')}'
             }"
-            partial="Component/Modal/Toggle" />
-    </div>
-</f:form>
+                partial="Component/Modal/Toggle" />
+        </div>
+    </f:form>
 
-<f:render
-    arguments="{
+    <f:render
+        arguments="{
         body: '{foundation:translate(arguments: {name: gift.description}, id: \'modal:body\')}',
         id: 'delete-gift-{gift.uid}-modal',
         title: '{foundation:translate(id: \'modal:title\')}'
     }"
-    contentAs="footer"
-    partial="Component/Modal/Dialog">
-    <f:render
-        arguments="{contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}"
-        section="ModalFooter" />
-</f:render>
+        contentAs="footer"
+        partial="Component/Modal/Dialog">
+        <f:render
+            arguments="{contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}"
+            section="ModalFooter" />
+    </f:render>
 
-<div
-    class="d-none"
-    id="templateEventGiftRelation">
-    <f:render
-        arguments="{_all}"
-        partial="FormFields/EventGiftRelation" />
-</div>
+    <div
+        class="d-none"
+        id="templateEventGiftRelation">
+        <f:render
+            arguments="{_all}"
+            partial="FormFields/EventGiftRelation" />
+    </div>
 
-<f:section name="ModalFooter">
-    <foundation:translation.registerLanguageFile
-        file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
-        name="modal" />
+    <f:section name="ModalFooter">
+        <foundation:translation.registerLanguageFile
+            file="EXT:contact_book/Resources/Private/Language/Frontend/confirmDeleteModal.xlf"
+            name="modal" />
 
-    <button
-        class="bg-secondary-subtle btn"
-        data-bs-dismiss="modal"
-        type="button">
-        <foundation:translate id="modal:cancel" />
-    </button>
-    <f:link.action
-        action="delete"
-        arguments="{contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}"
-        class="btn btn-danger">
-        <foundation:translate id="modal:delete" />
-    </f:link.action>
-</f:section>
+        <button
+            class="bg-secondary-subtle btn"
+            data-bs-dismiss="modal"
+            type="button">
+            <foundation:translate id="modal:cancel" />
+        </button>
+        <f:link.action
+            action="delete"
+            arguments="{contactEvent: contactEvent, gift: gift, giftLogEvent: giftLogEvent}"
+            class="btn btn-danger">
+            <foundation:translate id="modal:delete" />
+        </f:link.action>
+    </f:section>
 </html>

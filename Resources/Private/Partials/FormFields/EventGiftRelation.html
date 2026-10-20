@@ -4,135 +4,134 @@
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers"
     xmlns:giftLog="http://typo3.org/ns/PSBits/GiftLog/ViewHelpers"
     xmlns:psbvh="http://typo3.org/ns/PSBits/ViewHelpers/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
+    <foundation:translation.registerLanguageFile
+        file="EXT:gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
 
-<f:asset.script
-    identifier="deleteContent"
-    src="EXT:templates/Resources/Public/JavaScript/deleteContent.js"
-    type="module" />
+    <f:asset.script
+        identifier="deleteContent"
+        src="EXT:templates/Resources/Public/JavaScript/deleteContent.js"
+        type="module" />
 
-<f:if condition="{record}">
-    <f:then>
-        <f:variable
-            name="preSelectedValue"
-            value="{giftLog:eventIdentifier(event: record.event)}" />
-        <f:variable
-            name="uid"
-            value="{record.uid}" />
-    </f:then>
-    <f:else if="{preselectedEvent}">
-        <f:variable
-            name="preSelectedValue"
-            value="{giftLog:eventIdentifier(event: preselectedEvent)}" />
-        <f:variable
-            name="uid"
-            value="{f:format.date(date: 'now', format: 'U')}" />
-    </f:else>
-    <f:else>
-        <f:variable
-            name="uid"
-            value="###uid###" />
-    </f:else>
-</f:if>
+    <f:if condition="{record}">
+        <f:then>
+            <f:variable
+                name="preSelectedValue"
+                value="{giftLog:eventIdentifier(event: record.event)}" />
+            <f:variable
+                name="uid"
+                value="{record.uid}" />
+        </f:then>
+        <f:else if="{preselectedEvent}">
+            <f:variable
+                name="preSelectedValue"
+                value="{giftLog:eventIdentifier(event: preselectedEvent)}" />
+            <f:variable
+                name="uid"
+                value="{f:format.date(date: 'now', format: 'U')}" />
+        </f:else>
+        <f:else>
+            <f:variable
+                name="uid"
+                value="###uid###" />
+        </f:else>
+    </f:if>
 
-<div class="accordion-item">
-    <h2 class="accordion-header">
-        <f:if condition="{record} || {preselectedEvent}">
-            <f:then>
-                <f:variable
-                    name="additionalAttributes"
-                    value="{data-bs-target: '#accordionEventGiftRelation-{uid}'}" />
-            </f:then>
-            <f:else>
-                <f:variable
-                    name="additionalAttributes"
-                    value="{_data-bs-target: '#accordionEventGiftRelation-{uid}'}" />
-            </f:else>
-        </f:if>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <f:if condition="{record} || {preselectedEvent}">
+                <f:then>
+                    <f:variable
+                        name="additionalAttributes"
+                        value="{data-bs-target: '#accordionEventGiftRelation-{uid}'}" />
+                </f:then>
+                <f:else>
+                    <f:variable
+                        name="additionalAttributes"
+                        value="{_data-bs-target: '#accordionEventGiftRelation-{uid}'}" />
+                </f:else>
+            </f:if>
 
-        <psbvh:tag
-            additionalAttributes="{additionalAttributes}"
-            aria="{
+            <psbvh:tag
+                additionalAttributes="{additionalAttributes}"
+                aria="{
                 controls: 'accordionEventGiftRelation-{uid}',
                 expanded: '{f:if(condition: preselectedEvent, then: \'true\', else: \'false\')}'
             }"
-            class="accordion-button{f:if(condition: '{preselectedEvent}', else: ' collapsed')}"
-            data="{
+                class="accordion-button{f:if(condition: '{preselectedEvent}', else: ' collapsed')}"
+                data="{
                 bs-toggle: 'collapse',
             }"
-            tag="button"
-            type="button">
-            <f:if condition="{record}">
-                <f:then>
-                    {record.compactValue}
-                </f:then>
-                <f:else>
-                    <foundation:translate id="eventGiftRelation:newRelation" />
-                </f:else>
-            </f:if>
-        </psbvh:tag>
-    </h2>
-    <div
-        class="accordion-collapse{f:if(condition: '{preselectedEvent}', else: ' collapse')}"
-        data-bs-parent="#accordionEventGiftRelation"
-        id="accordionEventGiftRelation-{uid}">
-        <div class="accordion-body">
-            <div class="form-floating mb-3">
-                <f:form.select
-                    class="form-select"
-                    name="eventGiftRelation[{uid}][event]"
-                    value="{preSelectedValue}">
-                    <f:for
-                        as="eventGroup"
-                        each="{eventGroups}"
-                        key="groupIdentifier">
-                        <f:variable
-                            name="groupLabel"
-                            value="{foundation:translate(id: 'eventGiftRelation:dyn.eventGroup.{groupIdentifier}')}" />
+                tag="button"
+                type="button">
+                <f:if condition="{record}">
+                    <f:then>{record.compactValue}</f:then>
+                    <f:else>
+                        <foundation:translate
+                            id="eventGiftRelation:newRelation" />
+                    </f:else>
+                </f:if>
+            </psbvh:tag>
+        </h2>
+        <div
+            class="accordion-collapse{f:if(condition: '{preselectedEvent}', else: ' collapse')}"
+            data-bs-parent="#accordionEventGiftRelation"
+            id="accordionEventGiftRelation-{uid}">
+            <div class="accordion-body">
+                <div class="form-floating mb-3">
+                    <f:form.select
+                        class="form-select"
+                        name="eventGiftRelation[{uid}][event]"
+                        value="{preSelectedValue}">
+                        <f:for
+                            as="eventGroup"
+                            each="{eventGroups}"
+                            key="groupIdentifier">
+                            <f:variable
+                                name="groupLabel"
+                                value="{foundation:translate(id: 'eventGiftRelation:dyn.eventGroup.{groupIdentifier}')}" />
 
-                        <f:form.select.optgroup additionalAttributes="{label: groupLabel}">
-                            <f:for
-                                as="event"
-                                each="{eventGroup}">
-                                <f:form.select.option value="{event.value}">
-                                    {event.label}
-                                </f:form.select.option>
-                            </f:for>
-                        </f:form.select.optgroup>
-                    </f:for>
-                </f:form.select>
-                <label
-                    class="form-label">
-                    <foundation:translate id="eventGiftRelation:event" />
-                </label>
-            </div>
+                            <f:form.select.optgroup
+                                additionalAttributes="{label: groupLabel}">
+                                <f:for
+                                    as="event"
+                                    each="{eventGroup}">
+                                    <f:form.select.option value="{event.value}">
+                                        {event.label}
+                                    </f:form.select.option>
+                                </f:for>
+                            </f:form.select.optgroup>
+                        </f:for>
+                    </f:form.select>
+                    <label class="form-label">
+                        <foundation:translate id="eventGiftRelation:event" />
+                    </label>
+                </div>
 
-            <div class="form-floating mb-3">
-                <f:form.textfield
-                    class="form-control"
-                    name="eventGiftRelation[{uid}][year]"
-                    placeholder="{foundation:translate(id: 'eventGiftRelation:year')}"
-                    type="number"
-                    value="{record.year -> f:or(alternative: '{f:format.date(date: \'now\', format: \'Y\')}')}" />
-                <label
-                    class="form-label">
-                    <foundation:translate id="eventGiftRelation:year" />
-                </label>
-            </div>
+                <div class="form-floating mb-3">
+                    <f:form.textfield
+                        class="form-control"
+                        name="eventGiftRelation[{uid}][year]"
+                        placeholder="{foundation:translate(id: 'eventGiftRelation:year')}"
+                        type="number"
+                        value="{record.year -> f:or(alternative: '{f:format.date(date: \'now\', format: \'Y\')}')}" />
+                    <label class="form-label">
+                        <foundation:translate id="eventGiftRelation:year" />
+                    </label>
+                </div>
 
-            <f:if condition="{preselectedEvent}">
-                <f:form.hidden
-                name="eventGiftRelation[{uid}][preselection]"
-                value="true" />
-            </f:if>
+                <f:if condition="{preselectedEvent}">
+                    <f:form.hidden
+                        name="eventGiftRelation[{uid}][preselection]"
+                        value="true" />
+                </f:if>
 
-            <div
-                class="btn btn-danger"
-                data-psbits-delete-mode="closest"
-                data-psbits-delete-target=".accordion-item">
-                <foundation:translate id="eventGiftRelation:remove" />
+                <div
+                    class="btn btn-danger"
+                    data-psbits-delete-mode="closest"
+                    data-psbits-delete-target=".accordion-item">
+                    <foundation:translate id="eventGiftRelation:remove" />
+                </div>
             </div>
         </div>
     </div>
-</div>
 </html>

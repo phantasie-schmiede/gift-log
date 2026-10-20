@@ -2,52 +2,54 @@
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:foundation="http://typo3.org/ns/PSBits/Foundation/ViewHelpers">
-<foundation:translation.registerLanguageFile file="EXT:gift_log/Resources/Private/Language/Backend/Configuration/TCA/gift.xlf" />
-<foundation:translation.registerLanguageFile file="EXT:gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
+    <foundation:translation.registerLanguageFile
+        file="EXT:gift_log/Resources/Private/Language/Backend/Configuration/TCA/gift.xlf" />
+    <foundation:translation.registerLanguageFile
+        file="EXT:gift_log/Resources/Private/Language/Frontend/eventGiftRelation.xlf" />
 
-<f:asset.script
-    identifier="autoSizeTextArea"
-    src="EXT:templates/Resources/Public/JavaScript/autoSizeTextArea.js"
-    type="module" />
-<f:asset.script
-    identifier="copyContent"
-    src="EXT:templates/Resources/Public/JavaScript/copyContent.js"
-    type="module" />
+    <f:asset.script
+        identifier="autoSizeTextArea"
+        src="EXT:templates/Resources/Public/JavaScript/autoSizeTextArea.js"
+        type="module" />
+    <f:asset.script
+        identifier="copyContent"
+        src="EXT:templates/Resources/Public/JavaScript/copyContent.js"
+        type="module" />
 
-<div
-    class="accordion accordion-flush mb-3"
-    id="accordionEventGiftRelation">
-    <f:if condition="{preselectedEvent}">
-        <f:then>
-            <f:render
-                arguments="{_all}"
-                partial="FormFields/EventGiftRelation" />
-        </f:then>
-        <f:else>
-            <f:for
-                as="record"
-                each="{gift.eventRelations}">
+    <div
+        class="accordion accordion-flush mb-3"
+        id="accordionEventGiftRelation">
+        <f:if condition="{preselectedEvent}">
+            <f:then>
                 <f:render
                     arguments="{_all}"
                     partial="FormFields/EventGiftRelation" />
-            </f:for>
-        </f:else>
-    </f:if>
-</div>
+            </f:then>
+            <f:else>
+                <f:for
+                    as="record"
+                    each="{gift.eventRelations}">
+                    <f:render
+                        arguments="{_all}"
+                        partial="FormFields/EventGiftRelation" />
+                </f:for>
+            </f:else>
+        </f:if>
+    </div>
 
-<div class="mb-3">
-    <span
-        class="bg-secondary-subtle btn"
-        data-psbits-copy-mode="append"
-        data-psbits-copy-source="#templateEventGiftRelation"
-        data-psbits-copy-target="#accordionEventGiftRelation">
-        <foundation:translate id="eventGiftRelation:addEvent" />
-    </span>
-</div>
+    <div class="mb-3">
+        <span
+            class="bg-secondary-subtle btn"
+            data-psbits-copy-mode="append"
+            data-psbits-copy-source="#templateEventGiftRelation"
+            data-psbits-copy-target="#accordionEventGiftRelation">
+            <foundation:translate id="eventGiftRelation:addEvent" />
+        </span>
+    </div>
 
-<div class="form-floating mb-3">
-    <f:render
-        arguments="{
+    <div class="form-floating mb-3">
+        <f:render
+            arguments="{
             altValueField: 1,
             filterOptions: {
                 itemSearchField: 'searchTerms',
@@ -60,12 +62,12 @@
             name: 'gift[donors]',
             preselection: gift.donorUidsAsJson
         }"
-        partial="Component/InputAutocomplete" />
-</div>
+            partial="Component/InputAutocomplete" />
+    </div>
 
-<div class="form-floating mb-3">
-    <f:render
-        arguments="{
+    <div class="form-floating mb-3">
+        <f:render
+            arguments="{
             altValueField: 1,
             filterOptions: {
                 itemSearchField: 'searchTerms',
@@ -78,36 +80,34 @@
             name: 'gift[recipients]',
             preselection: gift.recipientUidsAsJson
         }"
-        partial="Component/InputAutocomplete" />
-</div>
+            partial="Component/InputAutocomplete" />
+    </div>
 
-<div class="form-floating mb-3">
-    <f:form.textarea
-        class="form-control psbits-auto-size"
-        placeholder="{foundation:translate(id: 'gift:description')}"
-        property="description"
-        value="{gift.description}" />
-    <label
-        class="form-label">
-        <foundation:translate id="gift:description" />
-    </label>
-</div>
+    <div class="form-floating mb-3">
+        <f:form.textarea
+            class="form-control psbits-auto-size"
+            placeholder="{foundation:translate(id: 'gift:description')}"
+            property="description"
+            value="{gift.description}" />
+        <label class="form-label">
+            <foundation:translate id="gift:description" />
+        </label>
+    </div>
 
-<div class="form-floating mb-3">
-    <f:form.textarea
-        class="form-control psbits-auto-size"
-        property="notes"
-        placeholder="{foundation:translate(id: 'gift:notes')}"
-        value="{gift.notes}" />
-    <label
-        class="form-label">
-        <foundation:translate id="gift:notes" />
-    </label>
-</div>
+    <div class="form-floating mb-3">
+        <f:form.textarea
+            class="form-control psbits-auto-size"
+            placeholder="{foundation:translate(id: 'gift:notes')}"
+            property="notes"
+            value="{gift.notes}" />
+        <label class="form-label">
+            <foundation:translate id="gift:notes" />
+        </label>
+    </div>
 
-<div class="mb-3">
-    <f:render
-        arguments="{id: 'images-gift-{gift.uid}', multiple: 1, name: 'images'}"
-        partial="Component/Form/Upload" />
-</div>
+    <div class="mb-3">
+        <f:render
+            arguments="{id: 'images-gift-{gift.uid}', multiple: 1, name: 'images'}"
+            partial="Component/Form/Upload" />
+    </div>
 </html>

@@ -1,17 +1,17 @@
 <html
-    data-namespace-typo3-fluid="true"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
-<f:link.action
-    action="listForEvent"
-    arguments="{contactEvent: event}"
-    class="align-self-start ms-auto p-2 pt-0{f:if(condition: hasGifts, else: ' text-secondary')}"
-    controller="History"
-    extensionName="GiftLog"
-    pluginName="History">
-    <core:icon
-        alternativeMarkupIdentifier="inline"
-        identifier="templates-gift"
-        size="small" />
-</f:link.action>
+    <f:link.action
+        action="listForEvent"
+        arguments="{contactEvent: event}"
+        class="align-self-start ms-auto p-2 pt-0{f:if(condition: hasGifts, else: ' text-secondary')}"
+        controller="History"
+        extensionName="GiftLog"
+        pluginName="History">
+        <core:icon
+            alternativeMarkupIdentifier="inline"
+            identifier="templates-gift"
+            size="small" />
+    </f:link.action>
 </html>
