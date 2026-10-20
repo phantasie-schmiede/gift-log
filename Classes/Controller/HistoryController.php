@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -118,8 +119,8 @@ class HistoryController extends ActionController
 
         /** @var EventGift $eventGiftRelation */
         foreach ($eventGiftRelations as $eventGiftRelation) {
-            $year = $eventGiftRelation->getYear();
-            $labelParts = [];
+            $year             = $eventGiftRelation->getYear();
+            $labelParts       = [];
             $groupKeyElements = [$year];
 
             foreach ($eventGiftRelation->getGift()
@@ -137,7 +138,7 @@ class HistoryController extends ActionController
                     );
                     $labelParts[] = $eventName;
                 } else {
-                    $eventName = $event->getName();
+                    $eventName    = $event->getName();
                     $labelParts[] = $eventName . ' ' . $eventRelation->getYear();
                 }
 

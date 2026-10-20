@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -23,8 +24,9 @@ class EventGiftDemand
 {
     protected ?ContactEvent $contactEvent = null;
     protected ?GiftLogEvent $giftLogEvent = null;
+
     /** @var list<Gift> */
-    protected array         $gifts        = [];
+    protected array $gifts = [];
 
     public function getContactEvent(): ?ContactEvent
     {

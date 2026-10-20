@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -32,7 +33,7 @@ class GiftRepository extends Repository
     public function findByDemand(GiftDemand $demand): QueryResultInterface
     {
         $constraints = [];
-        $query = $this->createQuery();
+        $query       = $this->createQuery();
 
         if (null !== $demand->getContact()) {
             $constraints[] = $query->logicalOr(

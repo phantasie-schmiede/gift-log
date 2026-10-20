@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -74,7 +75,7 @@ readonly class ModifyTabs
     private function getTabIcon(): string
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $icon = $iconFactory->getIcon('templates-gift');
+        $icon        = $iconFactory->getIcon('templates-gift');
         $icon->setTitle(
             LocalizationUtility::translate(
                 FilePathUtility::getLanguageFilePath(

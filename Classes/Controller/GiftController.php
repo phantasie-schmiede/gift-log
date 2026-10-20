@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -38,6 +39,7 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
+
 use function in_array;
 use function is_array;
 
@@ -200,7 +202,7 @@ class GiftController extends ActionController
      */
     private function collectEvents(?Contact $contact, ?ContactEvent $contactEvent): array
     {
-        $eventGroups = [];
+        $eventGroups               = [];
         $collectedContactEventUids = [];
 
         if ($contact instanceof Contact) {
@@ -271,12 +273,12 @@ class GiftController extends ActionController
 
         if ($contact instanceof Contact) {
             $actionName = 'listForContact';
-            $arguments = [
+            $arguments  = [
                 'contact' => $contact,
             ];
         } else {
             $actionName = 'listForEvent';
-            $arguments = [
+            $arguments  = [
                 'contactEvent' => $contactEvent,
                 'giftLogEvent' => $giftLogEvent,
             ];
@@ -400,6 +402,7 @@ class GiftController extends ActionController
                  */
                 if (isset($entityData['preselection']) && 'true' === $entityData['preselection']) {
                     $newEntities[] = $entityData;
+
                     continue;
                 }
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -32,7 +33,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
     'contactEvent',
     'giftLogEvent',
     'gift',
-],     labelAltForce: true)]
+], labelAltForce: true)]
 class EventGift extends AbstractEntity
 {
     #[Select(foreignTableWhere: 'ORDER BY year DESC, month DESC, day DESC', linkedModel: ContactEvent::class, prependItem: Select::EMPTY_DEFAULT_ITEM_OPTIONAL_INT)]
@@ -57,8 +58,8 @@ class EventGift extends AbstractEntity
     public function getCompactValue(): string
     {
         return '(' . $this->year . ') ' . ($this->contactEvent ? $this->contactEvent->getLabel(
-                $this->year
-            ) : $this->giftLogEvent->getName());
+            $this->year
+        ) : $this->giftLogEvent->getName());
     }
 
     public function getContactEvent(): ?ContactEvent

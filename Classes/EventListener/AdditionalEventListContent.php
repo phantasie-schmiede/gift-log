@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -45,7 +46,7 @@ readonly class AdditionalEventListContent
     public function __invoke(AdditionalEventListContentEvent $event): void
     {
         $demand = (new EventGiftDemand())->setContactEvent($event->getEvent());
-        $view = $this->viewService->createStandaloneView(
+        $view   = $this->viewService->createStandaloneView(
             $this->extensionInformation,
             $event->getRequest(),
             'Event/AdditionalEventListContent'
@@ -57,8 +58,8 @@ readonly class AdditionalEventListContent
                 $event->getEvent()
                     ->getUid()
             ),
-            'hasGifts' => $this->eventGiftRepository->findByDemand($demand)
-                    ->count() > 0,
+            'hasGifts' => 0 < $this->eventGiftRepository->findByDemand($demand)
+                    ->count(),
         ]);
 
         $event->addContent($view->render());

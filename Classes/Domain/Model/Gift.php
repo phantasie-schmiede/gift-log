@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -61,7 +62,7 @@ class Gift extends AbstractEntity
     /** @var ObjectStorage<FileReference> */
     #[File(allowed                   : [
         'common-image-types',
-    ],     uploadDuplicationBehaviour: DuplicationBehavior::RENAME, uploadFileNameGeneratorPartSeparator: '_', uploadFileNameGeneratorProperties: ['uid'], uploadTargetFolder: 'user_upload/gift_log/images',)]
+    ], uploadDuplicationBehaviour: DuplicationBehavior::RENAME, uploadFileNameGeneratorPartSeparator: '_', uploadFileNameGeneratorProperties: ['uid'], uploadTargetFolder: 'user_upload/gift_log/images', )]
     protected ObjectStorage $images;
 
     #[Text]
@@ -139,7 +140,8 @@ class Gift extends AbstractEntity
         }
 
         throw new InvalidArgumentException(
-            __CLASS__ . ': Event relation with UID ' . $uid . ' was not found!', 1731501874
+            __CLASS__ . ': Event relation with UID ' . $uid . ' was not found!',
+            1731501874
         );
     }
 
@@ -193,10 +195,10 @@ class Gift extends AbstractEntity
 
     public function initializeObject(): void
     {
-        $this->donors = new ObjectStorage();
+        $this->donors         = new ObjectStorage();
         $this->eventRelations = new ObjectStorage();
-        $this->images = new ObjectStorage();
-        $this->recipients = new ObjectStorage();
+        $this->images         = new ObjectStorage();
+        $this->recipients     = new ObjectStorage();
     }
 
     public function removeAllContacts(): self

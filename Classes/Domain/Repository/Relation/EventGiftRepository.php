@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -30,7 +31,7 @@ class EventGiftRepository extends Repository
     public function findByDemand(EventGiftDemand $demand): QueryResultInterface
     {
         $constraints = [];
-        $query = $this->createQuery();
+        $query       = $this->createQuery();
 
         if (null !== $demand->getContactEvent()) {
             $constraints[] = $query->equals('contactEvent', $demand->getContactEvent());
