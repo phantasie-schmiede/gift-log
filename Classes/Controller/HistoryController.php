@@ -23,7 +23,7 @@ use PSBits\GiftLog\Domain\Model\Event as GiftLogEvent;
 use PSBits\GiftLog\Domain\Model\Relation\EventGift;
 use PSBits\GiftLog\Domain\Repository\GiftRepository;
 use PSBits\GiftLog\Domain\Repository\Relation\EventGiftRepository;
-use PSBits\Templates\Utility\StringUtility;
+use PSBits\FrontendTemplates\Utility\StringUtility;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;

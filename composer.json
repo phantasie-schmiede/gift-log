@@ -47,7 +47,7 @@
         },
         {
             "type": "vcs",
-            "url": "git@github.com:phantasie-schmiede/templates.git"
+            "url": "git@github.com:phantasie-schmiede/frontend-templates.git"
         }
     ],
     "require": {

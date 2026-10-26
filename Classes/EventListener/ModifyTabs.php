@@ -18,7 +18,7 @@ use PSBits\Foundation\Utility\LocalizationUtility;
 use PSBits\GiftLog\Data\ExtensionInformation;
 use PSBits\GiftLog\Domain\Demand\GiftDemand;
 use PSBits\GiftLog\Domain\Repository\GiftRepository;
-use PSBits\Templates\Service\ViewService;
+use PSBits\FrontendTemplates\Service\ViewService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
