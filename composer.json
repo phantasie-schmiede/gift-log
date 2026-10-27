@@ -58,7 +58,7 @@
     "require": {
         "php": "^8.3",
         "psbits/contact-book": "@dev",
-        "psbits/foundation": "^4.0",
+        "psbits/foundation": "^4.2.2",
         "typo3/cms-core": "^13.4 || ^14.3"
     },
     "require-dev": {
