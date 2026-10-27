@@ -60,6 +60,20 @@ class EventGiftTest extends UnitTestCase
     }
 
     #[Test]
+    public function theGenericGetterReturnsNullWithoutAnEvent(): void
+    {
+        self::assertNull((new EventGift())->getEvent());
+    }
+
+    #[Test]
+    public function theCompactValueContainsOnlyTheYearWithoutAnEvent(): void
+    {
+        $relation = (new EventGift())->setYear(2024);
+
+        self::assertSame('(2024)', $relation->getCompactValue());
+    }
+
+    #[Test]
     public function theCompactValueIsBuiltFromTheGiftLogEvent(): void
     {
         $giftLogEvent = new GiftLogEvent();

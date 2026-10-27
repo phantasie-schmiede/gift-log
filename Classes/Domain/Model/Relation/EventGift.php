@@ -57,9 +57,15 @@ class EventGift extends AbstractEntity
      */
     public function getCompactValue(): string
     {
-        return '(' . $this->year . ') ' . ($this->contactEvent ? $this->contactEvent->getLabel(
-            $this->year
-        ) : $this->giftLogEvent->getName());
+        if (null !== $this->contactEvent) {
+            return '(' . $this->year . ') ' . $this->contactEvent->getLabel($this->year);
+        }
+
+        if (null !== $this->giftLogEvent) {
+            return '(' . $this->year . ') ' . $this->giftLogEvent->getName();
+        }
+
+        return '(' . $this->year . ')';
     }
 
     public function getContactEvent(): ?ContactEvent
@@ -67,7 +73,7 @@ class EventGift extends AbstractEntity
         return $this->contactEvent;
     }
 
-    public function getEvent(): ContactEvent|GiftLogEvent
+    public function getEvent(): ContactEvent|GiftLogEvent|null
     {
         return $this->contactEvent ?? $this->giftLogEvent;
     }

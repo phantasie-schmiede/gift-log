@@ -127,6 +127,10 @@ class HistoryController extends ActionController
                          ->getEventRelations() as $eventRelation) {
                 $event = $eventRelation->getEvent();
 
+                if (null === $event) {
+                    continue;
+                }
+
                 if ($event instanceof ContactEvent) {
                     $eventName = $event->getLabel($eventRelation->getYear());
                     $eventName = LocalizationUtility::translate(
