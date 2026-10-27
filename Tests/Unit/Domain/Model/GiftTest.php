@@ -1,0 +1,202 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of PSBits Gift Log.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ */
+
+namespace PSBits\GiftLog\Tests\Unit\Domain\Model;
+
+use InvalidArgumentException;
+use JsonException;
+use PHPUnit\Framework\Attributes\Test;
+use PSBits\ContactBook\Domain\Model\Contact;
+use PSBits\GiftLog\Domain\Model\Gift;
+use PSBits\GiftLog\Domain\Model\Relation\EventGift;
+use PSBits\GiftLog\Tests\Unit\Fixtures\FakeLanguageServiceFactory;
+use ReflectionProperty;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Localization\Locale;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+
+/**
+ * Class GiftTest
+ *
+ * @package PSBits\GiftLog\Tests\Unit\Domain\Model
+ */
+class GiftTest extends UnitTestCase
+{
+    protected bool $resetSingletonInstances = true;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        /*
+         * The donor and recipient lists are rendered through the extension language file, which the core language
+         * stack cannot load in unit tests. A pre-seeded language service factory serves the enumeration words
+         * instead.
+         */
+        $languageService = $this->createMock(LanguageService::class);
+        $languageService->method('getLocale')
+            ->willReturn(new Locale('en'));
+        $labels          = static function (string $key): string {
+            $key = substr($key, strrpos($key, ':') + 1);
+
+            return match ($key) {
+                'separator'   => ', ',
+                'conjunction' => 'and',
+                default       => $key,
+            };
+        };
+        $languageService->method('sL')
+            ->willReturnCallback($labels);
+
+        GeneralUtility::setSingletonInstance(
+            LanguageServiceFactory::class,
+            new FakeLanguageServiceFactory($languageService)
+        );
+
+        /*
+         * The core keeps the language service in the runtime cache between lookups, which is not configured in unit
+         * tests. A stubbed cache manager serves the pre-seeded language service instead.
+         */
+        $cache = $this->createMock(FrontendInterface::class);
+        $cache->method('get')
+            ->willReturn($languageService);
+
+        $cacheManager = $this->createMock(CacheManager::class);
+        $cacheManager->method('getCache')
+            ->willReturn($cache);
+
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
+    }
+
+    private static function entityWithUid(int $uid): Contact
+    {
+        $contact = new Contact();
+        (new ReflectionProperty(AbstractDomainObject::class, 'uid'))->setValue($contact, $uid);
+
+        return $contact;
+    }
+
+    #[Test]
+    public function aNewGiftHasNoRelations(): void
+    {
+        $gift = new Gift();
+
+        self::assertCount(0, $gift->getDonors());
+        self::assertCount(0, $gift->getEventRelations());
+        self::assertCount(0, $gift->getImages());
+        self::assertCount(0, $gift->getRecipients());
+    }
+
+    #[Test]
+    public function contactsCanBeAddedAsDonorsAndRecipients(): void
+    {
+        $donor     = self::entityWithUid(1);
+        $recipient = self::entityWithUid(2);
+        $gift      = (new Gift())
+            ->addDonor($donor)
+            ->addRecipient($recipient);
+
+        self::assertSame([$donor], $gift->getDonors()->toArray());
+        self::assertSame([$recipient], $gift->getRecipients()->toArray());
+    }
+
+    #[Test]
+    public function allContactsCanBeRemovedAtOnce(): void
+    {
+        $gift = (new Gift())
+            ->addDonor(self::entityWithUid(1))
+            ->addRecipient(self::entityWithUid(2));
+
+        $gift->removeAllContacts();
+
+        self::assertCount(0, $gift->getDonors());
+        self::assertCount(0, $gift->getRecipients());
+    }
+
+    #[Test]
+    public function anEventRelationIsReturnedByItsUid(): void
+    {
+        $relation = new EventGift();
+        (new ReflectionProperty(AbstractDomainObject::class, 'uid'))->setValue($relation, 42);
+        $gift     = new Gift();
+
+        $gift->addEventRelation($relation);
+
+        self::assertSame($relation, $gift->getEventRelationByUid(42));
+    }
+
+    #[Test]
+    public function anUnknownEventRelationUidThrowsAnException(): void
+    {
+        $gift = new Gift();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1731501874);
+
+        $gift->getEventRelationByUid(42);
+    }
+
+    #[Test]
+    public function theDonorUidsAreReturnedAsJsonArray(): void
+    {
+        $gift = (new Gift())
+            ->addDonor(self::entityWithUid(1))
+            ->addDonor(self::entityWithUid(2));
+
+        self::assertSame('[1,2]', $gift->getDonorUidsAsJson());
+    }
+
+    #[Test]
+    public function anEmptyRecipientListYieldsAnEmptyJsonArray(): void
+    {
+        self::assertSame('[]', (new Gift())->getRecipientUidsAsJson());
+    }
+
+    /**
+     * @throws JsonException
+     */
+    #[Test]
+    public function aSingleDonorIsListedByHisShortName(): void
+    {
+        $donor = new Contact();
+        $donor->setFirstName('Anna');
+        $donor->setLastName('Schmidt');
+        $gift  = (new Gift())->addDonor($donor);
+
+        self::assertSame('Anna Schmidt', $gift->getDonorList());
+    }
+
+    /**
+     * @throws JsonException
+     */
+    #[Test]
+    public function multipleRecipientsOfDifferentFamiliesAreListedAsEnumeration(): void
+    {
+        $first = new Contact();
+        $first->setFirstName('Anna');
+        $first->setLastName('Schmidt');
+
+        $second = new Contact();
+        $second->setFirstName('Ludwig');
+        $second->setLastName('Mayer');
+
+        $gift = (new Gift())
+            ->addRecipient($first)
+            ->addRecipient($second);
+
+        self::assertSame('Anna Schmidt and Ludwig Mayer', $gift->getRecipientList());
+    }
+}
