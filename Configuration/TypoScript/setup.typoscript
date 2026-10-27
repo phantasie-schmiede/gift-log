@@ -5,7 +5,7 @@ plugin {
     view {
       partialRootPaths {
         10 = {$plugin.tx_contactbook.view.partialRootPath}
-        20 = {$plugin.tx_templates.view.partialRootPath}
+        20 = {$plugin.tx_frontendtemplates.view.partialRootPath}
       }
     }
   }
