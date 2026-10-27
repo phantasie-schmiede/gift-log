@@ -19,21 +19,16 @@ use PSBits\GiftLog\Data\ExtensionInformation;
 use PSBits\GiftLog\Domain\Demand\GiftDemand;
 use PSBits\GiftLog\Domain\Repository\GiftRepository;
 use PSBits\GiftLog\EventListener\ModifyTabs;
-use PSBits\GiftLog\Tests\Unit\Fixtures\FakeLanguageServiceFactory;
-use PSBits\GiftLog\Tests\Unit\Fixtures\InMemoryListenerProvider;
 use PSBits\FrontendTemplates\Service\ViewService;
+use PSBits\Qa\Testing\Fixtures\InMemoryListenerProvider;
+use PSBits\Qa\Testing\Support\LanguageStackSeeder;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionProperty;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -50,6 +45,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ModifyTabsTest extends UnitTestCase
 {
+    use LanguageStackSeeder;
+
     protected bool $resetSingletonInstances = true;
 
     protected function setUp(): void
@@ -60,26 +57,7 @@ class ModifyTabsTest extends UnitTestCase
          * The tab icon is rendered through the icon factory and the extension language file, neither of which is
          * available in unit tests. Pre-seeded singletons serve a stubbed icon and the tab label instead.
          */
-        $languageService = $this->createMock(LanguageService::class);
-        $languageService->method('getLocale')
-            ->willReturn(new Locale('en'));
-        $languageService->method('sL')
-            ->willReturn('Gifts');
-
-        GeneralUtility::setSingletonInstance(
-            LanguageServiceFactory::class,
-            new FakeLanguageServiceFactory($languageService)
-        );
-
-        $cache = $this->createMock(FrontendInterface::class);
-        $cache->method('get')
-            ->willReturn($languageService);
-
-        $cacheManager = $this->createMock(CacheManager::class);
-        $cacheManager->method('getCache')
-            ->willReturn($cache);
-
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
+        $this->seedLanguageStack(static fn (): string => 'Gifts');
 
         $icon = $this->createMock(Icon::class);
         $icon->method('render')

@@ -17,14 +17,8 @@ use PHPUnit\Framework\Attributes\Test;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\GiftLog\Domain\Model\Gift;
 use PSBits\GiftLog\Domain\Model\Relation\EventGift;
-use PSBits\GiftLog\Tests\Unit\Fixtures\FakeLanguageServiceFactory;
+use PSBits\Qa\Testing\Support\LanguageStackSeeder;
 use ReflectionProperty;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
-use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Localization\Locale;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -35,6 +29,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class GiftTest extends UnitTestCase
 {
+    use LanguageStackSeeder;
+
     protected bool $resetSingletonInstances = true;
 
     protected function setUp(): void
@@ -43,13 +39,10 @@ class GiftTest extends UnitTestCase
 
         /*
          * The donor and recipient lists are rendered through the extension language file, which the core language
-         * stack cannot load in unit tests. A pre-seeded language service factory serves the enumeration words
-         * instead.
+         * stack cannot load in unit tests. The seeder pre-seeds a language service factory that serves the
+         * enumeration words instead.
          */
-        $languageService = $this->createMock(LanguageService::class);
-        $languageService->method('getLocale')
-            ->willReturn(new Locale('en'));
-        $labels          = static function (string $key): string {
+        $labels = static function (string $key): string {
             $key = substr($key, strrpos($key, ':') + 1);
 
             return match ($key) {
@@ -58,27 +51,7 @@ class GiftTest extends UnitTestCase
                 default       => $key,
             };
         };
-        $languageService->method('sL')
-            ->willReturnCallback($labels);
-
-        GeneralUtility::setSingletonInstance(
-            LanguageServiceFactory::class,
-            new FakeLanguageServiceFactory($languageService)
-        );
-
-        /*
-         * The core keeps the language service in the runtime cache between lookups, which is not configured in unit
-         * tests. A stubbed cache manager serves the pre-seeded language service instead.
-         */
-        $cache = $this->createMock(FrontendInterface::class);
-        $cache->method('get')
-            ->willReturn($languageService);
-
-        $cacheManager = $this->createMock(CacheManager::class);
-        $cacheManager->method('getCache')
-            ->willReturn($cache);
-
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
+        $this->seedLanguageStack($labels);
     }
 
     private static function entityWithUid(int $uid): Contact

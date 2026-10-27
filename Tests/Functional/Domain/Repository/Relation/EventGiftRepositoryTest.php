@@ -18,9 +18,9 @@ use PSBits\GiftLog\Domain\Model\Event as GiftLogEvent;
 use PSBits\GiftLog\Domain\Model\Gift;
 use PSBits\GiftLog\Domain\Model\Relation\EventGift;
 use PSBits\GiftLog\Domain\Repository\Relation\EventGiftRepository;
+use PSBits\Qa\Testing\Support\PersistenceSupportTrait;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException;
-use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -30,6 +30,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class EventGiftRepositoryTest extends FunctionalTestCase
 {
+    use PersistenceSupportTrait;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/fluid_styled_content',
         'typo3conf/ext/friendsoftypo3/content-blocks',
@@ -42,11 +44,10 @@ class EventGiftRepositoryTest extends FunctionalTestCase
         'typo3conf/ext/wapplersystems/ws-scss',
     ];
 
-    private EventGiftRepository  $eventGiftRepository;
-    private Gift                 $gift;
-    private PersistenceManager   $persistenceManager;
-    private ?ContactEvent        $contactEvent = null;
-    private ?GiftLogEvent        $giftLogEvent = null;
+    private EventGiftRepository $eventGiftRepository;
+    private Gift                $gift;
+    private ?ContactEvent       $contactEvent = null;
+    private ?GiftLogEvent       $giftLogEvent = null;
 
     /**
      * @throws IllegalObjectTypeException
@@ -75,8 +76,7 @@ class EventGiftRepositoryTest extends FunctionalTestCase
 
         $this->eventGiftRepository->add($contactEventRelation);
         $this->eventGiftRepository->add($giftLogEventRelation);
-        $this->persistenceManager->persistAll();
-        $this->persistenceManager->clearState();
+        $this->persistAll();
     }
 
     protected function setUp(): void
@@ -84,7 +84,6 @@ class EventGiftRepositoryTest extends FunctionalTestCase
         parent::setUp();
 
         $this->eventGiftRepository = $this->get(EventGiftRepository::class);
-        $this->persistenceManager  = $this->get(PersistenceManager::class);
     }
 
     /**

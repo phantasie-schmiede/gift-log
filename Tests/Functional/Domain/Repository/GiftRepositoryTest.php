@@ -17,10 +17,10 @@ use PSBits\ContactBook\Domain\Repository\ContactRepository;
 use PSBits\GiftLog\Domain\Demand\GiftDemand;
 use PSBits\GiftLog\Domain\Model\Gift;
 use PSBits\GiftLog\Domain\Repository\GiftRepository;
+use PSBits\Qa\Testing\Support\PersistenceSupportTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException;
-use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -30,6 +30,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class GiftRepositoryTest extends FunctionalTestCase
 {
+    use PersistenceSupportTrait;
+
     protected array $testExtensionsToLoad = [
         'typo3/sysext/fluid_styled_content',
         'typo3conf/ext/friendsoftypo3/content-blocks',
@@ -42,9 +44,8 @@ class GiftRepositoryTest extends FunctionalTestCase
         'typo3conf/ext/wapplersystems/ws-scss',
     ];
 
-    private ContactRepository  $contactRepository;
-    private GiftRepository     $giftRepository;
-    private PersistenceManager $persistenceManager;
+    private ContactRepository $contactRepository;
+    private GiftRepository    $giftRepository;
 
     /**
      * @throws IllegalObjectTypeException
@@ -75,8 +76,7 @@ class GiftRepositoryTest extends FunctionalTestCase
         $this->contactRepository->add($ben);
         $this->giftRepository->add($annasGift);
         $this->giftRepository->add($bensGift);
-        $this->persistenceManager->persistAll();
-        $this->persistenceManager->clearState();
+        $this->persistAll();
 
         return [$anna, $ben];
     }
@@ -85,9 +85,8 @@ class GiftRepositoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->contactRepository  = $this->get(ContactRepository::class);
-        $this->giftRepository     = $this->get(GiftRepository::class);
-        $this->persistenceManager = $this->get(PersistenceManager::class);
+        $this->contactRepository = $this->get(ContactRepository::class);
+        $this->giftRepository    = $this->get(GiftRepository::class);
     }
 
     /**
@@ -137,8 +136,7 @@ class GiftRepositoryTest extends FunctionalTestCase
         $stranger->setFirstName('Sara');
         $stranger->setLastName('Muster');
         $this->contactRepository->add($stranger);
-        $this->persistenceManager->persistAll();
-        $this->persistenceManager->clearState();
+        $this->persistAll();
 
         $demand = (new GiftDemand())->setContact($stranger);
         $gifts  = $this->giftRepository->findByDemand($demand);

@@ -53,6 +53,10 @@
         {
             "type": "vcs",
             "url": "git@github.com:phantasie-schmiede/frontend-templates.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:phantasie-schmiede/qa.git"
         }
     ],
     "require": {
@@ -66,7 +70,7 @@
         "helmich/typo3-typoscript-lint": "^3.3",
         "phpstan/phpstan": "^2.2",
         "phpunit/phpunit": "^11",
-        "psbits/qa": "@dev",
+        "psbits/qa": "0.x.*@dev",
         "roave/security-advisories": "dev-latest",
         "saschaegerer/phpstan-typo3": "^2.1",
         "typo3/testing-framework": "^9.5"
