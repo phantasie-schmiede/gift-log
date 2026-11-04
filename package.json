@@ -1,6 +1,6 @@
 {
   "name": "gift-log",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Keep a record of all the gifts you have received or given.",
   "scripts": {
     "fix:classes": "node .Build/vendor/psbits/qa/Resources/Quality/lint-class-attributes.mjs",
