@@ -22,11 +22,9 @@ use ReflectionProperty;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Class GiftTest
- *
- * @package PSBits\GiftLog\Tests\Unit\Domain\Model
- */
+use function strrpos;
+use function substr;
+
 class GiftTest extends UnitTestCase
 {
     use LanguageStackSeeder;
@@ -42,8 +40,12 @@ class GiftTest extends UnitTestCase
          * stack cannot load in unit tests. The seeder pre-seeds a language service factory that serves the
          * enumeration words instead.
          */
-        $labels = static function (string $key): string {
-            $key = substr($key, strrpos($key, ':') + 1);
+        $labels = static function(string $key): string {
+            $separatorPosition = strrpos($key, ':');
+
+            if (false !== $separatorPosition) {
+                $key = substr($key, $separatorPosition + 1);
+            }
 
             return match ($key) {
                 'separator'   => ', ',
@@ -63,30 +65,6 @@ class GiftTest extends UnitTestCase
     }
 
     #[Test]
-    public function aNewGiftHasNoRelations(): void
-    {
-        $gift = new Gift();
-
-        self::assertCount(0, $gift->getDonors());
-        self::assertCount(0, $gift->getEventRelations());
-        self::assertCount(0, $gift->getImages());
-        self::assertCount(0, $gift->getRecipients());
-    }
-
-    #[Test]
-    public function contactsCanBeAddedAsDonorsAndRecipients(): void
-    {
-        $donor     = self::entityWithUid(1);
-        $recipient = self::entityWithUid(2);
-        $gift      = (new Gift())
-            ->addDonor($donor)
-            ->addRecipient($recipient);
-
-        self::assertSame([$donor], $gift->getDonors()->toArray());
-        self::assertSame([$recipient], $gift->getRecipients()->toArray());
-    }
-
-    #[Test]
     public function allContactsCanBeRemovedAtOnce(): void
     {
         $gift = (new Gift())
@@ -100,15 +78,32 @@ class GiftTest extends UnitTestCase
     }
 
     #[Test]
+    public function anEmptyRecipientListYieldsAnEmptyJsonArray(): void
+    {
+        self::assertSame('[]', (new Gift())->getRecipientUidsAsJson());
+    }
+
+    #[Test]
     public function anEventRelationIsReturnedByItsUid(): void
     {
         $relation = new EventGift();
         (new ReflectionProperty(AbstractDomainObject::class, 'uid'))->setValue($relation, 42);
-        $gift     = new Gift();
+        $gift = new Gift();
 
         $gift->addEventRelation($relation);
 
         self::assertSame($relation, $gift->getEventRelationByUid(42));
+    }
+
+    #[Test]
+    public function aNewGiftHasNoRelations(): void
+    {
+        $gift = new Gift();
+
+        self::assertCount(0, $gift->getDonors());
+        self::assertCount(0, $gift->getEventRelations());
+        self::assertCount(0, $gift->getImages());
+        self::assertCount(0, $gift->getRecipients());
     }
 
     #[Test]
@@ -122,22 +117,6 @@ class GiftTest extends UnitTestCase
         $gift->getEventRelationByUid(42);
     }
 
-    #[Test]
-    public function theDonorUidsAreReturnedAsJsonArray(): void
-    {
-        $gift = (new Gift())
-            ->addDonor(self::entityWithUid(1))
-            ->addDonor(self::entityWithUid(2));
-
-        self::assertSame('[1,2]', $gift->getDonorUidsAsJson());
-    }
-
-    #[Test]
-    public function anEmptyRecipientListYieldsAnEmptyJsonArray(): void
-    {
-        self::assertSame('[]', (new Gift())->getRecipientUidsAsJson());
-    }
-
     /**
      * @throws JsonException
      */
@@ -147,9 +126,22 @@ class GiftTest extends UnitTestCase
         $donor = new Contact();
         $donor->setFirstName('Anna');
         $donor->setLastName('Schmidt');
-        $gift  = (new Gift())->addDonor($donor);
+        $gift = (new Gift())->addDonor($donor);
 
         self::assertSame('Anna Schmidt', $gift->getDonorList());
+    }
+
+    #[Test]
+    public function contactsCanBeAddedAsDonorsAndRecipients(): void
+    {
+        $donor     = self::entityWithUid(1);
+        $recipient = self::entityWithUid(2);
+        $gift      = (new Gift())
+            ->addDonor($donor)
+            ->addRecipient($recipient);
+
+        self::assertSame([$donor], $gift->getDonors()->toArray());
+        self::assertSame([$recipient], $gift->getRecipients()->toArray());
     }
 
     /**
@@ -171,5 +163,15 @@ class GiftTest extends UnitTestCase
             ->addRecipient($second);
 
         self::assertSame('Anna Schmidt and Ludwig Mayer', $gift->getRecipientList());
+    }
+
+    #[Test]
+    public function theDonorUidsAreReturnedAsJsonArray(): void
+    {
+        $gift = (new Gift())
+            ->addDonor(self::entityWithUid(1))
+            ->addDonor(self::entityWithUid(2));
+
+        self::assertSame('[1,2]', $gift->getDonorUidsAsJson());
     }
 }

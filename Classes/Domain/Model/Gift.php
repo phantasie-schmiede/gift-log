@@ -26,7 +26,7 @@ use PSBits\Foundation\Attribute\TCA\Ctrl;
 use PSBits\Foundation\Enum\SelectRenderType;
 use PSBits\GiftLog\Domain\Model\Relation\EventGift;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use ReflectionException;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
@@ -34,11 +34,6 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-/**
- * Class Gift
- *
- * @package PSBits\GiftLog\Domain\Model
- */
 #[Ctrl(label: 'description')]
 class Gift extends AbstractEntity
 {
@@ -106,15 +101,21 @@ class Gift extends AbstractEntity
     }
 
     /**
-     * @return string
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function getDonorList(): string
     {
         return ContactUtility::createEnumeration($this->donors->toArray());
+    }
+
+    /** @return ObjectStorage<Contact> */
+    public function getDonors(): ObjectStorage
+    {
+        return $this->donors;
     }
 
     /**
@@ -125,12 +126,9 @@ class Gift extends AbstractEntity
         return JsonUtility::getUidsAsJsonArray(...$this->donors);
     }
 
-    /** @return ObjectStorage<Contact> */
-    public function getDonors(): ObjectStorage
-    {
-        return $this->donors;
-    }
-
+    /**
+     * @throws InvalidArgumentException
+     */
     public function getEventRelationByUid(int $uid): EventGift
     {
         foreach ($this->eventRelations as $eventRelation) {
@@ -163,15 +161,21 @@ class Gift extends AbstractEntity
     }
 
     /**
-     * @return string
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function getRecipientList(): string
     {
         return ContactUtility::createEnumeration($this->recipients->toArray());
+    }
+
+    /** @return ObjectStorage<Contact> */
+    public function getRecipients(): ObjectStorage
+    {
+        return $this->recipients;
     }
 
     /**
@@ -180,12 +184,6 @@ class Gift extends AbstractEntity
     public function getRecipientUidsAsJson(): false|string
     {
         return JsonUtility::getUidsAsJsonArray(...$this->recipients);
-    }
-
-    /** @return ObjectStorage<Contact> */
-    public function getRecipients(): ObjectStorage
-    {
-        return $this->recipients;
     }
 
     public function getRedeemed(): ?bool

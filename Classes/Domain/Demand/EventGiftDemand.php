@@ -15,11 +15,6 @@ use PSBits\ContactBook\Domain\Model\Event as ContactEvent;
 use PSBits\GiftLog\Domain\Model\Event as GiftLogEvent;
 use PSBits\GiftLog\Domain\Model\Gift;
 
-/**
- * Class EventGiftDemand
- *
- * @package PSBits\GiftLog\Domain\Demand
- */
 class EventGiftDemand
 {
     protected ?ContactEvent $contactEvent = null;

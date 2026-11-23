@@ -14,11 +14,6 @@ namespace PSBits\GiftLog\Service;
 use PSBits\ContactBook\Domain\Model\Event as ContactEvent;
 use PSBits\GiftLog\Domain\Model\Event as GiftLogEvent;
 
-/**
- * Class EventService
- *
- * @package PSBits\GiftLog\Service
- */
 readonly class EventService
 {
     public function getUniqueIdentifier(ContactEvent|GiftLogEvent $event): string

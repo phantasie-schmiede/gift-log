@@ -11,19 +11,18 @@ declare(strict_types=1);
 
 namespace PSBits\GiftLog\Data;
 
+use InvalidArgumentException;
 use PSBits\Foundation\Data\AbstractExtensionInformation;
 use PSBits\Foundation\Data\PluginConfiguration;
 use PSBits\GiftLog\Controller\GiftController;
 use PSBits\GiftLog\Controller\HistoryController;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * Class ExtensionInformation
- *
- * @package PSBits\GiftLog\Data
- */
 class ExtensionInformation extends AbstractExtensionInformation
 {
+    /**
+     * @throws InvalidArgumentException
+     */
     public function __construct()
     {
         parent::__construct();

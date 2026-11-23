@@ -19,10 +19,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * Class GiftRepository
- *
  * @extends Repository<Gift>
- * @package PSBits\GiftLog\Domain\Repository
  */
 class GiftRepository extends Repository
 {

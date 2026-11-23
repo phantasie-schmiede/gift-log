@@ -13,11 +13,6 @@ namespace PSBits\GiftLog\Domain\Demand;
 
 use PSBits\ContactBook\Domain\Model\Contact;
 
-/**
- * Class EventGiftDemand
- *
- * @package PSBits\GiftLog\Domain\Demand
- */
 class GiftDemand
 {
     protected ?Contact $contact = null;

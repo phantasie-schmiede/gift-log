@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace PSBits\GiftLog\Domain\Model\Relation;
 
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Domain\Model\Event as ContactEvent;
 use PSBits\Foundation\Attribute\TCA\Column;
@@ -20,15 +21,10 @@ use PSBits\Foundation\Attribute\TCA\Ctrl;
 use PSBits\GiftLog\Domain\Model\Event as GiftLogEvent;
 use PSBits\GiftLog\Domain\Model\Gift;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use ReflectionException;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-/**
- * Class EventGift
- *
- * @package PSBits\GiftLog\Domain\Model\Relation
- */
 #[Ctrl(defaultSortBy: 'year DESC', label: 'year', labelAlt: [
     'contactEvent',
     'giftLogEvent',
@@ -52,8 +48,9 @@ class EventGift extends AbstractEntity
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function getCompactValue(): string
     {

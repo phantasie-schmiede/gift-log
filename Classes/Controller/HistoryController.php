@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace PSBits\GiftLog\Controller;
 
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Domain\Model\Event as ContactEvent;
@@ -25,7 +26,6 @@ use PSBits\GiftLog\Domain\Model\Relation\EventGift;
 use PSBits\GiftLog\Domain\Repository\GiftRepository;
 use PSBits\GiftLog\Domain\Repository\Relation\EventGiftRepository;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionException;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
@@ -33,11 +33,9 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
-/**
- * Class HistoryController
- *
- * @package PSBits\GiftLog\Controller
- */
+use function implode;
+use function sort;
+
 class HistoryController extends ActionController
 {
     use ControllerCacheTrait;
@@ -53,9 +51,10 @@ class HistoryController extends ActionController
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws InvalidQueryException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     #[PluginAction]
     public function listForContactAction(Contact $contact): ResponseInterface
@@ -81,13 +80,14 @@ class HistoryController extends ActionController
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     #[PluginAction(default: true)]
     public function listForEventAction(
-        ContactEvent $contactEvent = null,
-        GiftLogEvent $giftLogEvent = null,
+        ?ContactEvent $contactEvent = null,
+        ?GiftLogEvent $giftLogEvent = null,
     ): ResponseInterface {
         $this->setCacheTags(self::CACHE_TAG);
         $demand = new EventGiftDemand();
@@ -105,12 +105,11 @@ class HistoryController extends ActionController
 
     /**
      * @param QueryResultInterface<int, EventGift> $eventGiftRelations
-     *
      * @return array<int, array<string, array{label: string, relations: list<EventGift>}>>
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      */
     private function groupRelations(QueryResultInterface $eventGiftRelations): array

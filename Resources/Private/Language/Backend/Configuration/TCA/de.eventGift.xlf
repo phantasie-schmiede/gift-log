@@ -8,13 +8,13 @@
         source-language="en"
         target-language="de">
         <body>
-            <trans-unit id="ctrl.title">
-                <source>Event-gift-relation</source>
-                <target>Ereignis-Geschenk-Verknüpfung</target>
-            </trans-unit>
             <trans-unit id="contactEvent">
                 <source>Personal event</source>
                 <target>Persönliches Ereignis</target>
+            </trans-unit>
+            <trans-unit id="ctrl.title">
+                <source>Event-gift-relation</source>
+                <target>Ereignis-Geschenk-Verknüpfung</target>
             </trans-unit>
             <trans-unit id="gift">
                 <source>Gift</source>

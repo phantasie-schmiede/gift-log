@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace PSBits\GiftLog\Controller;
 
+use Exception;
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Domain\Model\Contact;
 use PSBits\ContactBook\Domain\Model\Event as ContactEvent;
@@ -29,7 +31,6 @@ use PSBits\GiftLog\Domain\Model\Relation\EventGift;
 use PSBits\GiftLog\Domain\Repository\EventRepository as GiftLogEventRepository;
 use PSBits\GiftLog\Domain\Repository\GiftRepository;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionException;
 use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheGroupException;
@@ -39,15 +40,15 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
+use ValueError;
 
+use function array_map;
+use function explode;
 use function in_array;
 use function is_array;
+use function json_decode;
+use function usort;
 
-/**
- * Class GiftController
- *
- * @package PSBits\GiftLog\Controller
- */
 class GiftController extends ActionController
 {
     use ControllerCacheTrait;
@@ -68,11 +69,10 @@ class GiftController extends ActionController
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws IllegalObjectTypeException
-     * @throws JsonException
      * @throws MisconfiguredTcaException
      * @throws NoSuchCacheGroupException
-     * @throws NotFoundExceptionInterface
      * @throws PropertyNotAccessibleException
      * @throws ReflectionException
      */
@@ -91,8 +91,8 @@ class GiftController extends ActionController
     }
 
     /**
-     * @throws NoSuchCacheGroupException
      * @throws IllegalObjectTypeException
+     * @throws NoSuchCacheGroupException
      */
     #[PluginAction(uncached: true)]
     public function deleteAction(
@@ -116,8 +116,10 @@ class GiftController extends ActionController
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws ValueError
      */
     #[PluginAction(uncached: true)]
     public function editAction(
@@ -134,8 +136,10 @@ class GiftController extends ActionController
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws ValueError
      */
     #[PluginAction(uncached: true)]
     public function newAction(
@@ -152,11 +156,10 @@ class GiftController extends ActionController
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws IllegalObjectTypeException
-     * @throws JsonException
      * @throws MisconfiguredTcaException
      * @throws NoSuchCacheGroupException
-     * @throws NotFoundExceptionInterface
      * @throws PropertyNotAccessibleException
      * @throws ReflectionException
      * @throws UnknownObjectException
@@ -176,12 +179,12 @@ class GiftController extends ActionController
 
     /**
      * @param array<string, list<array{label: string, value: string}>> $eventGroups
-     *
      * @return array<string, list<array{label: string, value: string}>>
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     private function addEventToEventGroup(array &$eventGroups, ContactEvent $event, string $key): array
     {
@@ -197,8 +200,10 @@ class GiftController extends ActionController
      * @return array<string, list<array{label: string, value: string}>>
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws ValueError
      */
     private function collectEvents(?Contact $contact, ?ContactEvent $contactEvent): array
     {
@@ -258,7 +263,6 @@ class GiftController extends ActionController
      * @throws ContainerExceptionInterface
      * @throws MisconfiguredTcaException
      * @throws NoSuchCacheGroupException
-     * @throws NotFoundExceptionInterface
      * @throws PropertyNotAccessibleException
      * @throws ReflectionException
      */
@@ -294,14 +298,16 @@ class GiftController extends ActionController
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     * @throws ValueError
      */
     private function prepareForm(
-        Contact      $contact = null,
-        ContactEvent $contactEvent = null,
-        Gift         $gift = null,
-        GiftLogEvent $giftLogEvent = null,
+        ?Contact      $contact = null,
+        ?ContactEvent $contactEvent = null,
+        ?Gift         $gift = null,
+        ?GiftLogEvent $giftLogEvent = null,
     ): void {
         if (null === $gift && null !== $contactEvent) {
             $gift = new Gift();
@@ -322,7 +328,7 @@ class GiftController extends ActionController
 
     /**
      * @param array<string, mixed> $arguments
-     *
+     * @throws Exception
      * @throws JsonException
      */
     private function processRelations(array $arguments, Gift $gift): void
@@ -333,7 +339,6 @@ class GiftController extends ActionController
 
     /**
      * @param array<string, mixed> $arguments
-     *
      * @throws JsonException
      */
     private function updateContacts(array $arguments, Gift $gift): void
@@ -385,6 +390,10 @@ class GiftController extends ActionController
         }
     }
 
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     private function updateEvents(Gift $gift): void
     {
         $existingEntities = clone $gift->getEventRelations();
@@ -432,7 +441,6 @@ class GiftController extends ActionController
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
      * @throws MisconfiguredTcaException
-     * @throws NotFoundExceptionInterface
      * @throws PropertyNotAccessibleException
      * @throws ReflectionException
      */

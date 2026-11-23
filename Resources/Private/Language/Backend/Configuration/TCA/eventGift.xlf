@@ -7,11 +7,11 @@
         product-name="gift_log"
         source-language="en">
         <body>
-            <trans-unit id="ctrl.title">
-                <source>Event-gift-relation</source>
-            </trans-unit>
             <trans-unit id="contactEvent">
                 <source>Personal event</source>
+            </trans-unit>
+            <trans-unit id="ctrl.title">
+                <source>Event-gift-relation</source>
             </trans-unit>
             <trans-unit id="gift">
                 <source>Gift</source>

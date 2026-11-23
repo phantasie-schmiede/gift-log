@@ -15,10 +15,7 @@ use PSBits\GiftLog\Domain\Model\Event;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * Class EventRepository
- *
  * @extends Repository<Event>
- * @package PSBits\GiftLog\Domain\Repository
  */
 class EventRepository extends Repository
 {
