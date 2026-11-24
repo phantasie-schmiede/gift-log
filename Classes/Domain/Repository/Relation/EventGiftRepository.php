@@ -18,10 +18,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * Class EventGiftRepository
  * @extends Repository<EventGift>
- *
- * @package PSBits\GiftLog\Domain\Repository\Relation
  */
 class EventGiftRepository extends Repository
 {

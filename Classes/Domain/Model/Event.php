@@ -15,11 +15,6 @@ use PSBits\Foundation\Attribute\TCA\ColumnType\Input;
 use PSBits\Foundation\Attribute\TCA\Ctrl;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-/**
- * Class Event
- *
- * @package PSBits\GiftLog\Domain\Model
- */
 #[Ctrl(label: 'name')]
 class Event extends AbstractEntity
 {

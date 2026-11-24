@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of PSBits Family Tree.
+ * This file is part of PSBits Gift Log.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
@@ -11,27 +11,23 @@ declare(strict_types=1);
 
 namespace PSBits\GiftLog\EventListener;
 
+use InvalidArgumentException;
 use JsonException;
 use PSBits\ContactBook\Event\ModifyTabsEvent;
 use PSBits\Foundation\Utility\Configuration\FilePathUtility;
 use PSBits\Foundation\Utility\LocalizationUtility;
+use PSBits\FrontendTemplates\Service\ViewService;
 use PSBits\GiftLog\Data\ExtensionInformation;
 use PSBits\GiftLog\Domain\Demand\GiftDemand;
 use PSBits\GiftLog\Domain\Repository\GiftRepository;
-use PSBits\Templates\Service\ViewService;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use ReflectionException;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 
-/**
- * Class ModifyTabs
- *
- * @package PSBits\GiftLog\EventListener
- */
 #[AsEventListener(identifier: 'GiftLog/ModifyTabs')]
 readonly class ModifyTabs
 {
@@ -45,9 +41,10 @@ readonly class ModifyTabs
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws InvalidQueryException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function __invoke(ModifyTabsEvent $event): void
     {
@@ -69,8 +66,9 @@ readonly class ModifyTabs
     /**
      * @throws AspectNotFoundException
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     private function getTabIcon(): string
     {

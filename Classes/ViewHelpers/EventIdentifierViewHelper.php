@@ -14,11 +14,6 @@ namespace PSBits\GiftLog\ViewHelpers;
 use PSBits\GiftLog\Service\EventService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-/**
- * Class EventIdentifierViewHelper
- *
- * @package PSBits\GiftLog\ViewHelpers
- */
 class EventIdentifierViewHelper extends AbstractViewHelper
 {
     public function __construct(

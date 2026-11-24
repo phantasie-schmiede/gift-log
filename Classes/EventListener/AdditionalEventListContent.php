@@ -14,19 +14,14 @@ namespace PSBits\GiftLog\EventListener;
 use JsonException;
 use PSBits\ContactBook\Domain\Repository\EventRepository as ContactEventRepository;
 use PSBits\ContactBook\Event\AdditionalEventListContentEvent;
+use PSBits\FrontendTemplates\Service\ViewService;
 use PSBits\GiftLog\Data\ExtensionInformation;
 use PSBits\GiftLog\Domain\Demand\EventGiftDemand;
 use PSBits\GiftLog\Domain\Repository\Relation\EventGiftRepository;
-use PSBits\Templates\Service\ViewService;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use ReflectionException;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 
-/**
- * Class AdditionalEventListContent
- *
- * @package PSBits\GiftLog\EventListener
- */
 #[AsEventListener(identifier: 'GiftLog/AdditionalEventListContent')]
 readonly class AdditionalEventListContent
 {
@@ -41,7 +36,7 @@ readonly class AdditionalEventListContent
     /**
      * @throws ContainerExceptionInterface
      * @throws JsonException
-     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function __invoke(AdditionalEventListContentEvent $event): void
     {
